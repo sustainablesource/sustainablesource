@@ -1,6 +1,16 @@
 ---
 ---
 
+@font-face {
+  font-family: "Bitstream Vera";
+  src: url("{{ site.url }}/assets/fonts/Vera.ttf");
+}
+
+@font-face {
+  font-family: "Bitstream Vera Serif";
+  src: url("{{ site.url }}/assets/fonts/VeraSerif.ttf");
+}
+
 body {
   background-color: #00002f;
   color: white;

@@ -1,6 +1,9 @@
 ---
 ---
 
+$darkblue: #00002f;
+$green: #00ff00;
+
 @font-face {
   font-family: "Bitstream Vera";
   src: url("{{ site.url }}/assets/fonts/Vera.ttf");
@@ -12,7 +15,40 @@
 }
 
 body {
-  background-color: #00002f;
+  background-color: $darkblue;
+  font-family: "Bitstream Vera", sans-serif;
+}
+
+p {
   color: white;
-  font-family: sans-serif;
+  max-width: 50em;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+p.belief {
+  max-width: 30em;
+}
+
+h1 {
+  text-align: center;
+  font-family: "Bitstream Vera Serif", serif;
+  color: $darkblue;
+  background-color: $green;
+  padding-top: 2em;
+  padding-bottom: 2em;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+h2, h3, h4, h5, h6 {
+  text-align: center;
+  font-variant: small-caps;
+  color: $green;
+}
+
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }

@@ -5,7 +5,7 @@ we believe in freedom
 
 {: .belief}
 Software developers are changing the world. We have incredible amounts of
-passion and talent. We should be free to create things that are important and
+passion and talent. We can be free to create things that are important and
 meaningful to us. Only then can we build truly great software.
 
 we believe in responsibility
@@ -21,9 +21,8 @@ we believe in sustainability
 
 {: .belief}
 Software development is a real trade, a craft that earns us a living and
-sustains our lives. We believe that we should not have to compromise our
-freedom and need not walk away from our responsibility in order to reach
-sustainability.
+sustains our lives. We believe we can make our passion sustainable while
+remaining true to our core values of freedom and responsibility.
 
 Sustainable Source
 ==================

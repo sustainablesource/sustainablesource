@@ -89,3 +89,19 @@ to suggest improvements. The maintainers of the project have the duty to ensure
 that those improvements that meet the project standards and vision will be
 accepted as a contribution. The smart contract will then ensure that the
 contributor is rewarded with a share of the proceeds.
+
+Help
+----
+
+We hope that you feel as excited about this project as we are. If you'd like to
+help then there are several ways in which you can contribute. If you're a
+software developer, then there's a ton of stuff you could help us with. If
+you're a lawyer, you can contribute to the license. If you're a designer, you
+can help design the user experience. Let us know on [Gitter][1] what it is that
+you'd like to contribute.
+
+Or if you just can't wait for us to finish this, you can [donate][2] so that we
+can free up more of our time to get a release out the door.
+
+[1]: https://gitter.im/sustainablesource/Lobby
+[2]: TODO

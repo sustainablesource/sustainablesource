@@ -1,0 +1,17 @@
+node_modules
+build
+.idea/*
+!.idea/modules.xml
+!.idea/*.iml
+!.idea/codeStyleSettings.xml
+!.idea/jsLibraryMappings.xml
+!.idea/misc.xml
+!.idea/vcs.xml
+!.idea/inspectionProfiles
+!.idea/inspectionProfiles/*
+!.idea/runConfigurations
+!.idea/runConfigurations/*
+!.idea/fileTemplates
+!.idea/fileTemplates/*
+!.idea/libraries
+!.idea/libraries/*

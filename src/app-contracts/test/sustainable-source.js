@@ -8,6 +8,7 @@ const SustainableSource = artifacts.require('SustainableSource.sol')
 chai.use(chaiAsPromised)
 
 contract('SustainableSource', function (accounts) {
+  const owner = accounts[0]
   const person = accounts[1]
   const fee = web3.toWei(10, 'finney')
 
@@ -40,5 +41,20 @@ contract('SustainableSource', function (accounts) {
     const tooMuch = web3.toWei(11, 'finney')
     const call = sustainable.payLicenseFeeFor(person, {value: tooMuch})
     await expect(call).to.eventually.be.rejected
+  })
+
+  describe('changing license fees', function () {
+    const newFee = web3.toWei(5, 'finney')
+
+    it('allows owner to change license fee', async function () {
+      await sustainable.setLicenseFee(newFee, {from: owner})
+      const actualFee = await sustainable.licenseFeeInWei()
+      expect(actualFee.toString()).to.equal(newFee)
+    })
+
+    it('throws when others try to change license fee', async function () {
+      const call = sustainable.setLicenseFee(newFee, {from: person})
+      await expect(call).to.eventually.be.rejected
+    })
   })
 })

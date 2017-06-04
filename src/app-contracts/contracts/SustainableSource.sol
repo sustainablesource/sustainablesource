@@ -3,7 +3,7 @@ import "./zeppelin/ownership/Ownable.sol";
 
 contract SustainableSource is Ownable {
 
-  mapping (address => bool) public hasLicense;
+  mapping(string => mapping(address => bool)) licenses;
   uint public licenseFeeInWei;
 
   function SustainableSource(uint licenseFeeInWei_) {
@@ -14,10 +14,15 @@ contract SustainableSource is Ownable {
     licenseFeeInWei = licenseFeeInWei_;
   }
 
-  function payLicenseFeeFor(address account) payable {
+  function payLicenseFee(address account, string version) payable {
       if (msg.value != licenseFeeInWei) {
         throw;
       }
-      hasLicense[account] = true;
+
+      licenses[version][account] = true;
+  }
+
+  function hasLicense(address account, string version) constant returns (bool) {
+    return licenses[version][account];
   }
 }

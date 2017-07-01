@@ -1,8 +1,12 @@
 /* eslint-env mocha */
 /* global web3 */
-const expect = require('chai').expect
+const chai = require('chai')
+const chaiAsPromised = require('chai-as-promised')
+const expect = chai.expect
 const GitHub = artifacts.require('GitHub.sol')
 const TestableGitHub = artifacts.require('TestableGitHub.sol')
+
+chai.use(chaiAsPromised)
 
 contract('GitHub', function (accounts) {
   it('is deployed', async function () {
@@ -15,12 +19,14 @@ contract('GitHub', function (accounts) {
     const gistId = '1234abcd'
     const oraclizeQueryId = 42
     const oraclizeProof = 'some oraclize proof'
+    const oraclizeAddress = accounts[2]
 
     let github
 
     beforeEach(async function () {
       github = await TestableGitHub.new()
       await github.alwaysReturnOraclizeQueryId(oraclizeQueryId)
+      await github.alwaysReturnOraclizeAddress(oraclizeAddress)
       await github.attest(username, gistId, { from: account })
     })
 
@@ -39,10 +45,15 @@ contract('GitHub', function (accounts) {
       expect(web3.toDecimal(proofType)).to.equal(notary | ipfs)
     })
 
+    it('only accepts callbacks from oraclize', async function () {
+      const notOraclize = accounts[3]
+      expect(github.__callback(0, '', '', { from: notOraclize })).to.be.rejected
+    })
+
     context('when oraclize returns correct gist details', function () {
       beforeEach(async function () {
         const result = `["${username}", "attestation", "${account}"]`
-        github.__callback(oraclizeQueryId, result, oraclizeProof)
+        github.__callback(oraclizeQueryId, result, oraclizeProof, { from: oraclizeAddress })
       })
 
       it('maps the github username to the ethereum account', async function () {
@@ -53,7 +64,7 @@ contract('GitHub', function (accounts) {
     context('wen oraclize returns incorrect username', function () {
       beforeEach(async function () {
         const result = `["incorrect", "attestation", "${account}"]`
-        github.__callback(oraclizeQueryId, result, oraclizeProof)
+        github.__callback(oraclizeQueryId, result, oraclizeProof, { from: oraclizeAddress })
       })
 
       it('does not register the github username', async function () {
@@ -65,7 +76,7 @@ contract('GitHub', function (accounts) {
     context('wen oraclize returns incorrect filename', function () {
       beforeEach(async function () {
         const result = `["${username}", "incorrect", "${account}"]`
-        github.__callback(oraclizeQueryId, result, oraclizeProof)
+        github.__callback(oraclizeQueryId, result, oraclizeProof, { from: oraclizeAddress })
       })
 
       it('does not register the github username', async function () {
@@ -77,7 +88,7 @@ contract('GitHub', function (accounts) {
     context('wen oraclize returns incorrect file contents', function () {
       beforeEach(async function () {
         const result = `["${username}", "attestation", "incorrect"]`
-        github.__callback(oraclizeQueryId, result, oraclizeProof)
+        github.__callback(oraclizeQueryId, result, oraclizeProof, { from: oraclizeAddress })
       })
 
       it('does not register the github username', async function () {

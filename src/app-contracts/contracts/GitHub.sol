@@ -24,7 +24,7 @@ contract GitHub is usingOraclize {
         queries[queryId] = Query(username, msg.sender);
     }
 
-  function __callback(bytes32 queryId, string result, bytes) {
+    function __callback(bytes32 queryId, string result, bytes) onlyOraclize {
         Query query = queries[queryId];
         string memory accountString = query.account.toString();
 
@@ -40,5 +40,12 @@ contract GitHub is usingOraclize {
     struct Query {
         string username;
         address account;
+    }
+
+    modifier onlyOraclize {
+        if (msg.sender != oraclize_cbAddress()) {
+            throw;
+        }
+        _;
     }
 }

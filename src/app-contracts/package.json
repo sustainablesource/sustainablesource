@@ -10,6 +10,7 @@
   ],
   "license": "Sustainable Source",
   "devDependencies": {
+    "chai": "^4.0.2",
     "child-process-promise": "^2.2.1",
     "ethereumjs-testrpc": "^3.0.5",
     "fs-extra-promise": "^1.0.1",

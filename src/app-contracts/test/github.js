@@ -10,14 +10,17 @@ contract('GitHub', function (accounts) {
   })
 
   context('when attesting', function () {
+    const username = 'some_user'
     const account = accounts[1]
     const gistId = '1234abcd'
+    const oraclizeQueryId = 42
 
     let github
 
     beforeEach(async function () {
       github = await TestableGitHub.new()
-      await github.attest(gistId, { from: account })
+      await github.alwaysReturnOraclizeQueryId(oraclizeQueryId)
+      await github.attest(username, gistId, { from: account })
     })
 
     it('requests gist details through oraclize', async function () {
@@ -33,6 +36,19 @@ contract('GitHub', function (accounts) {
       const ipfs = 0x01
       const proofType = await github.latestProofType()
       expect(web3.toDecimal(proofType)).to.equal(notary | ipfs)
+    })
+
+    context('when oraclize returns correct gist details', function () {
+      const proof = 'some oraclize proof'
+
+      beforeEach(async function () {
+        const result = `["${username}", "attestation", "${account}"]`
+        github.__callback(oraclizeQueryId, result, proof)
+      })
+
+      it('maps the github username to the ethereum account', async function () {
+        expect(await github.users(username)).to.equal(account)
+      })
     })
   })
 })

@@ -50,48 +50,32 @@ contract('GitHub', function (accounts) {
       expect(github.__callback(0, '', '', { from: notOraclize })).to.be.rejected
     })
 
-    context('when oraclize returns correct gist details', function () {
-      beforeEach(async function () {
-        const result = `["${username}", "attestation", "${account}"]`
-        github.__callback(oraclizeQueryId, result, oraclizeProof, { from: oraclizeAddress })
-      })
+    context('when oraclize query results are in', function () {
+      async function callback (result) {
+        await github.__callback(
+          oraclizeQueryId, result, oraclizeProof, { from: oraclizeAddress }
+        )
+      }
 
-      it('maps the github username to the ethereum account', async function () {
+      it('registers the username when gist is correct', async function () {
+        await callback(`["${username}", "attestation", "${account}"]`)
         expect(await github.users(username)).to.equal(account)
       })
-    })
 
-    context('wen oraclize returns incorrect username', function () {
-      beforeEach(async function () {
-        const result = `["incorrect", "attestation", "${account}"]`
-        github.__callback(oraclizeQueryId, result, oraclizeProof, { from: oraclizeAddress })
-      })
-
-      it('does not register the github username', async function () {
+      it('does not register when username is incorrect', async function () {
+        await callback(`["incorrect", "attestation", "${account}"]`)
         const user = await github.users(username)
         expect(web3.toDecimal(user)).to.equal(0)
       })
-    })
 
-    context('wen oraclize returns incorrect filename', function () {
-      beforeEach(async function () {
-        const result = `["${username}", "incorrect", "${account}"]`
-        github.__callback(oraclizeQueryId, result, oraclizeProof, { from: oraclizeAddress })
-      })
-
-      it('does not register the github username', async function () {
+      it('does not register when filename is incorrect', async function () {
+        await callback(`["${username}", "incorrect", "${account}"]`)
         const user = await github.users(username)
         expect(web3.toDecimal(user)).to.equal(0)
       })
-    })
 
-    context('wen oraclize returns incorrect file contents', function () {
-      beforeEach(async function () {
-        const result = `["${username}", "attestation", "incorrect"]`
-        github.__callback(oraclizeQueryId, result, oraclizeProof, { from: oraclizeAddress })
-      })
-
-      it('does not register the github username', async function () {
+      it('does not register when contents are incorrect', async function () {
+        await callback(`["${username}", "attestation", "incorrect"]`)
         const user = await github.users(username)
         expect(web3.toDecimal(user)).to.equal(0)
       })

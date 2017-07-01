@@ -47,7 +47,8 @@ contract('GitHub', function (accounts) {
 
     it('only accepts callbacks from oraclize', async function () {
       const notOraclize = accounts[3]
-      expect(github.__callback(0, '', '', { from: notOraclize })).to.be.rejected
+      const call = github.__callback(0, '', '', { from: notOraclize })
+      await expect(call).to.be.rejected
     })
 
     context('when oraclize query results are in', function () {
@@ -78,6 +79,11 @@ contract('GitHub', function (accounts) {
         await callback(`["${username}", "attestation", "incorrect"]`)
         const user = await github.users(username)
         expect(web3.toDecimal(user)).to.equal(0)
+      })
+
+      it('only processes a query result once', async function () {
+        await callback('some result')
+        await expect(callback('some result')).to.be.rejected
       })
     })
   })

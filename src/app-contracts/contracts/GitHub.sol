@@ -21,13 +21,22 @@ contract GitHub is usingOraclize {
         string memory query = strConcat(queryPrefix, gistId, queryPostfix);
         bytes32 queryId = oraclize_query("URL", query);
 
-        queries[queryId] = Query(username, msg.sender);
+        queries[queryId] = Query(username, msg.sender, false);
     }
 
     function __callback(bytes32 queryId, string result, bytes) onlyOraclize {
         Query query = queries[queryId];
-        string memory accountString = query.account.toString();
+        if (query.isProcessed) {
+            throw;
+        }
 
+        processQueryResult(query, result);
+
+        query.isProcessed = true;
+    }
+
+    function processQueryResult(Query query, string result) private {
+        string memory accountString = query.account.toString();
         string memory correctResult = strConcat(
             "[\"", query.username, "\", \"attestation\", \"0x", accountString, "\"]"
         );
@@ -40,6 +49,7 @@ contract GitHub is usingOraclize {
     struct Query {
         string username;
         address account;
+        bool isProcessed;
     }
 
     modifier onlyOraclize {

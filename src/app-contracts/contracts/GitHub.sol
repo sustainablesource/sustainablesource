@@ -7,6 +7,7 @@ contract GitHub is usingOraclize {
         string memory queryPrefix = "json(https://api.github.com/gists/";
         string memory queryPostfix = ").$..[owner,files]..[login,filename,content]";
         string memory query = strConcat(queryPrefix, gistId, queryPostfix);
+        oraclize_setProof(proofType_TLSNotary | proofStorage_IPFS);
         oraclize_query("URL", query);
     }
 }

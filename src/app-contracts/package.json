@@ -21,7 +21,8 @@
     "install": "yarn run truffle compile",
     "test": "yarn run truffle test",
     "testrpc": "testrpc",
-    "deploy-ropsten": "node deploy/ropsten.js"
+    "deploy-ropsten": "node deploy/ropsten.js",
+    "integration-test": "yarn run truffle test -- --network ropsten test/github-integration.js"
   },
   "engines": {
     "node": ">=7.6.0"

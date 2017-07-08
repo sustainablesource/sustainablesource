@@ -9,8 +9,23 @@ const TestableGitHub = artifacts.require('TestableGitHub.sol')
 chai.use(chaiAsPromised)
 
 contract('GitHub', function (accounts) {
+  const oraclizePrice = 123456
+  const oraclizeGasLimit = 400000
+
+  let github
+
+  beforeEach(async function () {
+    github = await TestableGitHub.new()
+    await github.alwaysReturnOraclizePrice('URL', oraclizeGasLimit, oraclizePrice)
+  })
+
   it('is deployed', async function () {
     expect(await GitHub.deployed()).to.exist
+  })
+
+  it('returns the attestation price', async function () {
+    const price = await github.attestationPrice()
+    expect(price.toNumber()).to.equal(oraclizePrice)
   })
 
   context('when attesting', function () {
@@ -21,13 +36,10 @@ contract('GitHub', function (accounts) {
     const oraclizeProof = 'some oraclize proof'
     const oraclizeAddress = accounts[2]
 
-    let github
-
     beforeEach(async function () {
-      github = await TestableGitHub.new()
       await github.alwaysReturnOraclizeQueryId(oraclizeQueryId)
       await github.alwaysReturnOraclizeAddress(oraclizeAddress)
-      await github.attest(username, gistId, { from: account })
+      await github.attest(username, gistId, { from: account, value: oraclizePrice })
     })
 
     it('requests gist details through oraclize', async function () {
@@ -47,7 +59,13 @@ contract('GitHub', function (accounts) {
 
     it('specifies a custom gas limit', async function () {
       const gasLimit = await github.latestOraclizeGasLimit()
-      expect(gasLimit.toNumber()).to.equal(400000)
+      expect(gasLimit.toNumber()).to.equal(oraclizeGasLimit)
+    })
+
+    it('only accepts calls with correct payment', async function () {
+      const wrongPayment = oraclizePrice - 1
+      const call = github.attest(username, gistId, { from: account, value: wrongPayment })
+      await expect(call).to.eventually.be.rejected
     })
 
     it('only accepts callbacks from oraclize', async function () {

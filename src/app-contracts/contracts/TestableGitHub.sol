@@ -9,6 +9,7 @@ contract TestableGitHub is GitHub {
 
     bytes32 queryIdToReturn;
     address oraclizeAddressToReturn;
+    mapping (string => mapping (uint => uint)) oraclizePriceToReturn;
 
     function alwaysReturnOraclizeQueryId(bytes32 queryId) {
         queryIdToReturn = queryId;
@@ -16,6 +17,14 @@ contract TestableGitHub is GitHub {
 
     function alwaysReturnOraclizeAddress(address oraclizeAddress) {
         oraclizeAddressToReturn = oraclizeAddress;
+    }
+
+    function alwaysReturnOraclizePrice(
+        string datasource,
+        uint gaslimit,
+        uint price)
+    {
+      oraclizePriceToReturn[datasource][gaslimit] = price;
     }
 
     function oraclize_query(string datasource, string arg, uint gaslimit)
@@ -34,5 +43,12 @@ contract TestableGitHub is GitHub {
 
     function oraclize_cbAddress() internal returns (address) {
         return oraclizeAddressToReturn;
+    }
+
+    function oraclize_getPrice(string datasource, uint gaslimit)
+        internal
+        returns (uint)
+    {
+        return oraclizePriceToReturn[datasource][gaslimit];
     }
 }

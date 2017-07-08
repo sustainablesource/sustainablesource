@@ -13,9 +13,12 @@ contract GitHub is usingOraclize {
         return usernameToAddress[username];
     }
 
-    function attest(string username, string gistId) {
+    function attestationPrice() constant returns (uint) {
         oraclize_setProof(proofType_TLSNotary | proofStorage_IPFS);
+        return oraclize_getPrice('URL', 400000);
+    }
 
+    function attest(string username, string gistId) payable onlyCorrectPayment {
         string memory queryPrefix = "json(https://api.github.com/gists/";
         string memory queryPostfix = ").$..[owner,files]..[login,filename,content]";
         string memory query = strConcat(queryPrefix, gistId, queryPostfix);
@@ -54,6 +57,13 @@ contract GitHub is usingOraclize {
 
     modifier onlyOraclize {
         if (msg.sender != oraclize_cbAddress()) {
+            throw;
+        }
+        _;
+    }
+
+    modifier onlyCorrectPayment {
+        if (msg.value != attestationPrice()) {
             throw;
         }
         _;

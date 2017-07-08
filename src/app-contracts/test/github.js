@@ -45,6 +45,11 @@ contract('GitHub', function (accounts) {
       expect(web3.toDecimal(proofType)).to.equal(notary | ipfs)
     })
 
+    it('specifies a custom gas limit', async function () {
+      const gasLimit = await github.latestOraclizeGasLimit()
+      expect(gasLimit.toNumber()).to.equal(400000)
+    })
+
     it('only accepts callbacks from oraclize', async function () {
       const notOraclize = accounts[3]
       const call = github.__callback(0, '', '', { from: notOraclize })

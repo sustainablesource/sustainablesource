@@ -1,7 +1,10 @@
 pragma solidity ^0.4.8;
 import "oraclize/usingOraclize.sol";
+import "./Conversions.sol";
 
 contract GitHub is usingOraclize {
+
+    using Conversions for address;
 
     mapping (string => address) usernameToAddress;
     mapping (bytes32 => Query) queries;
@@ -21,9 +24,17 @@ contract GitHub is usingOraclize {
         queries[queryId] = Query(username, msg.sender);
     }
 
-    function __callback(bytes32 queryId, string result, bytes proof) {
+  function __callback(bytes32 queryId, string result, bytes) {
         Query query = queries[queryId];
-        usernameToAddress[query.username] = query.account;
+        string memory accountString = query.account.toString();
+
+        string memory correctResult = strConcat(
+            "[\"", query.username, "\", \"attestation\", \"0x", accountString, "\"]"
+        );
+
+        if (strCompare(correctResult, result) == 0) {
+            usernameToAddress[query.username] = query.account;
+        }
     }
 
     struct Query {

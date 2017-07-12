@@ -14,6 +14,7 @@ contract('GitHub', function (accounts) {
     const account = accounts[1]
     const gistId = '1234abcd'
     const oraclizeQueryId = 42
+    const oraclizeProof = 'some oraclize proof'
 
     let github
 
@@ -39,15 +40,49 @@ contract('GitHub', function (accounts) {
     })
 
     context('when oraclize returns correct gist details', function () {
-      const proof = 'some oraclize proof'
-
       beforeEach(async function () {
         const result = `["${username}", "attestation", "${account}"]`
-        github.__callback(oraclizeQueryId, result, proof)
+        github.__callback(oraclizeQueryId, result, oraclizeProof)
       })
 
       it('maps the github username to the ethereum account', async function () {
         expect(await github.users(username)).to.equal(account)
+      })
+    })
+
+    context('wen oraclize returns incorrect username', function () {
+      beforeEach(async function () {
+        const result = `["incorrect", "attestation", "${account}"]`
+        github.__callback(oraclizeQueryId, result, oraclizeProof)
+      })
+
+      it('does not register the github username', async function () {
+        const user = await github.users(username)
+        expect(web3.toDecimal(user)).to.equal(0)
+      })
+    })
+
+    context('wen oraclize returns incorrect filename', function () {
+      beforeEach(async function () {
+        const result = `["${username}", "incorrect", "${account}"]`
+        github.__callback(oraclizeQueryId, result, oraclizeProof)
+      })
+
+      it('does not register the github username', async function () {
+        const user = await github.users(username)
+        expect(web3.toDecimal(user)).to.equal(0)
+      })
+    })
+
+    context('wen oraclize returns incorrect file contents', function () {
+      beforeEach(async function () {
+        const result = `["${username}", "attestation", "incorrect"]`
+        github.__callback(oraclizeQueryId, result, oraclizeProof)
+      })
+
+      it('does not register the github username', async function () {
+        const user = await github.users(username)
+        expect(web3.toDecimal(user)).to.equal(0)
       })
     })
   })

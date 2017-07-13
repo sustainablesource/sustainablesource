@@ -2,7 +2,7 @@ pragma solidity ^0.4.8;
 import "oraclize/usingOraclize.sol";
 import "./Conversions.sol";
 
-contract GitHub is usingOraclize {
+contract Users is usingOraclize {
 
     using Conversions for address;
 

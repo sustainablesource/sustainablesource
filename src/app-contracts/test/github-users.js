@@ -3,28 +3,28 @@
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
 const expect = chai.expect
-const GitHub = artifacts.require('GitHub.sol')
-const TestableGitHub = artifacts.require('TestableGitHub.sol')
+const Users = artifacts.require('Users.sol')
+const TestableUsers = artifacts.require('TestableUsers.sol')
 
 chai.use(chaiAsPromised)
 
-contract('GitHub', function (accounts) {
+contract('Users', function (accounts) {
   const oraclizePrice = 123456
   const oraclizeGasLimit = 400000
 
-  let github
+  let users
 
   beforeEach(async function () {
-    github = await TestableGitHub.new()
-    await github.alwaysReturnOraclizePrice('URL', oraclizeGasLimit, oraclizePrice)
+    users = await TestableUsers.new()
+    await users.alwaysReturnOraclizePrice('URL', oraclizeGasLimit, oraclizePrice)
   })
 
   it('is deployed', async function () {
-    expect(await GitHub.deployed()).to.exist
+    expect(await Users.deployed()).to.exist
   })
 
   it('returns the attestation price', async function () {
-    const price = await github.attestationPrice()
+    const price = await users.attestationPrice()
     expect(price.toNumber()).to.equal(oraclizePrice)
   })
 
@@ -37,70 +37,70 @@ contract('GitHub', function (accounts) {
     const oraclizeAddress = accounts[2]
 
     beforeEach(async function () {
-      await github.alwaysReturnOraclizeQueryId(oraclizeQueryId)
-      await github.alwaysReturnOraclizeAddress(oraclizeAddress)
-      await github.attest(username, gistId, { from: account, value: oraclizePrice })
+      await users.alwaysReturnOraclizeQueryId(oraclizeQueryId)
+      await users.alwaysReturnOraclizeAddress(oraclizeAddress)
+      await users.attest(username, gistId, { from: account, value: oraclizePrice })
     })
 
     it('requests gist details through oraclize', async function () {
       const githubApi = 'https://api.github.com'
       const jsonPath = '$..[owner,files]..[login,filename,content]'
       const query = `json(${githubApi}/gists/${gistId}).${jsonPath}`
-      expect(await github.latestOraclizeDataSource()).to.equal('URL')
-      expect(await github.latestOraclizeArg()).to.equal(query)
+      expect(await users.latestOraclizeDataSource()).to.equal('URL')
+      expect(await users.latestOraclizeArg()).to.equal(query)
     })
 
     it('requests oraclize proofs', async function () {
       const notary = 0x10
       const ipfs = 0x01
-      const proofType = await github.latestProofType()
+      const proofType = await users.latestProofType()
       expect(web3.toDecimal(proofType)).to.equal(notary | ipfs)
     })
 
     it('specifies a custom gas limit', async function () {
-      const gasLimit = await github.latestOraclizeGasLimit()
+      const gasLimit = await users.latestOraclizeGasLimit()
       expect(gasLimit.toNumber()).to.equal(oraclizeGasLimit)
     })
 
     it('only accepts calls with correct payment', async function () {
       const wrongPayment = oraclizePrice - 1
-      const call = github.attest(username, gistId, { from: account, value: wrongPayment })
+      const call = users.attest(username, gistId, { from: account, value: wrongPayment })
       await expect(call).to.eventually.be.rejected
     })
 
     it('only accepts callbacks from oraclize', async function () {
       const notOraclize = accounts[3]
-      const call = github.__callback(0, '', '', { from: notOraclize })
+      const call = users.__callback(0, '', '', { from: notOraclize })
       await expect(call).to.be.rejected
     })
 
     context('when oraclize query results are in', function () {
       async function callback (result) {
-        await github.__callback(
+        await users.__callback(
           oraclizeQueryId, result, oraclizeProof, { from: oraclizeAddress }
         )
       }
 
       it('registers the username when gist is correct', async function () {
         await callback(`["${username}", "attestation", "${account}"]`)
-        expect(await github.users(username)).to.equal(account)
+        expect(await users.users(username)).to.equal(account)
       })
 
       it('does not register when username is incorrect', async function () {
         await callback(`["incorrect", "attestation", "${account}"]`)
-        const user = await github.users(username)
+        const user = await users.users(username)
         expect(web3.toDecimal(user)).to.equal(0)
       })
 
       it('does not register when filename is incorrect', async function () {
         await callback(`["${username}", "incorrect", "${account}"]`)
-        const user = await github.users(username)
+        const user = await users.users(username)
         expect(web3.toDecimal(user)).to.equal(0)
       })
 
       it('does not register when contents are incorrect', async function () {
         await callback(`["${username}", "attestation", "incorrect"]`)
-        const user = await github.users(username)
+        const user = await users.users(username)
         expect(web3.toDecimal(user)).to.equal(0)
       })
 

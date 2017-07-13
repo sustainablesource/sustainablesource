@@ -2,7 +2,7 @@
 /* global web3 */
 const expect = require('chai').expect
 const isTestNetwork = require('./test-networks').isTestNetwork
-const GitHub = artifacts.require('GitHub.sol')
+const Users = artifacts.require('Users.sol')
 
 if (!isTestNetwork(web3)) {
   return
@@ -13,12 +13,12 @@ contract('GitHub', function (accounts) {
   const address = '0x7792eba89dd0facd048329955c5855d52554b788'
   const username = 'markspanbroek'
 
-  let github
+  let users
   let price
 
   beforeEach(async function () {
-    github = await GitHub.deployed()
-    price = await github.attestationPrice()
+    users = await Users.deployed()
+    price = await users.attestationPrice()
   })
 
   describe('integration testing environment', function () {
@@ -39,13 +39,13 @@ contract('GitHub', function (accounts) {
 
     it('attests with a correct gist', function (done) {
       async function poll () {
-        if (await github.users(username) === address) {
+        if (await users.users(username) === address) {
           done()
         } else {
           await poll()
         }
       }
-      github.attest(username, gistId, { value: price }).then(poll)
+      users.attest(username, gistId, { value: price }).then(poll)
     })
   })
 })

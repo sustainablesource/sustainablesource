@@ -1,7 +1,7 @@
 pragma solidity ^0.4.8;
-import "./GitHub.sol";
+import "./Users.sol";
 
-contract TestableGitHub is GitHub {
+contract TestableUsers is Users {
     string public latestOraclizeDataSource;
     string public latestOraclizeArg;
     uint public latestOraclizeGasLimit;

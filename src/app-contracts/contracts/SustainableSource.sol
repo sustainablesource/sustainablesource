@@ -1,5 +1,5 @@
 pragma solidity ^0.4.8;
-import "./zeppelin/ownership/Ownable.sol";
+import "zeppelin/ownership/Ownable.sol";
 
 contract SustainableSource is Ownable {
 

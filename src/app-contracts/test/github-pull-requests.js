@@ -1,4 +1,5 @@
 /* eslint-env mocha */
+/* global web3 */
 const expect = require('chai').expect
 const PullRequests = artifacts.require('PullRequests')
 const TestablePullRequests = artifacts.require('TestablePullRequests')
@@ -28,16 +29,23 @@ contract('PullRequests', function () {
 
     it('requests the user name through oraclize', async function () {
       const query = createQuery('user.login')
-      const event = transaction.logs[0]
+      const event = transaction.logs[1]
       expect(event.args.datasource).to.equal('URL')
       expect(event.args.arg).to.equal(query)
     })
 
     it('requests the merged state through oraclize', async function () {
       const query = createQuery('merged')
-      const event = transaction.logs[1]
+      const event = transaction.logs[2]
       expect(event.args.datasource).to.equal('URL')
       expect(event.args.arg).to.equal(query)
+    })
+
+    it('requests oraclize proofs', async function () {
+      const notary = 0x10
+      const ipfs = 0x01
+      const event = transaction.logs[0]
+      expect(web3.toDecimal(event.args.proofType)).to.equal(notary | ipfs)
     })
   })
 })

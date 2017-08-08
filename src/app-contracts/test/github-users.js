@@ -36,30 +36,35 @@ contract('Users', function (accounts) {
     const oraclizeProof = 'some oraclize proof'
     const oraclizeAddress = accounts[2]
 
+    let transaction
+
     beforeEach(async function () {
       await users.alwaysReturnOraclizeQueryId(oraclizeQueryId)
       await users.alwaysReturnOraclizeAddress(oraclizeAddress)
-      await users.attest(username, gistId, { from: account, value: oraclizePrice })
+      transaction = await users.attest(
+        username, gistId, { from: account, value: oraclizePrice }
+      )
     })
 
     it('requests gist details through oraclize', async function () {
       const githubApi = 'https://api.github.com'
       const jsonPath = '$..[owner,files]..[login,filename,content]'
       const query = `json(${githubApi}/gists/${gistId}).${jsonPath}`
-      expect(await users.latestOraclizeDataSource()).to.equal('URL')
-      expect(await users.latestOraclizeArg()).to.equal(query)
+      const event = transaction.logs[1]
+      expect(event.args.datasource).to.equal('URL')
+      expect(event.args.arg).to.equal(query)
     })
 
     it('requests oraclize proofs', async function () {
       const notary = 0x10
       const ipfs = 0x01
-      const proofType = await users.latestProofType()
-      expect(web3.toDecimal(proofType)).to.equal(notary | ipfs)
+      const event = transaction.logs[0]
+      expect(web3.toDecimal(event.args.proofType)).to.equal(notary | ipfs)
     })
 
     it('specifies a custom gas limit', async function () {
-      const gasLimit = await users.latestOraclizeGasLimit()
-      expect(gasLimit.toNumber()).to.equal(oraclizeGasLimit)
+      const event = transaction.logs[1]
+      expect(event.args.gaslimit.toNumber()).to.equal(oraclizeGasLimit)
     })
 
     it('only accepts calls with correct payment', async function () {

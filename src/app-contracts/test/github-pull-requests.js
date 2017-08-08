@@ -13,10 +13,11 @@ contract('PullRequests', function () {
     const pullRequestId = 1234
 
     let pullRequests
+    let transaction
 
     beforeEach(async function () {
       pullRequests = await TestablePullRequests.new(repo)
-      await pullRequests.register(pullRequestId)
+      transaction = await pullRequests.register(pullRequestId)
     })
 
     it('requests the user name through oraclize', async function () {
@@ -24,8 +25,9 @@ contract('PullRequests', function () {
       const url = `${githubApi}/${repo}/pulls/${pullRequestId}`
       const jsonPath = 'user.login'
       const query = `json(${url}).${jsonPath}`
-      expect(await pullRequests.latestOraclizeDataSource()).to.equal('URL')
-      expect(await pullRequests.latestOraclizeArg()).to.equal(query)
+      const event = transaction.logs[0]
+      expect(event.args.datasource).to.equal('URL')
+      expect(event.args.arg).to.equal(query)
     })
   })
 })

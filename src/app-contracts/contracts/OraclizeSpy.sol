@@ -1,11 +1,6 @@
 pragma solidity^0.4.6;
 
 contract OraclizeSpy {
-    string public latestOraclizeDataSource;
-    string public latestOraclizeArg;
-    uint public latestOraclizeGasLimit;
-    byte public latestProofType;
-
     bytes32 queryIdToReturn;
     address oraclizeAddressToReturn;
     mapping (string => mapping (uint => uint)) oraclizePriceToReturn;
@@ -30,14 +25,12 @@ contract OraclizeSpy {
         internal
         returns (bytes32)
     {
-        latestOraclizeDataSource = datasource;
-        latestOraclizeArg = arg;
-        latestOraclizeGasLimit = gaslimit;
+        OraclizeQuery(datasource, arg, gaslimit);
         return queryIdToReturn;
     }
 
     function oraclize_setProof(byte proofType) internal {
-        latestProofType = proofType;
+        OraclizeSetProof(proofType);
     }
 
     function oraclize_cbAddress() internal returns (address) {
@@ -50,4 +43,7 @@ contract OraclizeSpy {
     {
         return oraclizePriceToReturn[datasource][gaslimit];
     }
+
+    event OraclizeQuery(string datasource, string arg, uint gaslimit);
+    event OraclizeSetProof(byte proofType);
 }

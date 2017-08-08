@@ -20,12 +20,22 @@ contract('PullRequests', function () {
       transaction = await pullRequests.register(pullRequestId)
     })
 
-    it('requests the user name through oraclize', async function () {
+    function createQuery (jsonPath) {
       const githubApi = 'https://api.github.com'
       const url = `${githubApi}/${repo}/pulls/${pullRequestId}`
-      const jsonPath = 'user.login'
-      const query = `json(${url}).${jsonPath}`
+      return `json(${url}).${jsonPath}`
+    }
+
+    it('requests the user name through oraclize', async function () {
+      const query = createQuery('user.login')
       const event = transaction.logs[0]
+      expect(event.args.datasource).to.equal('URL')
+      expect(event.args.arg).to.equal(query)
+    })
+
+    it('requests the merged state through oraclize', async function () {
+      const query = createQuery('merged')
+      const event = transaction.logs[1]
       expect(event.args.datasource).to.equal('URL')
       expect(event.args.arg).to.equal(query)
     })

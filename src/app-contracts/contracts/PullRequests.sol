@@ -10,11 +10,18 @@ contract PullRequests is usingOraclize {
     }
 
     function register(uint pullRequestId) {
-        string memory prefix = "json(https://api.github.com/";
-        string memory infix = "/pulls/";
-        string memory postfix = ").user.login";
-        string memory id = uint2str(pullRequestId);
-        string memory query = strConcat(prefix, repo, infix, id, postfix);
-        oraclize_query("URL", query, 0);
+        string memory prefix = queryPrefix(pullRequestId);
+        oraclize_query("URL", strConcat(prefix, "user.login"), 0);
+        oraclize_query("URL", strConcat(prefix, "merged"), 0);
+    }
+
+    function queryPrefix(uint pullRequestId) private returns (string) {
+        return strConcat(
+            "json(https://api.github.com/",
+            repo,
+            "/pulls/",
+             uint2str(pullRequestId),
+            ")."
+        );
     }
 }

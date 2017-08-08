@@ -5,6 +5,8 @@ const PullRequests = artifacts.require('PullRequests')
 const TestablePullRequests = artifacts.require('TestablePullRequests')
 
 contract('PullRequests', function () {
+  const oraclizeGasLimit = 300000
+
   it('is deployed', async function () {
     expect(await PullRequests.deployed()).to.exist
   })
@@ -46,6 +48,13 @@ contract('PullRequests', function () {
       const ipfs = 0x01
       const event = transaction.logs[0]
       expect(web3.toDecimal(event.args.proofType)).to.equal(notary | ipfs)
+    })
+
+    it('specifies a custom gas limit', async function () {
+      const event1 = transaction.logs[1]
+      const event2 = transaction.logs[2]
+      expect(event1.args.gaslimit.toNumber()).to.equal(oraclizeGasLimit)
+      expect(event2.args.gaslimit.toNumber()).to.equal(oraclizeGasLimit)
     })
   })
 })

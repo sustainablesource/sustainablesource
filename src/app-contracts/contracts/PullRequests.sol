@@ -12,8 +12,8 @@ contract PullRequests is usingOraclize {
     function register(uint pullRequestId) {
         string memory prefix = queryPrefix(pullRequestId);
         oraclize_setProof(proofType_TLSNotary | proofStorage_IPFS);
-        oraclize_query("URL", strConcat(prefix, "user.login"), 0);
-        oraclize_query("URL", strConcat(prefix, "merged"), 0);
+        oraclize_query("URL", strConcat(prefix, "user.login"), 300000);
+        oraclize_query("URL", strConcat(prefix, "merged"), 300000);
     }
 
     function queryPrefix(uint pullRequestId) private returns (string) {

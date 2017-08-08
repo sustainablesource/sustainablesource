@@ -5,5 +5,5 @@ const PullRequests = artifacts.require('PullRequests.sol')
 module.exports = function (deployer) {
   deployer.deploy(SustainableSource)
   deployer.deploy(Users)
-  deployer.deploy(PullRequests)
+  deployer.deploy(PullRequests, 'sustainablesource/sustainablesource')
 }

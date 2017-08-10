@@ -4,8 +4,9 @@ const expect = require('chai').expect
 const PullRequests = artifacts.require('PullRequests')
 const TestablePullRequests = artifacts.require('TestablePullRequests')
 
-contract('PullRequests', function () {
+contract('PullRequests', function (accounts) {
   const repo = 'sustainablesource/sustainablesource'
+  const oraclizeAddress = accounts[2]
   const oraclizePrice = 123456
   const oraclizeGasLimit = 300000
   const registrationPrice = 2 * oraclizePrice
@@ -14,6 +15,7 @@ contract('PullRequests', function () {
 
   beforeEach(async function () {
     pullRequests = await TestablePullRequests.new(repo)
+    await pullRequests.alwaysReturnOraclizeAddress(oraclizeAddress)
     await pullRequests
       .alwaysReturnOraclizePrice('URL', oraclizeGasLimit, oraclizePrice)
   })
@@ -76,6 +78,12 @@ contract('PullRequests', function () {
       const wrongPayment = registrationPrice - 1
       const call = pullRequests.register(pullRequestId, { value: wrongPayment })
       await expect(call).to.eventually.be.rejected
+    })
+
+    it('only accepts callbacks from oraclize', async function () {
+      const notOraclize = accounts[3]
+      const call = pullRequests.__callback(0, '', '', { from: notOraclize })
+      await expect(call).to.be.rejected
     })
   })
 })

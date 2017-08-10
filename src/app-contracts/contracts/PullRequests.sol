@@ -20,6 +20,9 @@ contract PullRequests is usingOraclize {
         oraclize_query("URL", strConcat(prefix, "merged"), 300000);
     }
 
+    function __callback(bytes32 queryId, string result, bytes) onlyOraclize {
+    }
+
     function queryPrefix(uint pullRequestId) private returns (string) {
         return strConcat(
             "json(https://api.github.com/",
@@ -28,6 +31,13 @@ contract PullRequests is usingOraclize {
              uint2str(pullRequestId),
             ")."
         );
+    }
+
+    modifier onlyOraclize {
+        if (msg.sender != oraclize_cbAddress()) {
+            throw;
+        }
+        _;
     }
 
     modifier onlyCorrectPayment {

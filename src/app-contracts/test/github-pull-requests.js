@@ -8,6 +8,7 @@ contract('PullRequests', function () {
   const repo = 'sustainablesource/sustainablesource'
   const oraclizePrice = 123456
   const oraclizeGasLimit = 300000
+  const registrationPrice = 2 * oraclizePrice
 
   let pullRequests
 
@@ -23,7 +24,7 @@ contract('PullRequests', function () {
 
   it('returns the registration price', async function () {
     const price = await pullRequests.registrationPrice()
-    expect(price.toNumber()).to.equal(2 * oraclizePrice)
+    expect(price.toNumber()).to.equal(registrationPrice)
   })
 
   context('when registering a pull request', function () {
@@ -32,7 +33,9 @@ contract('PullRequests', function () {
     let transaction
 
     beforeEach(async function () {
-      transaction = await pullRequests.register(pullRequestId)
+      transaction = await pullRequests.register(
+        pullRequestId, { value: registrationPrice }
+      )
     })
 
     function createQuery (jsonPath) {
@@ -67,6 +70,12 @@ contract('PullRequests', function () {
       const event2 = transaction.logs[2]
       expect(event1.args.gaslimit.toNumber()).to.equal(oraclizeGasLimit)
       expect(event2.args.gaslimit.toNumber()).to.equal(oraclizeGasLimit)
+    })
+
+    it('only accepts calls with correct payment', async function () {
+      const wrongPayment = registrationPrice - 1
+      const call = pullRequests.register(pullRequestId, { value: wrongPayment })
+      await expect(call).to.eventually.be.rejected
     })
   })
 })

@@ -5,21 +5,33 @@ const PullRequests = artifacts.require('PullRequests')
 const TestablePullRequests = artifacts.require('TestablePullRequests')
 
 contract('PullRequests', function () {
+  const repo = 'sustainablesource/sustainablesource'
+  const oraclizePrice = 123456
   const oraclizeGasLimit = 300000
+
+  let pullRequests
+
+  beforeEach(async function () {
+    pullRequests = await TestablePullRequests.new(repo)
+    await pullRequests
+      .alwaysReturnOraclizePrice('URL', oraclizeGasLimit, oraclizePrice)
+  })
 
   it('is deployed', async function () {
     expect(await PullRequests.deployed()).to.exist
   })
 
+  it('returns the registration price', async function () {
+    const price = await pullRequests.registrationPrice()
+    expect(price.toNumber()).to.equal(2 * oraclizePrice)
+  })
+
   context('when registering a pull request', function () {
-    const repo = 'sustainablesource/sustainablesource'
     const pullRequestId = 1234
 
-    let pullRequests
     let transaction
 
     beforeEach(async function () {
-      pullRequests = await TestablePullRequests.new(repo)
       transaction = await pullRequests.register(pullRequestId)
     })
 

@@ -9,6 +9,10 @@ contract PullRequests is usingOraclize {
         repo = repo_;
     }
 
+    function registrationPrice() constant returns (uint) {
+        return 2 * oraclize_getPrice('URL', 300000);
+    }
+
     function register(uint pullRequestId) {
         string memory prefix = queryPrefix(pullRequestId);
         oraclize_setProof(proofType_TLSNotary | proofStorage_IPFS);

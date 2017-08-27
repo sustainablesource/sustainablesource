@@ -4,8 +4,16 @@ const testNetworks = {
   42: 'kovan'
 }
 
-function isTestNetwork (web3) {
-  return !!testNetworks[web3.version.network]
+async function isTestNetwork (web3) {
+  return new Promise(function (resolve, reject) {
+    web3.version.getNetwork(function (error, network) {
+      if (error) {
+        reject(error)
+      } else {
+        resolve(!!testNetworks[network])
+      }
+    })
+  })
 }
 
 module.exports.isTestNetwork = isTestNetwork

@@ -106,6 +106,11 @@ contract('PullRequests', function (accounts) {
         await usernameCallback('["incorrect_user"]')
         expect(await pullRequests.creators(pullRequestId)).to.equal('')
       })
+
+      it('only processes a query result once', async function () {
+        await usernameCallback('some result')
+        await expect(usernameCallback('some result')).to.be.rejected
+      })
     })
   })
 })

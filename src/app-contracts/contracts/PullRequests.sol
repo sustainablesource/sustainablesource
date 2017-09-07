@@ -29,15 +29,24 @@ contract PullRequests is usingOraclize {
 
         string memory usernameQuery = strConcat(prefix, "user.login");
         bytes32 usernameQueryId = oraclize_query("URL", usernameQuery, 300000);
-        usernameQueries[usernameQueryId] = UsernameQuery(pullRequestId, creator);
+        usernameQueries[usernameQueryId] = UsernameQuery(pullRequestId, creator, false);
 
         oraclize_query("URL", strConcat(prefix, "merged"), 300000);
     }
 
     function __callback(bytes32 queryId, string result, bytes) onlyOraclize {
         UsernameQuery query = usernameQueries[queryId];
-        string memory correctResult = strConcat("[\"", query.creator, "\"]");
+        if (query.isProcessed) {
+            throw;
+        }
 
+        processUsernameResult(query, result);
+
+        query.isProcessed = true;
+    }
+
+    function processUsernameResult(UsernameQuery query, string result) private {
+        string memory correctResult = strConcat("[\"", query.creator, "\"]");
         if (strCompare(correctResult, result) == 0) {
             pullRequestIdToCreator[query.pullRequestId] = query.creator;
         }
@@ -56,6 +65,7 @@ contract PullRequests is usingOraclize {
     struct UsernameQuery {
         uint pullRequestId;
         string creator;
+        bool isProcessed;
     }
 
     modifier onlyOraclize {

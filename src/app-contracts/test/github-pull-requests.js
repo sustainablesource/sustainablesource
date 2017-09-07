@@ -10,6 +10,7 @@ contract('PullRequests', function (accounts) {
   const oraclizePrice = 123456
   const oraclizeGasLimit = 300000
   const registrationPrice = 2 * oraclizePrice
+  const oraclizeProof = 'some oraclize proof'
 
   let pullRequests
 
@@ -30,13 +31,16 @@ contract('PullRequests', function (accounts) {
   })
 
   context('when registering a pull request', function () {
+    const creator = 'some_user'
     const pullRequestId = 1234
+    const usernameQueryId = 42
 
     let transaction
 
     beforeEach(async function () {
+      await pullRequests.alwaysReturnOraclizeQueryId(usernameQueryId)
       transaction = await pullRequests.register(
-        pullRequestId, { value: registrationPrice }
+        pullRequestId, creator, { value: registrationPrice }
       )
     })
 
@@ -84,6 +88,24 @@ contract('PullRequests', function (accounts) {
       const notOraclize = accounts[3]
       const call = pullRequests.__callback(0, '', '', { from: notOraclize })
       await expect(call).to.be.rejected
+    })
+
+    context('when oraclize returns the user name', function () {
+      async function usernameCallback (result) {
+        await pullRequests.__callback(
+          usernameQueryId, result, oraclizeProof, { from: oraclizeAddress }
+        )
+      }
+
+      it('registers the creator when username is correct', async function () {
+        await usernameCallback(`["${creator}"]`)
+        expect(await pullRequests.creators(pullRequestId)).to.equal(creator)
+      })
+
+      it('does not register when username is incorrect', async function () {
+        await usernameCallback('["incorrect_user"]')
+        expect(await pullRequests.creators(pullRequestId)).to.equal('')
+      })
     })
   })
 })

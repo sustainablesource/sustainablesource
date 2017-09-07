@@ -5,22 +5,42 @@ contract PullRequests is usingOraclize {
 
     string repo;
 
+    mapping (uint => string) pullRequestIdToCreator;
+    mapping (bytes32 => UsernameQuery) usernameQueries;
+
     function PullRequests(string repo_) {
         repo = repo_;
+    }
+
+    function creators(uint pullRequestId) constant returns (string creator) {
+        return pullRequestIdToCreator[pullRequestId];
     }
 
     function registrationPrice() constant returns (uint) {
         return 2 * oraclize_getPrice('URL', 300000);
     }
 
-    function register(uint pullRequestId) payable onlyCorrectPayment {
+    function register(uint pullRequestId, string creator)
+        payable
+        onlyCorrectPayment
+    {
         string memory prefix = queryPrefix(pullRequestId);
         oraclize_setProof(proofType_TLSNotary | proofStorage_IPFS);
-        oraclize_query("URL", strConcat(prefix, "user.login"), 300000);
+
+        string memory usernameQuery = strConcat(prefix, "user.login");
+        bytes32 usernameQueryId = oraclize_query("URL", usernameQuery, 300000);
+        usernameQueries[usernameQueryId] = UsernameQuery(pullRequestId, creator);
+
         oraclize_query("URL", strConcat(prefix, "merged"), 300000);
     }
 
     function __callback(bytes32 queryId, string result, bytes) onlyOraclize {
+        UsernameQuery query = usernameQueries[queryId];
+        string memory correctResult = strConcat("[\"", query.creator, "\"]");
+
+        if (strCompare(correctResult, result) == 0) {
+            pullRequestIdToCreator[query.pullRequestId] = query.creator;
+        }
     }
 
     function queryPrefix(uint pullRequestId) private returns (string) {
@@ -31,6 +51,11 @@ contract PullRequests is usingOraclize {
              uint2str(pullRequestId),
             ")."
         );
+    }
+
+    struct UsernameQuery {
+        uint pullRequestId;
+        string creator;
     }
 
     modifier onlyOraclize {

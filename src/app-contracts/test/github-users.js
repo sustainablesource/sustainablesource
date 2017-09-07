@@ -39,7 +39,7 @@ contract('Users', function (accounts) {
     let transaction
 
     beforeEach(async function () {
-      await users.alwaysReturnOraclizeQueryId(oraclizeQueryId)
+      await users.returnOraclizeQueryIdsStartingFrom(oraclizeQueryId)
       await users.alwaysReturnOraclizeAddress(oraclizeAddress)
       transaction = await users.attest(
         username, gistId, { from: account, value: oraclizePrice }

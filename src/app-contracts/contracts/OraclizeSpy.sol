@@ -5,7 +5,7 @@ contract OraclizeSpy {
     address oraclizeAddressToReturn;
     mapping (string => mapping (uint => uint)) oraclizePriceToReturn;
 
-    function alwaysReturnOraclizeQueryId(bytes32 queryId) {
+    function returnOraclizeQueryIdsStartingFrom(bytes32 queryId) {
         queryIdToReturn = queryId;
     }
 
@@ -23,10 +23,11 @@ contract OraclizeSpy {
 
     function oraclize_query(string datasource, string arg, uint gaslimit)
         internal
-        returns (bytes32)
+        returns (bytes32 queryId)
     {
         OraclizeQuery(datasource, arg, gaslimit);
-        return queryIdToReturn;
+        queryId = queryIdToReturn;
+        queryIdToReturn = bytes32(uint256(queryIdToReturn) + 1);
     }
 
     function oraclize_setProof(byte proofType) internal {

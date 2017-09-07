@@ -38,7 +38,7 @@ contract('PullRequests', function (accounts) {
     let transaction
 
     beforeEach(async function () {
-      await pullRequests.alwaysReturnOraclizeQueryId(usernameQueryId)
+      await pullRequests.returnOraclizeQueryIdsStartingFrom(usernameQueryId)
       transaction = await pullRequests.register(
         pullRequestId, creator, { value: registrationPrice }
       )

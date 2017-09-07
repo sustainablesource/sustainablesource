@@ -6,7 +6,9 @@ contract PullRequests is usingOraclize {
     string repo;
 
     mapping (uint => string) pullRequestIdToCreator;
+    mapping (uint => bool) pullRequestIdToMergedState;
     mapping (bytes32 => UsernameQuery) usernameQueries;
+    mapping (bytes32 => MergedQuery) mergedQueries;
 
     function PullRequests(string repo_) {
         repo = repo_;
@@ -14,6 +16,10 @@ contract PullRequests is usingOraclize {
 
     function creators(uint pullRequestId) constant returns (string creator) {
         return pullRequestIdToCreator[pullRequestId];
+    }
+
+    function isMerged(uint pullRequestId) constant returns (bool isMerged) {
+        return pullRequestIdToMergedState[pullRequestId];
     }
 
     function registrationPrice() constant returns (uint) {
@@ -31,24 +37,41 @@ contract PullRequests is usingOraclize {
         bytes32 usernameQueryId = oraclize_query("URL", usernameQuery, 300000);
         usernameQueries[usernameQueryId] = UsernameQuery(pullRequestId, creator, false);
 
-        oraclize_query("URL", strConcat(prefix, "merged"), 300000);
+        bytes32 mergedQueryId = oraclize_query("URL", strConcat(prefix, "merged"), 300000);
+        mergedQueries[mergedQueryId] = MergedQuery(pullRequestId, false);
     }
 
     function __callback(bytes32 queryId, string result, bytes) onlyOraclize {
-        UsernameQuery query = usernameQueries[queryId];
-        if (query.isProcessed) {
+        UsernameQuery usernameQuery = usernameQueries[queryId];
+        if (usernameQuery.isProcessed) {
             throw;
         }
+        if (usernameQuery.pullRequestId != 0) {
+            processUsernameResult(usernameQuery, result);
+            usernameQuery.isProcessed = true;
+        }
 
-        processUsernameResult(query, result);
-
-        query.isProcessed = true;
+        MergedQuery mergedQuery = mergedQueries[queryId];
+        if (mergedQuery.isProcessed) {
+            throw;
+        }
+        if (mergedQuery.pullRequestId != 0) {
+            processMergedStateResult(mergedQuery, result);
+            mergedQuery.isProcessed = true;
+        }
     }
 
     function processUsernameResult(UsernameQuery query, string result) private {
         string memory correctResult = strConcat("[\"", query.creator, "\"]");
         if (strCompare(correctResult, result) == 0) {
             pullRequestIdToCreator[query.pullRequestId] = query.creator;
+        }
+    }
+
+    function processMergedStateResult(MergedQuery query, string result) private {
+        string memory correctResult = "[true]";
+        if (strCompare(correctResult, result) == 0) {
+            pullRequestIdToMergedState[query.pullRequestId] = true;
         }
     }
 
@@ -65,6 +88,11 @@ contract PullRequests is usingOraclize {
     struct UsernameQuery {
         uint pullRequestId;
         string creator;
+        bool isProcessed;
+    }
+
+    struct MergedQuery {
+        uint pullRequestId;
         bool isProcessed;
     }
 

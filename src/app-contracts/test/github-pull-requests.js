@@ -33,7 +33,8 @@ contract('PullRequests', function (accounts) {
   context('when registering a pull request', function () {
     const creator = 'some_user'
     const pullRequestId = 1234
-    const usernameQueryId = 42
+    const usernameQueryId = '0x0000000000000000000000000000000000000000000000000000000000000042'
+    const mergedStateQueryId = '0x0000000000000000000000000000000000000000000000000000000000000043'
 
     let transaction
 
@@ -110,6 +111,29 @@ contract('PullRequests', function (accounts) {
       it('only processes a query result once', async function () {
         await usernameCallback('some result')
         await expect(usernameCallback('some result')).to.be.rejected
+      })
+    })
+
+    context('when oraclize returns the merged state', function () {
+      async function mergedStateCallback (result) {
+        await pullRequests.__callback(
+          mergedStateQueryId, result, oraclizeProof, { from: oraclizeAddress }
+        )
+      }
+
+      it('registers that pull request is merged', async function () {
+        await mergedStateCallback('[true]')
+        expect(await pullRequests.isMerged(pullRequestId)).to.equal(true)
+      })
+
+      it('does not register when pull request is not merged', async function () {
+        await mergedStateCallback('[false]')
+        expect(await pullRequests.isMerged(pullRequestId)).to.equal(false)
+      })
+
+      it('only processes a query result once', async function () {
+        await mergedStateCallback('some result')
+        await expect(mergedStateCallback('some result')).to.be.rejected
       })
     })
   })

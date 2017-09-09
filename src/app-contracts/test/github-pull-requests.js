@@ -33,8 +33,8 @@ contract('PullRequests', function (accounts) {
   context('when registering a pull request', function () {
     const creator = 'some_user'
     const pullRequestId = 1234
-    const usernameQueryId = '0x0000000000000000000000000000000000000000000000000000000000000042'
-    const mergedStateQueryId = '0x0000000000000000000000000000000000000000000000000000000000000043'
+    const usernameQueryId = toBytes32(42)
+    const mergedStateQueryId = toBytes32(43)
 
     let transaction
 
@@ -137,4 +137,12 @@ contract('PullRequests', function (accounts) {
       })
     })
   })
+
+  function toBytes32 (number) {
+    let result = number.toString(16)
+    while (result.length < 64) {
+      result = '00' + result
+    }
+    return '0x' + result
+  }
 })

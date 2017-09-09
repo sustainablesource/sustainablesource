@@ -65,7 +65,7 @@ contract PullRequests is usingOraclize {
     function processUserResult(UserQuery query, string result)
         private
     {
-        string memory correctResult = strConcat("[\"", query.creator, "\"]");
+        string memory correctResult = query.creator;
         if (strCompare(correctResult, result) == 0) {
             pullRequestIdToCreator[query.pullRequestId] = query.creator;
         }
@@ -74,7 +74,7 @@ contract PullRequests is usingOraclize {
     function processMergedStateResult(MergedQuery query, string result)
         private
     {
-        string memory correctResult = "[true]";
+        string memory correctResult = "true";
         if (strCompare(correctResult, result) == 0) {
             pullRequestIdToMergedState[query.pullRequestId] = true;
         }

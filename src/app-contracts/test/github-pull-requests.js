@@ -99,12 +99,12 @@ contract('PullRequests', function (accounts) {
       }
 
       it('registers the creator when username is correct', async function () {
-        await usernameCallback(`["${creator}"]`)
+        await usernameCallback(creator)
         expect(await pullRequests.creators(pullRequestId)).to.equal(creator)
       })
 
       it('does not register when username is incorrect', async function () {
-        await usernameCallback('["incorrect_user"]')
+        await usernameCallback('incorrect_user')
         expect(await pullRequests.creators(pullRequestId)).to.equal('')
       })
 
@@ -122,12 +122,12 @@ contract('PullRequests', function (accounts) {
       }
 
       it('registers that pull request is merged', async function () {
-        await mergedStateCallback('[true]')
+        await mergedStateCallback('true')
         expect(await pullRequests.isMerged(pullRequestId)).to.equal(true)
       })
 
       it('does not register when pull request is not merged', async function () {
-        await mergedStateCallback('[false]')
+        await mergedStateCallback('false')
         expect(await pullRequests.isMerged(pullRequestId)).to.equal(false)
       })
 

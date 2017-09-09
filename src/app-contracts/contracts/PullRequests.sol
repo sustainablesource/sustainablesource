@@ -23,6 +23,7 @@ contract PullRequests is usingOraclize {
     }
 
     function registrationPrice() constant returns (uint) {
+        oraclize_setProof(proofType_TLSNotary | proofStorage_IPFS);
         return 2 * oraclize_getPrice('URL', 300000);
     }
 
@@ -31,7 +32,6 @@ contract PullRequests is usingOraclize {
         onlyCorrectPayment
     {
         string memory prefix = queryPrefix(pullRequestId);
-        oraclize_setProof(proofType_TLSNotary | proofStorage_IPFS);
 
         string memory userQuery = strConcat(prefix, "user.login");
         bytes32 userQueryId = oraclize_query("URL", userQuery, 300000);

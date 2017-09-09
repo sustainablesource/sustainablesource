@@ -47,7 +47,7 @@ contract('PullRequests', function (accounts) {
 
     function createQuery (jsonPath) {
       const githubApi = 'https://api.github.com'
-      const url = `${githubApi}/${repo}/pulls/${pullRequestId}`
+      const url = `${githubApi}/repos/${repo}/pulls/${pullRequestId}`
       return `json(${url}).${jsonPath}`
     }
 

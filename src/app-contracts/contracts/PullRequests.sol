@@ -85,7 +85,7 @@ contract PullRequests is usingOraclize {
         returns (string)
     {
         return strConcat(
-            "json(https://api.github.com/",
+            "json(https://api.github.com/repos/",
             repo,
             "/pulls/",
              uint2str(pullRequestId),

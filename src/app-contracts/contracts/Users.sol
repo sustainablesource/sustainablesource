@@ -9,7 +9,7 @@ contract Users is usingOraclize {
     mapping (string => address) usernameToAddress;
     mapping (bytes32 => Query) queries;
 
-    function users(string username) constant returns (address account) {
+    function user(string username) constant returns (address account) {
         return usernameToAddress[username];
     }
 

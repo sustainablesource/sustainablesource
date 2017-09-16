@@ -14,7 +14,7 @@ contract PullRequests is usingOraclize {
         repo = repo_;
     }
 
-    function creators(uint pullRequestId) constant returns (string creator) {
+    function creator(uint pullRequestId) constant returns (string creator) {
         return pullRequestIdToCreator[pullRequestId];
     }
 

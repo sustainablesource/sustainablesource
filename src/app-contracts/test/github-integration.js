@@ -74,7 +74,7 @@ contract('GitHub', function (accounts) {
 
       it('registers a pull request', async function () {
         async function poll () {
-          const creator = await pullRequests.creators(pullRequestId)
+          const creator = await pullRequests.creator(pullRequestId)
           const isMerged = await pullRequests.isMerged(pullRequestId)
           if (creator !== username || !isMerged) {
             await wait(500)

@@ -100,12 +100,12 @@ contract('PullRequests', function (accounts) {
 
       it('registers the creator when username is correct', async function () {
         await usernameCallback(creator)
-        expect(await pullRequests.creators(pullRequestId)).to.equal(creator)
+        expect(await pullRequests.creator(pullRequestId)).to.equal(creator)
       })
 
       it('does not register when username is incorrect', async function () {
         await usernameCallback('incorrect_user')
-        expect(await pullRequests.creators(pullRequestId)).to.equal('')
+        expect(await pullRequests.creator(pullRequestId)).to.equal('')
       })
 
       it('only processes a query result once', async function () {

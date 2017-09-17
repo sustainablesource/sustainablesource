@@ -1,17 +1,11 @@
-pragma solidity ^0.4.8;
-import "./GitHub.sol";
+pragma solidity^0.4.6;
 
-contract TestableGitHub is GitHub {
-    string public latestOraclizeDataSource;
-    string public latestOraclizeArg;
-    uint public latestOraclizeGasLimit;
-    byte public latestProofType;
-
+contract OraclizeSpy {
     bytes32 queryIdToReturn;
     address oraclizeAddressToReturn;
     mapping (string => mapping (uint => uint)) oraclizePriceToReturn;
 
-    function alwaysReturnOraclizeQueryId(bytes32 queryId) {
+    function returnOraclizeQueryIdsStartingFrom(bytes32 queryId) {
         queryIdToReturn = queryId;
     }
 
@@ -29,16 +23,15 @@ contract TestableGitHub is GitHub {
 
     function oraclize_query(string datasource, string arg, uint gaslimit)
         internal
-        returns (bytes32)
+        returns (bytes32 queryId)
     {
-        latestOraclizeDataSource = datasource;
-        latestOraclizeArg = arg;
-        latestOraclizeGasLimit = gaslimit;
-        return queryIdToReturn;
+        OraclizeQuery(datasource, arg, gaslimit);
+        queryId = queryIdToReturn;
+        queryIdToReturn = bytes32(uint256(queryIdToReturn) + 1);
     }
 
     function oraclize_setProof(byte proofType) internal {
-        latestProofType = proofType;
+        OraclizeSetProof(proofType);
     }
 
     function oraclize_cbAddress() internal returns (address) {
@@ -51,4 +44,7 @@ contract TestableGitHub is GitHub {
     {
         return oraclizePriceToReturn[datasource][gaslimit];
     }
+
+    event OraclizeQuery(string datasource, string arg, uint gaslimit);
+    event OraclizeSetProof(byte proofType);
 }

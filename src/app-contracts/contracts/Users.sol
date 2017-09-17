@@ -2,14 +2,14 @@ pragma solidity ^0.4.8;
 import "oraclize/usingOraclize.sol";
 import "./Conversions.sol";
 
-contract GitHub is usingOraclize {
+contract Users is usingOraclize {
 
     using Conversions for address;
 
     mapping (string => address) usernameToAddress;
     mapping (bytes32 => Query) queries;
 
-    function users(string username) constant returns (address account) {
+    function user(string username) constant returns (address account) {
         return usernameToAddress[username];
     }
 

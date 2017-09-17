@@ -10,24 +10,23 @@
   ],
   "license": "Sustainable Source",
   "devDependencies": {
-    "chai": "^4.0.2",
+    "chai": "^4.1.0",
+    "chai-as-promised": "^7.1.0",
     "child-process-promise": "^2.2.1",
     "ethereumjs-testrpc": "^3.0.5",
-    "fs-extra-promise": "^1.0.1",
+    "fs-extra": "^4.0.1",
     "is-port-reachable": "^2.0.0",
-    "truffle": "^3.2.5"
+    "truffle": "3.4.5"
   },
   "scripts": {
     "install": "yarn run truffle compile",
-    "test": "yarn run truffle test",
+    "test": "yarn run truffle test --network testing",
     "testrpc": "testrpc",
     "deploy-ropsten": "node deploy/ropsten.js",
-    "integration-test": "yarn run truffle test -- --network ropsten test/github-integration.js"
+    "deploy-rinkeby": "node deploy/rinkeby.js",
+    "integration-test": "yarn run truffle test --network ropsten test/github-integration.js"
   },
   "engines": {
     "node": ">=7.6.0"
-  },
-  "dependencies": {
-    "chai-as-promised": "^7.0.0"
   }
 }

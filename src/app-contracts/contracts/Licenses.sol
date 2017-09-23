@@ -1,12 +1,12 @@
 pragma solidity ^0.4.8;
 import "zeppelin/ownership/Ownable.sol";
 
-contract SustainableSource is Ownable {
+contract Licenses is Ownable {
 
   mapping(string => mapping(address => bool)) licenses;
   uint public licenseFeeInWei;
 
-  function SustainableSource(uint licenseFeeInWei_) {
+  function Licenses(uint licenseFeeInWei_) {
     licenseFeeInWei = licenseFeeInWei_;
   }
 

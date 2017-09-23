@@ -24,18 +24,17 @@ contract Users is usingOraclize {
         string memory query = strConcat(queryPrefix, gistId, queryPostfix);
         bytes32 queryId = oraclize_query("URL", query, 400000);
 
-        queries[queryId] = Query(username, msg.sender, false);
+        queries[queryId] = Query(username, msg.sender);
     }
 
     function __callback(bytes32 queryId, string result, bytes) onlyOraclize {
         Query query = queries[queryId];
-        if (query.isProcessed) {
-            throw;
+        if (bytes(query.username).length != 0) {
+            processQueryResult(query, result);
+            delete queries[queryId];
+            return;
         }
-
-        processQueryResult(query, result);
-
-        query.isProcessed = true;
+        throw;
     }
 
     function processQueryResult(Query query, string result) private {
@@ -52,7 +51,6 @@ contract Users is usingOraclize {
     struct Query {
         string username;
         address account;
-        bool isProcessed;
     }
 
     modifier onlyOraclize {

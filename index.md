@@ -13,7 +13,7 @@ We believe in responsibility
 
 {: .belief}
 We are responsible to those who use our software. We have a responsibility to
-do the right thing, to make the right choices. We cannot hide behind our boss
+do the right thing, to make the right choices. We do not hide behind our boss
 or investor.
 
 We believe in sustainability
@@ -21,7 +21,7 @@ We believe in sustainability
 
 {: .belief}
 Software development is a real trade, a craft that earns us a living and
-sustains our lives. We believe we can make our passion sustainable while
+sustains our lives and families. We believe we can make our passion sustainable while
 remaining true to our core values of freedom and responsibility.
 
 Sustainable Source

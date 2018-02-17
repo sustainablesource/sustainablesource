@@ -1,7 +1,8 @@
 pragma solidity^0.4.6;
 import "oraclize/usingOraclize.sol";
+import "./PullRequestsInterface.sol";
 
-contract PullRequests is usingOraclize {
+contract PullRequests is PullRequestsInterface, usingOraclize {
 
     string repo;
 

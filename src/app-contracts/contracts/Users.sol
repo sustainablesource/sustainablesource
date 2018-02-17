@@ -1,8 +1,9 @@
 pragma solidity ^0.4.8;
 import "oraclize/usingOraclize.sol";
 import "./Conversions.sol";
+import "./UsersInterface.sol";
 
-contract Users is usingOraclize {
+contract Users is UsersInterface, usingOraclize {
 
     using Conversions for address;
 

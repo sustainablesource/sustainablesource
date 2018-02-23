@@ -100,12 +100,18 @@ contract('PullRequests', function (accounts) {
 
       it('registers the creator when username is correct', async function () {
         await usernameCallback(creator)
-        expect(await pullRequests.creator(pullRequestId)).to.equal(creator)
+        const username = await pullRequests.creator(pullRequestId)
+        const hash = await pullRequests.creatorHash(pullRequestId)
+        expect(username).to.equal(creator)
+        expect(hash).to.equal(web3.sha3(creator))
       })
 
       it('does not register when username is incorrect', async function () {
         await usernameCallback('incorrect_user')
-        expect(await pullRequests.creator(pullRequestId)).to.equal('')
+        const username = await pullRequests.creator(pullRequestId)
+        const hash = await pullRequests.creatorHash(pullRequestId)
+        expect(username).to.equal('')
+        expect(web3.toDecimal(hash)).to.equal(0)
       })
 
       it('only processes a query result once', async function () {

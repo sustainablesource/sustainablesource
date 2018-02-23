@@ -25,7 +25,7 @@ contract PullRequests is PullRequestsInterface, usingOraclize {
 
     function registrationPrice() constant returns (uint) {
         oraclize_setProof(proofType_TLSNotary | proofStorage_IPFS);
-        return 2 * oraclize_getPrice('URL', 300000);
+        return 2 * oraclize_getPrice("URL", 300000);
     }
 
     function register(uint pullRequestId, string creator)

@@ -16,7 +16,7 @@ contract Users is UsersInterface, usingOraclize {
 
     function attestationPrice() constant returns (uint) {
         oraclize_setProof(proofType_TLSNotary | proofStorage_IPFS);
-        return oraclize_getPrice('URL', 400000);
+        return oraclize_getPrice("URL", 400000);
     }
 
     function attest(string username, string gistId) payable onlyCorrectPayment {

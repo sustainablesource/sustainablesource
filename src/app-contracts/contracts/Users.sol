@@ -7,11 +7,11 @@ contract Users is UsersInterface, usingOraclize {
 
     using Conversions for address;
 
-    mapping (string => address) usernameToAddress;
+    mapping (bytes32 => address) usernameHashToAddress;
     mapping (bytes32 => Query) queries;
 
-    function user(string username) constant returns (address account) {
-        return usernameToAddress[username];
+    function userByHash(bytes32 usernameHash) constant returns (address) {
+        return usernameHashToAddress[usernameHash];
     }
 
     function attestationPrice() constant returns (uint) {
@@ -45,7 +45,7 @@ contract Users is UsersInterface, usingOraclize {
         );
 
         if (strCompare(correctResult, result) == 0) {
-            usernameToAddress[query.username] = query.account;
+            usernameHashToAddress[keccak256(query.username)] = query.account;
         }
     }
 

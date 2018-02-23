@@ -89,24 +89,31 @@ contract('Users', function (accounts) {
       it('registers the username when gist is correct', async function () {
         await callback(`["${username}", "attestation", "${account}"]`)
         expect(await users.user(username)).to.equal(account)
+        expect(await users.userByHash(web3.sha3(username))).to.equal(account)
       })
 
       it('does not register when username is incorrect', async function () {
         await callback(`["incorrect", "attestation", "${account}"]`)
         const user = await users.user(username)
+        const userByHash = await users.userByHash(web3.sha3(username))
         expect(web3.toDecimal(user)).to.equal(0)
+        expect(web3.toDecimal(userByHash)).to.equal(0)
       })
 
       it('does not register when filename is incorrect', async function () {
         await callback(`["${username}", "incorrect", "${account}"]`)
         const user = await users.user(username)
+        const userByHash = await users.userByHash(web3.sha3(username))
         expect(web3.toDecimal(user)).to.equal(0)
+        expect(web3.toDecimal(userByHash)).to.equal(0)
       })
 
       it('does not register when contents are incorrect', async function () {
         await callback(`["${username}", "attestation", "incorrect"]`)
         const user = await users.user(username)
+        const userByHash = await users.userByHash(web3.sha3(username))
         expect(web3.toDecimal(user)).to.equal(0)
+        expect(web3.toDecimal(userByHash)).to.equal(0)
       })
 
       it('only processes a query result once', async function () {

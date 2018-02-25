@@ -22,7 +22,7 @@ contract('PullRequests', function (accounts) {
   })
 
   it('is deployed', async function () {
-    expect(await PullRequests.deployed()).to.exist
+    expect(await PullRequests.deployed()).to.exist()
   })
 
   it('returns the registration price', async function () {
@@ -82,13 +82,13 @@ contract('PullRequests', function (accounts) {
     it('only accepts calls with correct payment', async function () {
       const wrongPayment = registrationPrice - 1
       const call = pullRequests.register(pullRequestId, { value: wrongPayment })
-      await expect(call).to.eventually.be.rejected
+      await expect(call).to.eventually.be.rejected()
     })
 
     it('only accepts callbacks from oraclize', async function () {
       const notOraclize = accounts[3]
       const call = pullRequests.__callback(0, '', '', { from: notOraclize })
-      await expect(call).to.be.rejected
+      await expect(call).to.be.rejected()
     })
 
     context('when oraclize returns the user name', function () {
@@ -116,7 +116,7 @@ contract('PullRequests', function (accounts) {
 
       it('only processes a query result once', async function () {
         await usernameCallback('some result')
-        await expect(usernameCallback('some result')).to.be.rejected
+        await expect(usernameCallback('some result')).to.be.rejected()
       })
     })
 
@@ -139,7 +139,7 @@ contract('PullRequests', function (accounts) {
 
       it('only processes a query result once', async function () {
         await mergedStateCallback('some result')
-        await expect(mergedStateCallback('some result')).to.be.rejected
+        await expect(mergedStateCallback('some result')).to.be.rejected()
       })
     })
   })

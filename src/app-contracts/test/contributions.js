@@ -16,7 +16,7 @@ contract('Contributions', function (accounts) {
   })
 
   it('is deployed', async function () {
-    expect(await Contributions.deployed()).to.exist
+    expect(await Contributions.deployed()).to.exist()
   })
 
   it('has 0 contributions by default', async function () {

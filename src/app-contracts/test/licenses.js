@@ -1,11 +1,8 @@
 /* eslint-env mocha */
 /* global web3 */
 const chai = require('chai')
-const chaiAsPromised = require('chai-as-promised')
 const expect = chai.expect
 const Licenses = artifacts.require('Licenses.sol')
-
-chai.use(chaiAsPromised)
 
 contract('Licenses', function (accounts) {
   const owner = accounts[0]
@@ -20,7 +17,7 @@ contract('Licenses', function (accounts) {
   })
 
   it('is deployed', async function () {
-    expect(await Licenses.deployed()).to.exist
+    expect(await Licenses.deployed()).to.exist()
   })
 
   it('does not give out a license initially', async function () {
@@ -45,13 +42,13 @@ contract('Licenses', function (accounts) {
   it('throws when less than license fee was paid', async function () {
     const tooLittle = web3.toWei(9, 'finney')
     const call = licenses.payLicenseFee(person, version, {value: tooLittle})
-    await expect(call).to.eventually.be.rejected
+    await expect(call).to.eventually.be.rejected()
   })
 
   it('throws when more than license fee was paid', async function () {
     const tooMuch = web3.toWei(11, 'finney')
     const call = licenses.payLicenseFee(person, version, {value: tooMuch})
-    await expect(call).to.eventually.be.rejected
+    await expect(call).to.eventually.be.rejected()
   })
 
   describe('changing license fees', function () {
@@ -65,7 +62,7 @@ contract('Licenses', function (accounts) {
 
     it('throws when others try to change license fee', async function () {
       const call = licenses.setLicenseFee(newFee, {from: person})
-      await expect(call).to.eventually.be.rejected
+      await expect(call).to.eventually.be.rejected()
     })
   })
 })

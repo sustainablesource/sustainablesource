@@ -1,12 +1,9 @@
 /* eslint-env mocha */
 /* global web3 */
 const chai = require('chai')
-const chaiAsPromised = require('chai-as-promised')
 const expect = chai.expect
 const Users = artifacts.require('Users.sol')
 const TestableUsers = artifacts.require('TestableUsers.sol')
-
-chai.use(chaiAsPromised)
 
 contract('Users', function (accounts) {
   const oraclizePrice = 123456
@@ -20,7 +17,7 @@ contract('Users', function (accounts) {
   })
 
   it('is deployed', async function () {
-    expect(await Users.deployed()).to.exist
+    expect(await Users.deployed()).to.exist()
   })
 
   it('returns the attestation price', async function () {
@@ -70,13 +67,13 @@ contract('Users', function (accounts) {
     it('only accepts calls with correct payment', async function () {
       const wrongPayment = oraclizePrice - 1
       const call = users.attest(username, gistId, { from: account, value: wrongPayment })
-      await expect(call).to.eventually.be.rejected
+      await expect(call).to.eventually.be.rejected()
     })
 
     it('only accepts callbacks from oraclize', async function () {
       const notOraclize = accounts[3]
       const call = users.__callback(0, '', '', { from: notOraclize })
-      await expect(call).to.be.rejected
+      await expect(call).to.be.rejected()
     })
 
     context('when oraclize query results are in', function () {
@@ -118,7 +115,7 @@ contract('Users', function (accounts) {
 
       it('only processes a query result once', async function () {
         await callback('some result')
-        await expect(callback('some result')).to.be.rejected
+        await expect(callback('some result')).to.be.rejected()
       })
     })
   })

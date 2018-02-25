@@ -21,12 +21,13 @@ contract Contributions {
     }
 
     function registerContribution(uint pullRequestId) public {
-        totalContributions++;
+        require(pullRequests.isMerged(pullRequestId));
         bytes32 creatorHash = pullRequests.creatorHash(pullRequestId);
         address contributor = users.userByHash(creatorHash);
         if (contributions[contributor] == 0) {
             contributors.push(contributor);
         }
+        totalContributions++;
         contributions[contributor]++;
     }
 

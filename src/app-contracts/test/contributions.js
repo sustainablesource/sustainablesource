@@ -73,4 +73,10 @@ contract('Contributions', function (accounts) {
       })
     })
   })
+
+  it('does not register an unmerged pull request', async function () {
+    await pullRequests.setCreator(44, 'a creator')
+    await pullRequests.setIsMerged(44, false)
+    await expect(contributions.registerContribution(44)).to.be.rejected()
+  })
 })

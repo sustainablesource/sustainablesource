@@ -27,10 +27,14 @@ contract Contributions {
         bytes32 creatorHash = pullRequests.creatorHash(pullRequestId);
         address contributor = users.userByHash(creatorHash);
         require(contributor != 0);
+        registeredPullRequests[pullRequestId] = true;
+        addContribution(contributor);
+    }
+
+    function addContribution(address contributor) private {
         if (contributions[contributor] == 0) {
             contributors.push(contributor);
         }
-        registeredPullRequests[pullRequestId] = true;
         totalContributions++;
         contributions[contributor]++;
     }

@@ -72,6 +72,11 @@ contract('Contributions', function (accounts) {
         expect(numberOfContributors.toNumber()).to.equal(1)
       })
     })
+
+    it('cannot be registered again', async function () {
+      const secondRegister = contributions.registerContribution(pullRequestId)
+      await expect(secondRegister).to.be.rejected()
+    })
   })
 
   it('does not register an unmerged pull request', async function () {

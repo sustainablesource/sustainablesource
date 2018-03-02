@@ -7,6 +7,7 @@ contract Contributions {
     uint public totalContributions;
     address[] contributors;
     mapping (address => uint) contributions;
+    mapping (uint => bool) registeredPullRequests;
 
     UsersInterface users;
     PullRequestsInterface pullRequests;
@@ -21,6 +22,7 @@ contract Contributions {
     }
 
     function registerContribution(uint pullRequestId) public {
+        require(!registeredPullRequests[pullRequestId]);
         require(pullRequests.isMerged(pullRequestId));
         bytes32 creatorHash = pullRequests.creatorHash(pullRequestId);
         address contributor = users.userByHash(creatorHash);
@@ -28,6 +30,7 @@ contract Contributions {
         if (contributions[contributor] == 0) {
             contributors.push(contributor);
         }
+        registeredPullRequests[pullRequestId] = true;
         totalContributions++;
         contributions[contributor]++;
     }

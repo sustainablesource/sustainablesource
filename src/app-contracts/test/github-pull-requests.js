@@ -1,5 +1,3 @@
-/* eslint-env mocha */
-/* global web3 */
 const expect = require('chai').expect
 const PullRequests = artifacts.require('PullRequests')
 const TestablePullRequests = artifacts.require('TestablePullRequests')

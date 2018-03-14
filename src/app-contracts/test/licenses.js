@@ -1,5 +1,3 @@
-/* eslint-env mocha */
-/* global web3 */
 const chai = require('chai')
 const expect = chai.expect
 const Licenses = artifacts.require('Licenses.sol')

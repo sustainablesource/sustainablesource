@@ -1,4 +1,3 @@
-/* eslint-env mocha */
 const Contributions = artifacts.require('Contributions.sol')
 const Users = artifacts.require('UsersFake.sol')
 const PullRequests = artifacts.require('PullRequestsFake.sol')

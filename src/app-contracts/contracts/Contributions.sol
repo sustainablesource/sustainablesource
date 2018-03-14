@@ -1,9 +1,10 @@
 pragma solidity ^0.4.8;
 
+import "./ContributionsInterface.sol";
 import "./UsersInterface.sol";
 import "./PullRequestsInterface.sol";
 
-contract Contributions {
+contract Contributions is ContributionsInterface {
     uint public totalContributions;
     address[] contributors;
     mapping (address => uint) contributions;

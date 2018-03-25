@@ -5,7 +5,7 @@ import "./UsersInterface.sol";
 import "./PullRequestsInterface.sol";
 
 contract Contributions is ContributionsInterface {
-    uint public totalContributions;
+    uint total;
     address[] contributors;
     mapping (address => uint) contributions;
     mapping (uint => bool) registeredPullRequests;
@@ -14,9 +14,9 @@ contract Contributions is ContributionsInterface {
     PullRequestsInterface pullRequests;
 
     function Contributions(
-        UsersInterface users_, 
+        UsersInterface users_,
         PullRequestsInterface pullRequests_
-    ) public 
+    ) public
     {
         users = users_;
         pullRequests = pullRequests_;
@@ -36,8 +36,12 @@ contract Contributions is ContributionsInterface {
         if (contributions[contributor] == 0) {
             contributors.push(contributor);
         }
-        totalContributions++;
+        total++;
         contributions[contributor]++;
+    }
+
+    function totalContributions() public constant returns (uint) {
+        return total;
     }
 
     function numberOfContributors() public constant returns (uint) {
@@ -48,10 +52,10 @@ contract Contributions is ContributionsInterface {
         return contributors[index];
     }
 
-    function numberOfContributions(address contributor) 
-        public 
-        constant 
-        returns (uint) 
+    function numberOfContributions(address contributor)
+        public
+        constant
+        returns (uint)
     {
         return contributions[contributor];
     }

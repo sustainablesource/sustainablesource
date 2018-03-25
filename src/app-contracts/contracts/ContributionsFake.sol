@@ -3,15 +3,21 @@ pragma solidity ^0.4.8;
 import "./ContributionsInterface.sol";
 
 contract ContributionsFake is ContributionsInterface {
+    uint total;
     address[] contributors;
     mapping(address => uint) contributions;
 
     function addContributor(address contributor) public {
         contributors.push(contributor);
-    }    
+    }
 
-    function setContributions(address contributor, uint amount) public {
-        contributions[contributor] = amount;
+    function addContributions(address contributor, uint amount) public {
+        total += amount;
+        contributions[contributor] += amount;
+    }
+
+    function totalContributions() public constant returns (uint) {
+        return total;
     }
 
     function numberOfContributors() public constant returns (uint) {
@@ -22,7 +28,7 @@ contract ContributionsFake is ContributionsInterface {
         return contributors[index];
     }
 
-    function numberOfContributions(address contributor) 
+    function numberOfContributions(address contributor)
         public
         constant
         returns (uint)

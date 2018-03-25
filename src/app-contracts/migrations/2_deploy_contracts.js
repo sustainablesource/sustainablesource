@@ -9,7 +9,7 @@ async function deploy (deployer) {
   await deployer.deploy(Users)
   await deployer.deploy(PullRequests, 'sustainablesource/sustainablesource')
   await deployer.deploy(Contributions, Users.address, PullRequests.address)
-  await deployer.deploy(Payout)
+  await deployer.deploy(Payout, Contributions.address)
 }
 
 module.exports = function (deployer) {

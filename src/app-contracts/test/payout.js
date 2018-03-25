@@ -3,10 +3,14 @@ const ContributionsFake = artifacts.require('ContributionsFake')
 const expect = require('chai').expect
 
 contract('Payout', function (accounts) {
+  const funds = parseInt(web3.toWei(100, 'finney'))
+  const contributor1 = accounts[1]
+  const contributor2 = accounts[2]
+
   let payout
   let contributions
 
-  before(async function () {
+  beforeEach(async function () {
     contributions = await ContributionsFake.new()
     payout = await Payout.new(contributions.address)
   })
@@ -15,12 +19,17 @@ contract('Payout', function (accounts) {
     expect(await Payout.deployed()).to.exist()
   })
 
-  context('when there are multiple contributors', function () {
-    const funds = parseInt(web3.toWei(100, 'finney'))
-    const contributor1 = accounts[1]
-    const contributor2 = accounts[2]
+  it('rejects payments when there are no contributors', async function () {
+    await expect(payout.pay({ value: funds })).to.be.rejected()
+  })
 
-    before(async function () {
+  it('rejects payments when there are no contributions', async function () {
+    await contributions.addContributor(contributor1)
+    await expect(payout.pay({ value: funds })).to.be.rejected()
+  })
+
+  context('when there are multiple contributors', function () {
+    beforeEach(async function () {
       await contributions.addContributor(contributor1)
       await contributions.addContributor(contributor2)
       await contributions.addContributions(contributor1, 10)

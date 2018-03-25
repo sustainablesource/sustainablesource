@@ -16,6 +16,7 @@ contract Payout is PullPayment {
     function pay() public payable {
         uint numberOfContributors = contributions.numberOfContributors();
         uint totalContributions = contributions.totalContributions();
+        require(totalContributions > 0);
         for (uint i = 0; i < numberOfContributors; i++) {
             address contributor = contributions.getContributor(i);
             uint numberOfContributions = contributions.numberOfContributions(contributor);

@@ -3,8 +3,9 @@ pragma solidity ^0.4.8;
 import "zeppelin/payment/PullPayment.sol";
 import "zeppelin/SafeMath.sol";
 import "./ContributionsInterface.sol";
+import "./PayoutInterface.sol";
 
-contract Payout is PullPayment {
+contract Payout is PullPayment, PayoutInterface {
     using SafeMath for uint;
 
     ContributionsInterface contributions;

@@ -1,6 +1,7 @@
-const Payout = artifacts.require('Payout')
-const ContributionsFake = artifacts.require('ContributionsFake')
 const expect = require('chai').expect
+const getBalance = require('./get-balance')
+const ContributionsFake = artifacts.require('ContributionsFake')
+const Payout = artifacts.require('Payout')
 
 contract('Payout', function (accounts) {
   const funds = parseInt(web3.toWei(100, 'finney'))
@@ -39,14 +40,14 @@ contract('Payout', function (accounts) {
     it('divides funds according to amount of contributions', async function () {
       await payout.pay({ value: funds })
 
-      const initialBalance1 = await getBalance(contributor1)
+      const initialBalance1 = await getBalance(web3, contributor1)
       const transaction1 = await payout.withdrawPayments({ from: contributor1 })
-      const finalBalance1 = await getBalance(contributor1)
+      const finalBalance1 = await getBalance(web3, contributor1)
       const balanceIncrease1 = finalBalance1.sub(initialBalance1).toNumber()
 
-      const initialBalance2 = await getBalance(contributor2)
+      const initialBalance2 = await getBalance(web3, contributor2)
       const transaction2 = await payout.withdrawPayments({ from: contributor2 })
-      const finalBalance2 = await getBalance(contributor2)
+      const finalBalance2 = await getBalance(web3, contributor2)
       const balanceIncrease2 = finalBalance2.sub(initialBalance2).toNumber()
 
       expect(balanceIncrease1).to.equal(0.25 * funds - cost(transaction1))
@@ -54,18 +55,6 @@ contract('Payout', function (accounts) {
     })
   })
 })
-
-async function getBalance (address) {
-  return new Promise(function (resolve, reject) {
-    web3.eth.getBalance(address, function (error, result) {
-      if (error) {
-        reject(error)
-      } else {
-        resolve(result)
-      }
-    })
-  })
-}
 
 function cost (transaction) {
   return Payout.defaults().gasPrice * transaction.receipt.gasUsed

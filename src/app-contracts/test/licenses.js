@@ -1,17 +1,21 @@
 const chai = require('chai')
 const expect = chai.expect
+const getBalance = require('./get-balance')
+const PayoutFake = artifacts.require('PayoutFake.sol')
 const Licenses = artifacts.require('Licenses.sol')
 
 contract('Licenses', function (accounts) {
   const owner = accounts[0]
   const person = accounts[1]
-  const fee = web3.toWei(10, 'finney')
+  const fee = parseInt(web3.toWei(10, 'finney'))
   const version = '34947cd157c8ddf98a61628a1a1d6ce163097f54'
 
   let licenses
+  let payout
 
   beforeEach(async function () {
-    licenses = await Licenses.new(fee)
+    payout = await PayoutFake.new()
+    licenses = await Licenses.new(payout.address, fee)
   })
 
   it('is deployed', async function () {
@@ -34,6 +38,11 @@ contract('Licenses', function (accounts) {
     it('does not give out a license for other versions', async function () {
       const wrongVersion = '87b6b35a6889a0361d5db193a12fe8055b6da916'
       expect(await licenses.hasLicense(person, wrongVersion)).to.be.false
+    })
+
+    it('sends license fee to the payout contract', async function () {
+      const balance = await getBalance(web3, payout.address)
+      expect(balance.toNumber()).to.equal(fee)
     })
   })
 

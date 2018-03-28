@@ -1,12 +1,14 @@
 pragma solidity ^0.4.8;
 import "zeppelin/ownership/Ownable.sol";
+import "./PayoutInterface.sol";
 
 contract Licenses is Ownable {
-
-    mapping(string => mapping(address => bool)) licenses;
     uint public licenseFeeInWei;
+    mapping(string => mapping(address => bool)) licenses;
+    PayoutInterface payout;
 
-    function Licenses(uint licenseFeeInWei_) public {
+    function Licenses(PayoutInterface payout_, uint licenseFeeInWei_) public {
+        payout = payout_;
         licenseFeeInWei = licenseFeeInWei_;
     }
 
@@ -17,6 +19,7 @@ contract Licenses is Ownable {
     function payLicenseFee(address account, string version) public payable {
         require(msg.value == licenseFeeInWei);
 
+        payout.pay.value(msg.value)();
         licenses[version][account] = true;
     }
 

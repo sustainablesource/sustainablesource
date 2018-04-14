@@ -1,0 +1,92 @@
+@font-face { 
+  font-family: 'Orkney Regular'; 
+  src: url('Orkney Regular.ttf');
+}
+
+@font-face { 
+  font-family: 'Orkney Light'; 
+  src: url('Orkney Light.ttf');
+}
+
+@font-face { 
+  font-family: 'Orkney Light Italic'; 
+  src: url('Orkney Light Italic.ttf');
+}
+
+body {
+  background-color: #00002f;
+  color: whitesmoke;
+  font-size: 12pt;
+  font-family: 'Orkney Light Italic';
+  padding: 5rem;
+  max-width: 60rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+h1, h2, h3, h4, h5, h6, .illustration {
+  font-family: 'Orkney Light';
+}
+
+.logo {
+  height: 1em;
+  margin-top: 0.2em;
+  margin-bottom: -0.2em;
+  float: right;
+}
+
+.main {
+  border-radius: 0.5em;
+  background-color: lightcyan;
+  padding: 2rem;
+  color: #00002f;
+  clear: both;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+
+.section {
+  clear: both;
+  margin-bottom: 3rem;
+}
+
+.illustration {
+  text-align: center;
+  width: 0.8em;
+  height: 0.8em;
+  padding: 0.1em;
+  font-size: 100pt;
+}
+
+#dollar {
+  height: 0.9em;
+}
+
+.left {
+  float: left;
+  margin-right: 0.3em;
+}
+
+.right {
+  float: right;
+  margin-left: 0.3em;
+}
+
+.actions {
+  margin-top: 5em;
+  text-align: center;
+}
+
+.action {
+  min-width: 13em;
+  font-family: 'Orkney Light';
+  font-size: x-large;
+  color: whitesmoke;
+  background-color: transparent;
+  border-radius: 0.3em;
+  border-color: #00ff00;
+  border-style: solid;
+  border-width: 2px;
+  padding: 1em;
+  margin: 1em;
+}

@@ -1,6 +1,0 @@
-exclude:
-  - Gemfile
-  - Gemfile.lock
-  - CNAME
-gems:
-  - jekyll-default-layout

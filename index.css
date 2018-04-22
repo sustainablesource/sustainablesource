@@ -77,6 +77,10 @@ h1, h2, h3, h4, h5, h6, .illustration {
   text-align: center;
 }
 
+.actions a {
+  text-decoration: none;
+}
+
 .action {
   min-width: 13em;
   font-family: 'Orkney Light';

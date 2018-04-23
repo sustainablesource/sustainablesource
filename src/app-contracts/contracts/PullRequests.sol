@@ -1,7 +1,8 @@
 pragma solidity^0.4.6;
 import "oraclize/usingOraclize.sol";
+import "./PullRequestsInterface.sol";
 
-contract PullRequests is usingOraclize {
+contract PullRequests is PullRequestsInterface, usingOraclize {
 
     string repo;
 
@@ -24,7 +25,7 @@ contract PullRequests is usingOraclize {
 
     function registrationPrice() constant returns (uint) {
         oraclize_setProof(proofType_TLSNotary | proofStorage_IPFS);
-        return 2 * oraclize_getPrice('URL', 300000);
+        return 2 * oraclize_getPrice("URL", 300000);
     }
 
     function register(uint pullRequestId, string creator)
@@ -35,31 +36,29 @@ contract PullRequests is usingOraclize {
 
         string memory userQuery = strConcat(prefix, "user.login");
         bytes32 userQueryId = oraclize_query("URL", userQuery, 300000);
-        userQueries[userQueryId] = UserQuery(pullRequestId, creator, false);
+        userQueries[userQueryId] = UserQuery(pullRequestId, creator);
 
         string memory mergedQuery = strConcat(prefix, "merged");
         bytes32 mergedQueryId = oraclize_query("URL", mergedQuery, 300000);
-        mergedQueries[mergedQueryId] = MergedQuery(pullRequestId, false);
+        mergedQueries[mergedQueryId] = MergedQuery(pullRequestId);
     }
 
     function __callback(bytes32 queryId, string result, bytes) onlyOraclize {
         UserQuery userQuery = userQueries[queryId];
-        if (userQuery.isProcessed) {
-            throw;
-        }
         if (userQuery.pullRequestId != 0) {
             processUserResult(userQuery, result);
-            userQuery.isProcessed = true;
+            delete userQueries[queryId];
+            return;
         }
 
         MergedQuery mergedQuery = mergedQueries[queryId];
-        if (mergedQuery.isProcessed) {
-            throw;
-        }
         if (mergedQuery.pullRequestId != 0) {
             processMergedStateResult(mergedQuery, result);
-            mergedQuery.isProcessed = true;
+            delete mergedQueries[queryId];
+            return;
         }
+
+        throw;
     }
 
     function processUserResult(UserQuery query, string result)
@@ -96,12 +95,10 @@ contract PullRequests is usingOraclize {
     struct UserQuery {
         uint pullRequestId;
         string creator;
-        bool isProcessed;
     }
 
     struct MergedQuery {
         uint pullRequestId;
-        bool isProcessed;
     }
 
     modifier onlyOraclize {

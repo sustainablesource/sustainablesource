@@ -1,12 +1,7 @@
-/* eslint-env mocha */
-/* global web3 */
 const chai = require('chai')
-const chaiAsPromised = require('chai-as-promised')
 const expect = chai.expect
 const Users = artifacts.require('Users.sol')
 const TestableUsers = artifacts.require('TestableUsers.sol')
-
-chai.use(chaiAsPromised)
 
 contract('Users', function (accounts) {
   const oraclizePrice = 123456
@@ -20,7 +15,7 @@ contract('Users', function (accounts) {
   })
 
   it('is deployed', async function () {
-    expect(await Users.deployed()).to.exist
+    expect(await Users.deployed()).to.exist()
   })
 
   it('returns the attestation price', async function () {
@@ -69,13 +64,13 @@ contract('Users', function (accounts) {
     it('only accepts calls with correct payment', async function () {
       const wrongPayment = oraclizePrice - 1
       const call = users.attest(username, gistId, { from: account, value: wrongPayment })
-      await expect(call).to.eventually.be.rejected
+      await expect(call).to.eventually.be.rejected()
     })
 
     it('only accepts callbacks from oraclize', async function () {
       const notOraclize = accounts[3]
       const call = users.__callback(0, '', { from: notOraclize })
-      await expect(call).to.be.rejected
+      await expect(call).to.be.rejected()
     })
 
     context('when oraclize query results are in', function () {
@@ -88,29 +83,36 @@ contract('Users', function (accounts) {
       it('registers the username when gist is correct', async function () {
         await callback(`["${username}", "attestation", "${account}"]`)
         expect(await users.user(username)).to.equal(account)
+        expect(await users.userByHash(web3.sha3(username))).to.equal(account)
       })
 
       it('does not register when username is incorrect', async function () {
         await callback(`["incorrect", "attestation", "${account}"]`)
         const user = await users.user(username)
+        const userByHash = await users.userByHash(web3.sha3(username))
         expect(web3.toDecimal(user)).to.equal(0)
+        expect(web3.toDecimal(userByHash)).to.equal(0)
       })
 
       it('does not register when filename is incorrect', async function () {
         await callback(`["${username}", "incorrect", "${account}"]`)
         const user = await users.user(username)
+        const userByHash = await users.userByHash(web3.sha3(username))
         expect(web3.toDecimal(user)).to.equal(0)
+        expect(web3.toDecimal(userByHash)).to.equal(0)
       })
 
       it('does not register when contents are incorrect', async function () {
         await callback(`["${username}", "attestation", "incorrect"]`)
         const user = await users.user(username)
+        const userByHash = await users.userByHash(web3.sha3(username))
         expect(web3.toDecimal(user)).to.equal(0)
+        expect(web3.toDecimal(userByHash)).to.equal(0)
       })
 
       it('only processes a query result once', async function () {
         await callback('some result')
-        await expect(callback('some result')).to.be.rejected
+        await expect(callback('some result')).to.be.rejected()
       })
     })
   })

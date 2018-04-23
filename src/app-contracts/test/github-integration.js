@@ -1,5 +1,3 @@
-/* eslint-env mocha */
-/* global web3 */
 const expect = require('chai').expect
 const isTestNetwork = require('./test-networks').isTestNetwork
 const Users = artifacts.require('Users.sol')

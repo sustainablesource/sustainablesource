@@ -1,5 +1,3 @@
-/* eslint-env mocha */
-/* global web3 */
 const expect = require('chai').expect
 const PullRequests = artifacts.require('PullRequests')
 const TestablePullRequests = artifacts.require('TestablePullRequests')
@@ -21,7 +19,7 @@ contract('PullRequests', function (accounts) {
   })
 
   it('is deployed', async function () {
-    expect(await PullRequests.deployed()).to.exist
+    expect(await PullRequests.deployed()).to.exist()
   })
 
   it('returns the registration price', async function () {
@@ -81,13 +79,13 @@ contract('PullRequests', function (accounts) {
     it('only accepts calls with correct payment', async function () {
       const wrongPayment = registrationPrice - 1
       const call = pullRequests.register(pullRequestId, { value: wrongPayment })
-      await expect(call).to.eventually.be.rejected
+      await expect(call).to.eventually.be.rejected()
     })
 
     it('only accepts callbacks from oraclize', async function () {
       const notOraclize = accounts[3]
       const call = pullRequests.__callback(0, '', '', { from: notOraclize })
-      await expect(call).to.be.rejected
+      await expect(call).to.be.rejected()
     })
 
     context('when oraclize returns the user name', function () {
@@ -99,17 +97,23 @@ contract('PullRequests', function (accounts) {
 
       it('registers the creator when username is correct', async function () {
         await usernameCallback(creator)
-        expect(await pullRequests.creator(pullRequestId)).to.equal(creator)
+        const username = await pullRequests.creator(pullRequestId)
+        const hash = await pullRequests.creatorHash(pullRequestId)
+        expect(username).to.equal(creator)
+        expect(hash).to.equal(web3.sha3(creator))
       })
 
       it('does not register when username is incorrect', async function () {
         await usernameCallback('incorrect_user')
-        expect(await pullRequests.creator(pullRequestId)).to.equal('')
+        const username = await pullRequests.creator(pullRequestId)
+        const hash = await pullRequests.creatorHash(pullRequestId)
+        expect(username).to.equal('')
+        expect(web3.toDecimal(hash)).to.equal(0)
       })
 
       it('only processes a query result once', async function () {
         await usernameCallback('some result')
-        await expect(usernameCallback('some result')).to.be.rejected
+        await expect(usernameCallback('some result')).to.be.rejected()
       })
     })
 
@@ -132,7 +136,7 @@ contract('PullRequests', function (accounts) {
 
       it('only processes a query result once', async function () {
         await mergedStateCallback('some result')
-        await expect(mergedStateCallback('some result')).to.be.rejected
+        await expect(mergedStateCallback('some result')).to.be.rejected()
       })
     })
   })

@@ -1,21 +1,22 @@
 pragma solidity ^0.4.8;
 import "oraclize/usingOraclize.sol";
 import "./Conversions.sol";
+import "./UsersInterface.sol";
 
-contract Users is usingOraclize {
+contract Users is UsersInterface, usingOraclize {
 
     using Conversions for address;
 
-    mapping (string => address) usernameToAddress;
+    mapping (bytes32 => address) usernameHashToAddress;
     mapping (bytes32 => Query) queries;
 
-    function user(string username) constant returns (address account) {
-        return usernameToAddress[username];
+    function userByHash(bytes32 usernameHash) constant returns (address) {
+        return usernameHashToAddress[usernameHash];
     }
 
     function attestationPrice() constant returns (uint) {
         oraclize_setProof(proofType_TLSNotary | proofStorage_IPFS);
-        return oraclize_getPrice('URL', 400000);
+        return oraclize_getPrice("URL", 400000);
     }
 
     function attest(string username, string gistId) payable onlyCorrectPayment {
@@ -24,18 +25,17 @@ contract Users is usingOraclize {
         string memory query = strConcat(queryPrefix, gistId, queryPostfix);
         bytes32 queryId = oraclize_query("URL", query, 400000);
 
-        queries[queryId] = Query(username, msg.sender, false);
+        queries[queryId] = Query(username, msg.sender);
     }
 
     function __callback(bytes32 queryId, string result, bytes) onlyOraclize {
         Query query = queries[queryId];
-        if (query.isProcessed) {
-            throw;
+        if (bytes(query.username).length != 0) {
+            processQueryResult(query, result);
+            delete queries[queryId];
+            return;
         }
-
-        processQueryResult(query, result);
-
-        query.isProcessed = true;
+        throw;
     }
 
     function processQueryResult(Query query, string result) private {
@@ -45,14 +45,13 @@ contract Users is usingOraclize {
         );
 
         if (strCompare(correctResult, result) == 0) {
-            usernameToAddress[query.username] = query.account;
+            usernameHashToAddress[keccak256(query.username)] = query.account;
         }
     }
 
     struct Query {
         string username;
         address account;
-        bool isProcessed;
     }
 
     modifier onlyOraclize {

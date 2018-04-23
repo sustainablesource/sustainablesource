@@ -16,12 +16,14 @@
     "dirty-chai": "^2.0.1",
     "ethereumjs-testrpc": "^3.0.5",
     "fs-extra": "^4.0.1",
-    "is-port-reachable": "^2.0.0",
-    "truffle": "3.4.5"
+    "is-port-reachable": "^2.0.0"
+  },
+  "dependencies": {
+    "truffle": "^3.2.5"
   },
   "scripts": {
-    "install": "yarn run truffle compile",
-    "test": "yarn run truffle test --network testing",
+    "install": "truffle compile",
+    "test": "yarn truffle test --network testing",
     "testrpc": "testrpc",
     "deploy-ropsten": "node deploy/ropsten.js",
     "deploy-rinkeby": "node deploy/rinkeby.js",

@@ -10,7 +10,6 @@ contract('PullRequests', function (accounts) {
   const oraclizePrice = 123456
   const oraclizeGasLimit = 300000
   const registrationPrice = 2 * oraclizePrice
-  const oraclizeProof = 'some oraclize proof'
 
   let pullRequests
 
@@ -94,7 +93,7 @@ contract('PullRequests', function (accounts) {
     context('when oraclize returns the user name', function () {
       async function usernameCallback (result) {
         await pullRequests.__callback(
-          usernameQueryId, result, oraclizeProof, { from: oraclizeAddress }
+          usernameQueryId, result, { from: oraclizeAddress }
         )
       }
 
@@ -117,7 +116,7 @@ contract('PullRequests', function (accounts) {
     context('when oraclize returns the merged state', function () {
       async function mergedStateCallback (result) {
         await pullRequests.__callback(
-          mergedStateQueryId, result, oraclizeProof, { from: oraclizeAddress }
+          mergedStateQueryId, result, { from: oraclizeAddress }
         )
       }
 

@@ -33,7 +33,6 @@ contract('Users', function (accounts) {
     const account = accounts[1]
     const gistId = '1234abcd'
     const oraclizeQueryId = 42
-    const oraclizeProof = 'some oraclize proof'
     const oraclizeAddress = accounts[2]
 
     let transaction
@@ -75,14 +74,14 @@ contract('Users', function (accounts) {
 
     it('only accepts callbacks from oraclize', async function () {
       const notOraclize = accounts[3]
-      const call = users.__callback(0, '', '', { from: notOraclize })
+      const call = users.__callback(0, '', { from: notOraclize })
       await expect(call).to.be.rejected
     })
 
     context('when oraclize query results are in', function () {
       async function callback (result) {
         await users.__callback(
-          oraclizeQueryId, result, oraclizeProof, { from: oraclizeAddress }
+          oraclizeQueryId, result, { from: oraclizeAddress }
         )
       }
 

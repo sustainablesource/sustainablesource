@@ -8,6 +8,7 @@
     "Mark Spanbroek"
   ],
   "license": "Sustainable Source",
+  "private": true,
   "devDependencies": {
     "babel-eslint": "^7.1.1",
     "eslint": "^3.15.0",
@@ -16,16 +17,11 @@
     "eslint-config-standard-react": "^4.2.0",
     "eslint-plugin-promise": "^3.4.1",
     "eslint-plugin-react": "^6.9.0",
-    "eslint-plugin-standard": "^2.0.1"
+    "eslint-plugin-standard": "^2.0.1",
+    "lerna": "^3.1.1"
   },
   "scripts": {
-    "postinstall": "local_modules install --force --dir src",
-    "devsetup": "yarn install && local_modules link --force --dir src && ( cd src/app-contracts && yarn install ) && ( cd src/app-webapp && yarn install )",
-    "test": "eslint . && ( cd src/app-contracts && yarn test ) && ( cd src/app-webapp && yarn test )",
-    "testrpc": "( cd src/app-contracts && yarn testrpc )"
+    "test": "lerna run test"
   },
-  "dependencies": {
-    "local_modules": "^1.0.8",
-    "node-gyp": "^3.6.2"
-  }
+  "workspaces": ["contracts"]
 }

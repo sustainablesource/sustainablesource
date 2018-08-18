@@ -23,7 +23,7 @@ contract('Licenses', function (accounts) {
   })
 
   it('does not give out a license initially', async function () {
-    expect(await licenses.hasLicense(person, version)).to.be.false
+    expect(await licenses.hasLicense(person, version)).to.be.false()
   })
 
   context('when the correct license fee has been paid', async function () {
@@ -32,12 +32,12 @@ contract('Licenses', function (accounts) {
     })
 
     it('gives out a license', async function () {
-      expect(await licenses.hasLicense(person, version)).to.be.true
+      expect(await licenses.hasLicense(person, version)).to.be.true()
     })
 
     it('does not give out a license for other versions', async function () {
       const wrongVersion = '87b6b35a6889a0361d5db193a12fe8055b6da916'
-      expect(await licenses.hasLicense(person, wrongVersion)).to.be.false
+      expect(await licenses.hasLicense(person, wrongVersion)).to.be.false()
     })
 
     it('sends license fee to the payout contract', async function () {

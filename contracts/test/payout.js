@@ -59,4 +59,3 @@ contract('Payout', function (accounts) {
 function cost (transaction) {
   return Payout.defaults().gasPrice * transaction.receipt.gasUsed
 }
-

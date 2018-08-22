@@ -1,4 +1,4 @@
-const TestRPC = require('ethereumjs-testrpc')
+const Ganache = require('ganache-core')
 
 let truffleOptions = {
   networks: {
@@ -21,7 +21,7 @@ let truffleOptions = {
     },
     testing: {
       network_id: '*',
-      provider: TestRPC.provider()
+      provider: Ganache.provider()
     }
   },
   mocha: {

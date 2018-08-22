@@ -27,8 +27,10 @@ contract('GitHub', function (accounts) {
       let price
 
       beforeEach(async function () {
-        users = await Users.deployed()
-        price = await users.attestationPrice()
+        if (await isTestNetwork(web3)) {
+          users = await Users.deployed()
+          price = await users.attestationPrice()
+        }
       })
 
       it('has sufficient funds', async function () {
@@ -59,8 +61,10 @@ contract('GitHub', function (accounts) {
       let price
 
       beforeEach(async function () {
-        pullRequests = await PullRequests.deployed()
-        price = await pullRequests.registrationPrice()
+        if (await isTestNetwork(web3)) {
+          pullRequests = await PullRequests.deployed()
+          price = await pullRequests.registrationPrice()
+        }
       })
 
       it('has sufficient funds', async function () {

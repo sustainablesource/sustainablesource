@@ -2,6 +2,8 @@ const chai = require('chai')
 const expect = chai.expect
 const Users = artifacts.require('Users.sol')
 const TestableUsers = artifacts.require('TestableUsers.sol')
+const hexToNumber = web3.utils.hexToNumber
+const keccak256 = web3.utils.keccak256
 
 contract('Users', function (accounts) {
   const oraclizePrice = 123456
@@ -27,7 +29,7 @@ contract('Users', function (accounts) {
     const username = 'some_user'
     const account = accounts[1]
     const gistId = '1234abcd'
-    const oraclizeQueryId = 42
+    const oraclizeQueryId = '0x42'
     const oraclizeAddress = accounts[2]
 
     let transaction
@@ -53,7 +55,7 @@ contract('Users', function (accounts) {
       const notary = 0x10
       const ipfs = 0x01
       const event = transaction.logs[0]
-      expect(web3.toDecimal(event.args.proofType)).to.equal(notary | ipfs)
+      expect(hexToNumber(event.args.proofType)).to.equal(notary | ipfs)
     })
 
     it('specifies a custom gas limit', async function () {
@@ -83,31 +85,31 @@ contract('Users', function (accounts) {
       it('registers the username when gist is correct', async function () {
         await oraclizeCallback(`["${username}", "attestation", "${account}"]`)
         expect(await users.user(username)).to.equal(account)
-        expect(await users.userByHash(web3.sha3(username))).to.equal(account)
+        expect(await users.userByHash(keccak256(username))).to.equal(account)
       })
 
       it('does not register when username is incorrect', async function () {
         await oraclizeCallback(`["incorrect", "attestation", "${account}"]`)
         const user = await users.user(username)
-        const userByHash = await users.userByHash(web3.sha3(username))
-        expect(web3.toDecimal(user)).to.equal(0)
-        expect(web3.toDecimal(userByHash)).to.equal(0)
+        const userByHash = await users.userByHash(keccak256(username))
+        expect(hexToNumber(user)).to.equal(0)
+        expect(hexToNumber(userByHash)).to.equal(0)
       })
 
       it('does not register when filename is incorrect', async function () {
         await oraclizeCallback(`["${username}", "incorrect", "${account}"]`)
         const user = await users.user(username)
-        const userByHash = await users.userByHash(web3.sha3(username))
-        expect(web3.toDecimal(user)).to.equal(0)
-        expect(web3.toDecimal(userByHash)).to.equal(0)
+        const userByHash = await users.userByHash(keccak256(username))
+        expect(hexToNumber(user)).to.equal(0)
+        expect(hexToNumber(userByHash)).to.equal(0)
       })
 
       it('does not register when contents are incorrect', async function () {
         await oraclizeCallback(`["${username}", "attestation", "incorrect"]`)
         const user = await users.user(username)
-        const userByHash = await users.userByHash(web3.sha3(username))
-        expect(web3.toDecimal(user)).to.equal(0)
-        expect(web3.toDecimal(userByHash)).to.equal(0)
+        const userByHash = await users.userByHash(keccak256(username))
+        expect(hexToNumber(user)).to.equal(0)
+        expect(hexToNumber(userByHash)).to.equal(0)
       })
 
       it('only processes a query result once', async function () {

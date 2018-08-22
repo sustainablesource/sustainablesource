@@ -1,6 +1,7 @@
 const expect = require('chai').expect
 const PullRequests = artifacts.require('PullRequests')
 const TestablePullRequests = artifacts.require('TestablePullRequests')
+const hexToNumber = web3.utils.hexToNumber
 
 contract('PullRequests', function (accounts) {
   const repo = 'sustainablesource/sustainablesource'
@@ -66,7 +67,7 @@ contract('PullRequests', function (accounts) {
       const notary = 0x10
       const ipfs = 0x01
       const event = transaction.logs[0]
-      expect(web3.toDecimal(event.args.proofType)).to.equal(notary | ipfs)
+      expect(hexToNumber(event.args.proofType)).to.equal(notary | ipfs)
     })
 
     it('specifies a custom gas limit', async function () {
@@ -100,7 +101,7 @@ contract('PullRequests', function (accounts) {
         const username = await pullRequests.creator(pullRequestId)
         const hash = await pullRequests.creatorHash(pullRequestId)
         expect(username).to.equal(creator)
-        expect(hash).to.equal(web3.sha3(creator))
+        expect(hash).to.equal(web3.utils.keccak256(creator))
       })
 
       it('does not register when username is incorrect', async function () {
@@ -108,7 +109,7 @@ contract('PullRequests', function (accounts) {
         const username = await pullRequests.creator(pullRequestId)
         const hash = await pullRequests.creatorHash(pullRequestId)
         expect(username).to.equal('')
-        expect(web3.toDecimal(hash)).to.equal(0)
+        expect(hexToNumber(hash)).to.equal(0)
       })
 
       it('only processes a query result once', async function () {

@@ -1,5 +1,5 @@
 {
-  "name": "app-contracts",
+  "name": "sustainablesource-contracts",
   "version": "0.1.0",
   "description": "Sustainable Source Contracts",
   "main": "index.js",
@@ -28,14 +28,6 @@
     "deploy-ropsten": "node deploy/ropsten.js",
     "deploy-rinkeby": "node deploy/rinkeby.js",
     "integration-test": "yarn run truffle test --network ropsten test/github-integration.js"
-  },
-  "eslintConfig": {
-    "env": {
-      "mocha": true
-    },
-    "globals": {
-      "web3": true
-    }
   },
   "engines": {
     "node": ">=7.6.0"

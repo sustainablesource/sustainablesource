@@ -74,20 +74,20 @@ contract('Users', function (accounts) {
     })
 
     context('when oraclize query results are in', function () {
-      async function callback (result) {
+      async function oraclizeCallback (result) {
         await users.__callback(
           oraclizeQueryId, result, { from: oraclizeAddress }
         )
       }
 
       it('registers the username when gist is correct', async function () {
-        await callback(`["${username}", "attestation", "${account}"]`)
+        await oraclizeCallback(`["${username}", "attestation", "${account}"]`)
         expect(await users.user(username)).to.equal(account)
         expect(await users.userByHash(web3.sha3(username))).to.equal(account)
       })
 
       it('does not register when username is incorrect', async function () {
-        await callback(`["incorrect", "attestation", "${account}"]`)
+        await oraclizeCallback(`["incorrect", "attestation", "${account}"]`)
         const user = await users.user(username)
         const userByHash = await users.userByHash(web3.sha3(username))
         expect(web3.toDecimal(user)).to.equal(0)
@@ -95,7 +95,7 @@ contract('Users', function (accounts) {
       })
 
       it('does not register when filename is incorrect', async function () {
-        await callback(`["${username}", "incorrect", "${account}"]`)
+        await oraclizeCallback(`["${username}", "incorrect", "${account}"]`)
         const user = await users.user(username)
         const userByHash = await users.userByHash(web3.sha3(username))
         expect(web3.toDecimal(user)).to.equal(0)
@@ -103,7 +103,7 @@ contract('Users', function (accounts) {
       })
 
       it('does not register when contents are incorrect', async function () {
-        await callback(`["${username}", "attestation", "incorrect"]`)
+        await oraclizeCallback(`["${username}", "attestation", "incorrect"]`)
         const user = await users.user(username)
         const userByHash = await users.userByHash(web3.sha3(username))
         expect(web3.toDecimal(user)).to.equal(0)
@@ -111,8 +111,8 @@ contract('Users', function (accounts) {
       })
 
       it('only processes a query result once', async function () {
-        await callback('some result')
-        await expect(callback('some result')).to.be.rejected()
+        await oraclizeCallback('some result')
+        await expect(oraclizeCallback('some result')).to.be.rejected()
       })
     })
   })

@@ -10,16 +10,20 @@ contract Users is UsersInterface, usingOraclize {
     mapping (bytes32 => address) usernameHashToAddress;
     mapping (bytes32 => Query) queries;
 
-    function userByHash(bytes32 usernameHash) constant returns (address) {
+    function userByHash(bytes32 usernameHash) public view returns (address) {
         return usernameHashToAddress[usernameHash];
     }
 
-    function attestationPrice() constant returns (uint) {
+    function attestationPrice() public view returns (uint) {
         oraclize_setProof(proofType_TLSNotary | proofStorage_IPFS);
         return oraclize_getPrice("URL", 400000);
     }
 
-    function attest(string username, string gistId) payable onlyCorrectPayment {
+    function attest(string username, string gistId)
+        public
+        payable
+        onlyCorrectPayment
+    {
         string memory queryPrefix = "json(https://api.github.com/gists/";
         string memory queryPostfix = ").$..[owner,files]..[login,filename,content]";
         string memory query = strConcat(queryPrefix, gistId, queryPostfix);
@@ -28,14 +32,17 @@ contract Users is UsersInterface, usingOraclize {
         queries[queryId] = Query(username, msg.sender);
     }
 
-    function __callback(bytes32 queryId, string result, bytes) onlyOraclize {
+    function __callback(bytes32 queryId, string result, bytes)
+        public
+        onlyOraclize
+    {
         Query query = queries[queryId];
         if (bytes(query.username).length != 0) {
             processQueryResult(query, result);
             delete queries[queryId];
             return;
         }
-        throw;
+        revert("callback called for non-existent query");
     }
 
     function processQueryResult(Query query, string result) private {
@@ -56,14 +63,14 @@ contract Users is UsersInterface, usingOraclize {
 
     modifier onlyOraclize {
         if (msg.sender != oraclize_cbAddress()) {
-            throw;
+            revert("only Oraclize is allowed to call this method");
         }
         _;
     }
 
     modifier onlyCorrectPayment {
         if (msg.value != attestationPrice()) {
-            throw;
+            revert("incorrect payment amount");
         }
         _;
     }

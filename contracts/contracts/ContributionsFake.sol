@@ -30,7 +30,7 @@ contract ContributionsFake is ContributionsInterface {
 
     function numberOfContributions(address contributor)
         public
-        constant
+        view
         returns (uint)
     {
         return contributions[contributor];

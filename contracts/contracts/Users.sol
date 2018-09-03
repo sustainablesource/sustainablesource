@@ -37,7 +37,7 @@ contract Users is UsersInterface, usingOraclize {
         public
         onlyOraclize
     {
-        Query query = queries[queryId];
+        Query storage query = queries[queryId];
         if (bytes(query.username).length != 0) {
             processQueryResult(query, result);
             delete queries[queryId];
@@ -53,7 +53,7 @@ contract Users is UsersInterface, usingOraclize {
         );
 
         if (strCompare(correctResult.toLowerCase(), result.toLowerCase()) == 0) {
-            usernameHashToAddress[keccak256(query.username)] = query.account;
+            usernameHashToAddress[keccak256(bytes(query.username))] = query.account;
         }
     }
 

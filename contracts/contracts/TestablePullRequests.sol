@@ -3,6 +3,6 @@ import "./PullRequests.sol";
 import "./OraclizeSpy.sol";
 
 contract TestablePullRequests is PullRequests, OraclizeSpy {
-    function TestablePullRequests(string repo) PullRequests(repo){
+    constructor(string repo) PullRequests(repo) public {
     }
 }

@@ -26,7 +26,7 @@ contract('Users', function (accounts) {
   })
 
   context('when attesting', function () {
-    const username = 'some_user'
+    const username = 'Some User'
     const account = accounts[1]
     const gistId = '1234abcd'
     const oraclizeQueryId = '0x42'

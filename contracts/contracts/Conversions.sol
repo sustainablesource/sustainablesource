@@ -13,6 +13,19 @@ library Conversions {
         return string(result);
     }
 
+    function toLowerCase(string str) internal pure returns (string) {
+        bytes memory input = bytes(str);
+        bytes memory output = new bytes(input.length);
+        for (uint i = 0; i < input.length; i++) {
+            uint8 character = uint8(input[i]);
+            if (0x41 <= character && character <= 0x5A) {
+                character += 0x20;
+            }
+            output[i] = byte(character);
+        }
+        return string(output);
+    }
+
     function toHex(byte b) private pure returns (byte c) {
         uint8 asciiOffset = b < 10 ? 0x30 : 0x57;
         return byte(uint8(b) + asciiOffset);

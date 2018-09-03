@@ -6,6 +6,7 @@ import "./UsersInterface.sol";
 contract Users is UsersInterface, usingOraclize {
 
     using Conversions for address;
+    using Conversions for string;
 
     mapping (bytes32 => address) usernameHashToAddress;
     mapping (bytes32 => Query) queries;
@@ -51,7 +52,7 @@ contract Users is UsersInterface, usingOraclize {
             "[\"", query.username, "\", \"attestation\", \"0x", accountString, "\"]"
         );
 
-        if (strCompare(correctResult, result) == 0) {
+        if (strCompare(correctResult.toLowerCase(), result.toLowerCase()) == 0) {
             usernameHashToAddress[keccak256(query.username)] = query.account;
         }
     }

@@ -6,7 +6,7 @@ const testNetworks = {
 
 async function isTestNetwork (web3) {
   return new Promise(function (resolve, reject) {
-    web3.version.getNetwork(function (error, network) {
+    web3.eth.net.getId(function (error, network) {
       if (error) {
         reject(error)
       } else {

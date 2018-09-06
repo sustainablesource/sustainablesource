@@ -2,9 +2,10 @@ const expect = require('chai').expect
 const getBalance = require('./get-balance')
 const ContributionsFake = artifacts.require('ContributionsFake')
 const Payout = artifacts.require('Payout')
+const toBN = web3.utils.toBN
 
 contract('Payout', function (accounts) {
-  const funds = parseInt(web3.toWei(100, 'finney'))
+  const funds = parseInt(web3.utils.toWei('100', 'finney'))
   const contributor1 = accounts[1]
   const contributor2 = accounts[2]
 
@@ -40,18 +41,18 @@ contract('Payout', function (accounts) {
     it('divides funds according to amount of contributions', async function () {
       await payout.pay({ value: funds })
 
-      const initialBalance1 = await getBalance(web3, contributor1)
+      const initialBalance1 = toBN(await getBalance(web3, contributor1))
       const transaction1 = await payout.withdrawPayments({ from: contributor1 })
       const finalBalance1 = await getBalance(web3, contributor1)
-      const balanceIncrease1 = finalBalance1.sub(initialBalance1).toNumber()
+      const balanceIncrease1 = toBN(finalBalance1).sub(initialBalance1)
 
-      const initialBalance2 = await getBalance(web3, contributor2)
+      const initialBalance2 = toBN(await getBalance(web3, contributor2))
       const transaction2 = await payout.withdrawPayments({ from: contributor2 })
       const finalBalance2 = await getBalance(web3, contributor2)
-      const balanceIncrease2 = finalBalance2.sub(initialBalance2).toNumber()
+      const balanceIncrease2 = toBN(finalBalance2).sub(initialBalance2)
 
-      expect(balanceIncrease1).to.equal(0.25 * funds - cost(transaction1))
-      expect(balanceIncrease2).to.equal(0.75 * funds - cost(transaction2))
+      expect(balanceIncrease1.eq(toBN(0.25 * funds - cost(transaction1)))).to.be.true()
+      expect(balanceIncrease2.eq(toBN(0.75 * funds - cost(transaction2)))).to.be.true()
     })
   })
 })

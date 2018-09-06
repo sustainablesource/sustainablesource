@@ -11,24 +11,25 @@ contract PullRequests is PullRequestsInterface, usingOraclize {
     mapping (bytes32 => UserQuery) userQueries;
     mapping (bytes32 => MergedQuery) mergedQueries;
 
-    function PullRequests(string repo_) {
+    constructor(string repo_) public {
         repo = repo_;
     }
 
-    function creator(uint pullRequestId) constant returns (string creator) {
+    function creator(uint pullRequestId) public view returns (string) {
         return pullRequestIdToCreator[pullRequestId];
     }
 
-    function isMerged(uint pullRequestId) constant returns (bool isMerged) {
+    function isMerged(uint pullRequestId) public view returns (bool) {
         return pullRequestIdToMergedState[pullRequestId];
     }
 
-    function registrationPrice() constant returns (uint) {
+    function registrationPrice() public view returns (uint) {
         oraclize_setProof(proofType_TLSNotary | proofStorage_IPFS);
         return 2 * oraclize_getPrice("URL", 300000);
     }
 
-    function register(uint pullRequestId, string creator)
+    function register(uint pullRequestId, string creator_)
+        public
         payable
         onlyCorrectPayment
     {
@@ -36,29 +37,32 @@ contract PullRequests is PullRequestsInterface, usingOraclize {
 
         string memory userQuery = strConcat(prefix, "user.login");
         bytes32 userQueryId = oraclize_query("URL", userQuery, 300000);
-        userQueries[userQueryId] = UserQuery(pullRequestId, creator);
+        userQueries[userQueryId] = UserQuery(pullRequestId, creator_);
 
         string memory mergedQuery = strConcat(prefix, "merged");
         bytes32 mergedQueryId = oraclize_query("URL", mergedQuery, 300000);
         mergedQueries[mergedQueryId] = MergedQuery(pullRequestId);
     }
 
-    function __callback(bytes32 queryId, string result, bytes) onlyOraclize {
-        UserQuery userQuery = userQueries[queryId];
+    function __callback(bytes32 queryId, string result, bytes)
+        public
+        onlyOraclize
+    {
+        UserQuery storage userQuery = userQueries[queryId];
         if (userQuery.pullRequestId != 0) {
             processUserResult(userQuery, result);
             delete userQueries[queryId];
             return;
         }
 
-        MergedQuery mergedQuery = mergedQueries[queryId];
+        MergedQuery storage mergedQuery = mergedQueries[queryId];
         if (mergedQuery.pullRequestId != 0) {
             processMergedStateResult(mergedQuery, result);
             delete mergedQueries[queryId];
             return;
         }
 
-        throw;
+        revert("result to unknown query");
     }
 
     function processUserResult(UserQuery query, string result)
@@ -87,7 +91,7 @@ contract PullRequests is PullRequestsInterface, usingOraclize {
             "json(https://api.github.com/repos/",
             repo,
             "/pulls/",
-             uint2str(pullRequestId),
+            uint2str(pullRequestId),
             ")."
         );
     }
@@ -103,14 +107,14 @@ contract PullRequests is PullRequestsInterface, usingOraclize {
 
     modifier onlyOraclize {
         if (msg.sender != oraclize_cbAddress()) {
-            throw;
+            revert("only Oraclize is allowed to call this function");
         }
         _;
     }
 
     modifier onlyCorrectPayment {
         if (msg.value != registrationPrice()) {
-            throw;
+            revert("incorrect payment");
         }
         _;
     }

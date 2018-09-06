@@ -17,7 +17,7 @@ contract Licenses is Ownable {
     }
 
     function payLicenseFee(address account, string version) public payable {
-        require(msg.value == licenseFeeInWei);
+        require(msg.value == licenseFeeInWei, "incorrect payment");
 
         payout.pay.value(msg.value)();
         licenses[version][account] = true;
@@ -25,7 +25,7 @@ contract Licenses is Ownable {
 
     function hasLicense(address account, string version)
         public
-        constant
+        view
         returns (bool)
     {
         return licenses[version][account];

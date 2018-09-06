@@ -5,19 +5,19 @@ contract PullRequestsFake is PullRequestsInterface {
     mapping (uint => string) pullRequestIdToCreator;
     mapping (uint => bool) pullRequestIdToMergedState;
 
-    function creator(uint pullRequestId) constant returns (string creator) {
+    function creator(uint pullRequestId) public view returns (string) {
         return pullRequestIdToCreator[pullRequestId];
     }
 
-    function setCreator(uint pullRequestId, string creator) {
-        pullRequestIdToCreator[pullRequestId] = creator;
+    function setCreator(uint pullRequestId, string creator_) public {
+        pullRequestIdToCreator[pullRequestId] = creator_;
     }
 
-    function isMerged(uint pullRequestId) constant returns (bool isMerged) {
+    function isMerged(uint pullRequestId) public view returns (bool) {
         return pullRequestIdToMergedState[pullRequestId];
     }
 
-    function setIsMerged(uint pullRequestId, bool isMerged) {
-        pullRequestIdToMergedState[pullRequestId] = isMerged;
+    function setIsMerged(uint pullRequestId, bool isMerged_) public {
+        pullRequestIdToMergedState[pullRequestId] = isMerged_;
     }
 }

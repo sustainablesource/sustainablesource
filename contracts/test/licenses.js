@@ -7,7 +7,7 @@ const Licenses = artifacts.require('Licenses.sol')
 contract('Licenses', function (accounts) {
   const owner = accounts[0]
   const person = accounts[1]
-  const fee = parseInt(web3.toWei(10, 'finney'))
+  const fee = web3.utils.toWei('10', 'finney')
   const version = '34947cd157c8ddf98a61628a1a1d6ce163097f54'
 
   let licenses
@@ -42,24 +42,24 @@ contract('Licenses', function (accounts) {
 
     it('sends license fee to the payout contract', async function () {
       const balance = await getBalance(web3, payout.address)
-      expect(balance.toNumber()).to.equal(fee)
+      expect(balance).to.equal(fee)
     })
   })
 
   it('throws when less than license fee was paid', async function () {
-    const tooLittle = web3.toWei(9, 'finney')
+    const tooLittle = web3.utils.toWei('9', 'finney')
     const call = licenses.payLicenseFee(person, version, {value: tooLittle})
     await expect(call).to.eventually.be.rejected()
   })
 
   it('throws when more than license fee was paid', async function () {
-    const tooMuch = web3.toWei(11, 'finney')
+    const tooMuch = web3.utils.toWei('11', 'finney')
     const call = licenses.payLicenseFee(person, version, {value: tooMuch})
     await expect(call).to.eventually.be.rejected()
   })
 
   describe('changing license fees', function () {
-    const newFee = web3.toWei(5, 'finney')
+    const newFee = web3.utils.toWei('5', 'finney')
 
     it('allows owner to change license fee', async function () {
       await licenses.setLicenseFee(newFee, {from: owner})

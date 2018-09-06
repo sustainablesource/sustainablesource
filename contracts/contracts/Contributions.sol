@@ -13,7 +13,7 @@ contract Contributions is ContributionsInterface {
     UsersInterface users;
     PullRequestsInterface pullRequests;
 
-    function Contributions(
+    constructor(
         UsersInterface users_,
         PullRequestsInterface pullRequests_
     ) public
@@ -23,11 +23,11 @@ contract Contributions is ContributionsInterface {
     }
 
     function registerContribution(uint pullRequestId) public {
-        require(!registeredPullRequests[pullRequestId]);
-        require(pullRequests.isMerged(pullRequestId));
+        require(!registeredPullRequests[pullRequestId], "pull request is already registered");
+        require(pullRequests.isMerged(pullRequestId), "pull request must be merged");
         bytes32 creatorHash = pullRequests.creatorHash(pullRequestId);
         address contributor = users.userByHash(creatorHash);
-        require(contributor != 0);
+        require(contributor != 0, "contributor is not registered");
         registeredPullRequests[pullRequestId] = true;
         addContribution(contributor);
     }
@@ -40,21 +40,21 @@ contract Contributions is ContributionsInterface {
         contributions[contributor]++;
     }
 
-    function totalContributions() public constant returns (uint) {
+    function totalContributions() public view returns (uint) {
         return total;
     }
 
-    function numberOfContributors() public constant returns (uint) {
+    function numberOfContributors() public view returns (uint) {
         return contributors.length;
     }
 
-    function getContributor(uint index) public constant returns (address) {
+    function getContributor(uint index) public view returns (address) {
         return contributors[index];
     }
 
     function numberOfContributions(address contributor)
         public
-        constant
+        view
         returns (uint)
     {
         return contributions[contributor];

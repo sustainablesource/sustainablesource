@@ -9,7 +9,7 @@ async function deploy (deployer) {
   await deployer.deploy(PullRequests, 'sustainablesource/sustainablesource')
   await deployer.deploy(Contributions, Users.address, PullRequests.address)
   await deployer.deploy(Payout, Contributions.address)
-  await deployer.deploy(Licenses, Payout.address, web3.toWei(250, 'finney'))
+  await deployer.deploy(Licenses, Payout.address, web3.utils.toWei('250', 'finney'))
 }
 
 module.exports = function (deployer) {

@@ -1,15 +1,16 @@
 import React from 'react'
-import { render, getByText } from 'react-testing-library'
+import { render } from 'react-testing-library'
 import { Attest } from './Attest'
 
 const reason = 'in order to collect your income'
-
-let rendered
-
-beforeEach(() => {
-  rendered = render(<Attest reason={reason} />)
-})
+const githubUsername = 'some_user'
 
 it('explains why attestation is necessary', () => {
-  expect(getByText(rendered.container, reason)).toBeInTheDocument()
+  const { getByText } = render(<Attest reason={reason} />)
+  expect(getByText(reason)).toBeInTheDocument()
+})
+
+it('shows github username when provided', () => {
+  const { getByText } = render(<Attest githubUsername={githubUsername} />)
+  expect(getByText(githubUsername)).toBeInTheDocument()
 })

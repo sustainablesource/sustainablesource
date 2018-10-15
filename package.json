@@ -28,7 +28,8 @@
   ],
   "standard": {
     "env": [
-      "mocha"
+      "mocha",
+      "jest"
     ],
     "globals": [
       "web3",

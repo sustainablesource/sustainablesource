@@ -51,8 +51,12 @@ contract('Payout', function (accounts) {
       const finalBalance2 = await getBalance(web3, contributor2)
       const balanceIncrease2 = toBN(finalBalance2).sub(initialBalance2)
 
-      expect(balanceIncrease1.eq(toBN(0.25 * funds - cost(transaction1)))).to.be.true()
-      expect(balanceIncrease2.eq(toBN(0.75 * funds - cost(transaction2)))).to.be.true()
+      expect(
+        balanceIncrease1.eq(toBN(0.25 * funds - cost(transaction1)))
+      ).to.be.true()
+      expect(
+        balanceIncrease2.eq(toBN(0.75 * funds - cost(transaction2)))
+      ).to.be.true()
     })
   })
 })

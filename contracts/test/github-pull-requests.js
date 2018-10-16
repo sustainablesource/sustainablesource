@@ -15,8 +15,11 @@ contract('PullRequests', function (accounts) {
   beforeEach(async function () {
     pullRequests = await TestablePullRequests.new(repo)
     await pullRequests.alwaysReturnOraclizeAddress(oraclizeAddress)
-    await pullRequests
-      .alwaysReturnOraclizePrice('URL', oraclizeGasLimit, oraclizePrice)
+    await pullRequests.alwaysReturnOraclizePrice(
+      'URL',
+      oraclizeGasLimit,
+      oraclizePrice
+    )
   })
 
   it('is deployed', async function () {
@@ -38,9 +41,9 @@ contract('PullRequests', function (accounts) {
 
     beforeEach(async function () {
       await pullRequests.returnOraclizeQueryIdsStartingFrom(usernameQueryId)
-      transaction = await pullRequests.register(
-        pullRequestId, creator, { value: registrationPrice }
-      )
+      transaction = await pullRequests.register(pullRequestId, creator, {
+        value: registrationPrice
+      })
     })
 
     function createQuery (jsonPath) {
@@ -91,9 +94,9 @@ contract('PullRequests', function (accounts) {
 
     context('when oraclize returns the user name', function () {
       async function usernameCallback (result) {
-        await pullRequests.__callback(
-          usernameQueryId, result, { from: oraclizeAddress }
-        )
+        await pullRequests.__callback(usernameQueryId, result, {
+          from: oraclizeAddress
+        })
       }
 
       it('registers the creator when username is correct', async function () {
@@ -120,9 +123,9 @@ contract('PullRequests', function (accounts) {
 
     context('when oraclize returns the merged state', function () {
       async function mergedStateCallback (result) {
-        await pullRequests.__callback(
-          mergedStateQueryId, result, { from: oraclizeAddress }
-        )
+        await pullRequests.__callback(mergedStateQueryId, result, {
+          from: oraclizeAddress
+        })
       }
 
       it('registers that pull request is merged', async function () {

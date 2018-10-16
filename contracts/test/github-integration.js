@@ -42,7 +42,7 @@ contract('GitHub', function (accounts) {
 
       it('attests with a correct gist', async function () {
         async function poll () {
-          if (await users.user(username) !== address) {
+          if ((await users.user(username)) !== address) {
             await wait(5000)
             await poll()
           }

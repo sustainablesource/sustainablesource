@@ -13,7 +13,11 @@ contract('Users', function (accounts) {
 
   beforeEach(async function () {
     users = await TestableUsers.new()
-    await users.alwaysReturnOraclizePrice('URL', oraclizeGasLimit, oraclizePrice)
+    await users.alwaysReturnOraclizePrice(
+      'URL',
+      oraclizeGasLimit,
+      oraclizePrice
+    )
   })
 
   it('is deployed', async function () {
@@ -37,9 +41,10 @@ contract('Users', function (accounts) {
     beforeEach(async function () {
       await users.returnOraclizeQueryIdsStartingFrom(oraclizeQueryId)
       await users.alwaysReturnOraclizeAddress(oraclizeAddress)
-      transaction = await users.attest(
-        username, gistId, { from: account, value: oraclizePrice }
-      )
+      transaction = await users.attest(username, gistId, {
+        from: account,
+        value: oraclizePrice
+      })
     })
 
     it('requests gist details through oraclize', async function () {
@@ -65,7 +70,10 @@ contract('Users', function (accounts) {
 
     it('only accepts calls with correct payment', async function () {
       const wrongPayment = oraclizePrice - 1
-      const call = users.attest(username, gistId, { from: account, value: wrongPayment })
+      const call = users.attest(username, gistId, {
+        from: account,
+        value: wrongPayment
+      })
       await expect(call).to.eventually.be.rejected()
     })
 
@@ -77,9 +85,9 @@ contract('Users', function (accounts) {
 
     context('when oraclize query results are in', function () {
       async function oraclizeCallback (result) {
-        await users.__callback(
-          oraclizeQueryId, result, { from: oraclizeAddress }
-        )
+        await users.__callback(oraclizeQueryId, result, {
+          from: oraclizeAddress
+        })
       }
 
       it('registers the username when gist is correct', async function () {

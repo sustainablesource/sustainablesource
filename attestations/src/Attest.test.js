@@ -20,3 +20,18 @@ it('shows ethereum address when provided', () => {
   const { getByText } = render(<Attest address={address} />)
   expect(getByText(address)).toBeInTheDocument()
 })
+
+it('enables the register button when username and address are known', () => {
+  const { getByText } = render(<Attest username={username} address={address} />)
+  expect(getByText('register')).not.toBeDisabled()
+})
+
+it('disables the register button when username is unknown', () => {
+  const { getByText } = render(<Attest address={address} />)
+  expect(getByText('register')).toBeDisabled()
+})
+
+it('disables the register button when address is unknown', () => {
+  const { getByText } = render(<Attest username={username} />)
+  expect(getByText('register')).toBeDisabled()
+})

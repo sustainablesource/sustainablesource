@@ -16,6 +16,11 @@ it('shows github username when provided', () => {
   expect(getByText(username)).toBeInTheDocument()
 })
 
+it('shows github login when username not provided', () => {
+  const { getByText } = render(<Attest />)
+  expect(getByText('login to Github')).toBeInTheDocument()
+})
+
 it('shows ethereum address when provided', () => {
   const { getByText } = render(<Attest address={address} />)
   expect(getByText(address)).toBeInTheDocument()

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Github } from './github'
 import Button from 'react-bootstrap/lib/Button'
 
 export const Attest = ({ reason, username, address }) => (
@@ -11,13 +12,4 @@ export const Attest = ({ reason, username, address }) => (
 )
 
 const Reason = ({ children }) => <p>{children}</p>
-const Github = ({ username }) => {
-  if (username) {
-    return <GithubUsername username={username} />
-  } else {
-    return <GithubLogin />
-  }
-}
-const GithubUsername = ({ username }) => <p>{username}</p>
-const GithubLogin = () => <Button>login to Github</Button>
 const EthereumAddress = ({ address }) => <p>{address}</p>

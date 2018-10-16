@@ -3,8 +3,8 @@ import { render } from 'react-testing-library'
 import { Attest } from './Attest'
 
 const reason = 'in order to collect your income'
-const githubUsername = 'some_user'
-const ethereumAddress = '0x1234567890'
+const username = 'some_user'
+const address = '0x1234567890'
 
 it('explains why attestation is necessary', () => {
   const { getByText } = render(<Attest reason={reason} />)
@@ -12,11 +12,11 @@ it('explains why attestation is necessary', () => {
 })
 
 it('shows github username when provided', () => {
-  const { getByText } = render(<Attest githubUsername={githubUsername} />)
-  expect(getByText(githubUsername)).toBeInTheDocument()
+  const { getByText } = render(<Attest username={username} />)
+  expect(getByText(username)).toBeInTheDocument()
 })
 
 it('shows ethereum address when provided', () => {
-  const { getByText } = render(<Attest ethereumAddress={ethereumAddress} />)
-  expect(getByText(ethereumAddress)).toBeInTheDocument()
+  const { getByText } = render(<Attest address={address} />)
+  expect(getByText(address)).toBeInTheDocument()
 })

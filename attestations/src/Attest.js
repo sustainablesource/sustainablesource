@@ -1,9 +1,9 @@
 import React from 'react'
 
-export const Attest = ({ reason, githubUsername, ethereumAddress }) => (<div>
+export const Attest = ({ reason, username, address }) => (<div>
   <Reason>{ reason }</Reason>
-  <GithubUsername username={githubUsername} />
-  <EthereumAddress address={ethereumAddress} />
+  <GithubUsername username={username} />
+  <EthereumAddress address={address} />
 </div>)
 
 const Reason = ({ children }) => (<p>{ children }</p>)

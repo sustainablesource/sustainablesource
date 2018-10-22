@@ -11,10 +11,12 @@
   "private": true,
   "devDependencies": {
     "lerna": "^3.1.1",
+    "prettier-standard": "^8.0.1",
     "standard": "^11.0.1"
   },
   "scripts": {
-    "test": "standard && lerna run test"
+    "test": "standard && lerna run test",
+    "format": "prettier-standard '**/*.js'"
   },
   "workspaces": [
     "contracts"

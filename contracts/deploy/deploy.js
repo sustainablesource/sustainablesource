@@ -24,27 +24,27 @@ async function deploy (networkName, networkPort, gethArgs) {
 
   async function truffleMigrate () {
     await spawn(
-      'yarn', ['run', 'truffle', 'migrate', '--', '--network', networkName],
+      'yarn',
+      ['run', 'truffle', 'migrate', '--', '--network', networkName],
       { stdio: 'inherit' }
     )
   }
 
   async function truffleNetworksClean () {
-    await spawn(
-      'yarn', ['run', 'truffle', 'networks', '--', '--clean'],
-      { stdio: 'inherit' }
-    )
+    await spawn('yarn', ['run', 'truffle', 'networks', '--', '--clean'], {
+      stdio: 'inherit'
+    })
   }
 
   function networkUnavailable () {
     console.error(
       `Error: No ethereum node was found on port ${networkPort}. ` +
-      'Did you start Geth correctly?\n' +
-      'For example:\n'
+        'Did you start Geth correctly?\n' +
+        'For example:\n'
     )
     console.error(
       `  geth ${gethArgs} -rpc --rpcport ${networkPort} ` +
-      '-rpcapi "eth,net,web3,personal" --unlock 0\n'
+        '-rpcapi "eth,net,web3,personal" --unlock 0\n'
     )
     process.exit(1)
   }

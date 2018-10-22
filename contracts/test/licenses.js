@@ -28,7 +28,7 @@ contract('Licenses', function (accounts) {
 
   context('when the correct license fee has been paid', async function () {
     beforeEach(async function () {
-      await licenses.payLicenseFee(person, version, {value: fee})
+      await licenses.payLicenseFee(person, version, { value: fee })
     })
 
     it('gives out a license', async function () {
@@ -48,13 +48,13 @@ contract('Licenses', function (accounts) {
 
   it('throws when less than license fee was paid', async function () {
     const tooLittle = web3.utils.toWei('9', 'finney')
-    const call = licenses.payLicenseFee(person, version, {value: tooLittle})
+    const call = licenses.payLicenseFee(person, version, { value: tooLittle })
     await expect(call).to.eventually.be.rejected()
   })
 
   it('throws when more than license fee was paid', async function () {
     const tooMuch = web3.utils.toWei('11', 'finney')
-    const call = licenses.payLicenseFee(person, version, {value: tooMuch})
+    const call = licenses.payLicenseFee(person, version, { value: tooMuch })
     await expect(call).to.eventually.be.rejected()
   })
 
@@ -62,13 +62,13 @@ contract('Licenses', function (accounts) {
     const newFee = web3.utils.toWei('5', 'finney')
 
     it('allows owner to change license fee', async function () {
-      await licenses.setLicenseFee(newFee, {from: owner})
+      await licenses.setLicenseFee(newFee, { from: owner })
       const actualFee = await licenses.licenseFeeInWei()
       expect(actualFee.toString()).to.equal(newFee)
     })
 
     it('throws when others try to change license fee', async function () {
-      const call = licenses.setLicenseFee(newFee, {from: person})
+      const call = licenses.setLicenseFee(newFee, { from: person })
       await expect(call).to.eventually.be.rejected()
     })
   })

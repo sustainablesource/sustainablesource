@@ -24,9 +24,8 @@
   },
   "scripts": {
     "install": "truffle compile",
-    "test": "yarn truffle test --network testing",
-    "testrpc": "testrpc",
-    "integration-test": "yarn run truffle test --network ropsten test/github-integration.js"
+    "test": "truffle test --network testing",
+    "integration-test": "truffle test --network ropsten test/github-integration.js"
   },
   "engines": {
     "node": ">=7.6.0"

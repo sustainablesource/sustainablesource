@@ -19,7 +19,8 @@
   },
   "dependencies": {
     "ganache-core": "^2.2.1",
-    "truffle": "^5.0.0-beta.0"
+    "truffle": "^5.0.0",
+    "truffle-hdwallet-provider": "^1.0.1"
   },
   "scripts": {
     "install": "truffle compile",

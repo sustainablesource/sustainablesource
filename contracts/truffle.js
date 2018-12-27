@@ -25,7 +25,8 @@ let truffleOptions = {
     }
   },
   mocha: {
-    slow: 250
+    slow: 250,
+    require: 'test/chai-setup'
   }
 }
 

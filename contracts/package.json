@@ -25,8 +25,6 @@
     "install": "truffle compile",
     "test": "yarn truffle test --network testing",
     "testrpc": "testrpc",
-    "deploy-ropsten": "node deploy/ropsten.js",
-    "deploy-rinkeby": "node deploy/rinkeby.js",
     "integration-test": "yarn run truffle test --network ropsten test/github-integration.js"
   },
   "engines": {

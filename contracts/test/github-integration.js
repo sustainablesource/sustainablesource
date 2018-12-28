@@ -1,4 +1,4 @@
-const expect = require('chai').expect
+const { expect } = require('@sustainablesource/chai')
 const isTestNetwork = require('./test-networks').isTestNetwork
 const Users = artifacts.require('Users.sol')
 const PullRequests = artifacts.require('PullRequests.sol')

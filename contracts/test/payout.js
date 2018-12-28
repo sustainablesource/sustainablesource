@@ -1,4 +1,4 @@
-const expect = require('chai').expect
+const { expect } = require('@sustainablesource/chai')
 const getBalance = require('./get-balance')
 const ContributionsFake = artifacts.require('ContributionsFake')
 const Payout = artifacts.require('Payout')

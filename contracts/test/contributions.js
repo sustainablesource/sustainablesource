@@ -1,7 +1,7 @@
+const { expect } = require('@sustainablesource/chai')
 const Contributions = artifacts.require('Contributions.sol')
 const Users = artifacts.require('UsersFake.sol')
 const PullRequests = artifacts.require('PullRequestsFake.sol')
-const expect = require('chai').expect
 
 contract('Contributions', function (accounts) {
   let contributions

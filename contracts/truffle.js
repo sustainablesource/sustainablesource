@@ -16,7 +16,6 @@ module.exports = {
     }
   },
   mocha: {
-    slow: 250,
-    require: 'test/chai-setup'
+    slow: 250
   }
 }

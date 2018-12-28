@@ -19,6 +19,7 @@
     "format": "prettier-standard '**/*.js'"
   },
   "workspaces": [
+    "chai",
     "contracts"
   ],
   "standard": {

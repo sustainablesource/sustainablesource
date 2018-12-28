@@ -1,5 +1,4 @@
-const chai = require('chai')
-const expect = chai.expect
+const { expect } = require('@sustainablesource/chai')
 const Users = artifacts.require('Users.sol')
 const TestableUsers = artifacts.require('TestableUsers.sol')
 const hexToNumber = web3.utils.hexToNumber

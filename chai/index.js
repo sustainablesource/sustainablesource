@@ -4,3 +4,5 @@ const dirtyChai = require('dirty-chai')
 
 chai.use(chaiAsPromised)
 chai.use(dirtyChai)
+
+module.exports = chai

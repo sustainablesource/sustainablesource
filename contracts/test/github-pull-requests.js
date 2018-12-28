@@ -1,4 +1,4 @@
-const expect = require('chai').expect
+const { expect } = require('@sustainablesource/chai')
 const PullRequests = artifacts.require('PullRequests')
 const TestablePullRequests = artifacts.require('TestablePullRequests')
 const hexToNumber = web3.utils.hexToNumber

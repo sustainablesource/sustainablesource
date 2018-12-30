@@ -1,5 +1,5 @@
 pragma solidity^0.5.0;
-import "./oraclize/usingOraclize.sol";
+import "@sustainablesource/oraclize/contracts/usingOraclize.sol";
 import "./PullRequestsInterface.sol";
 
 contract PullRequests is PullRequestsInterface, usingOraclize {

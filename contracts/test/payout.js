@@ -42,25 +42,21 @@ contract('Payout', function (accounts) {
       await payout.pay({ value: funds })
 
       const initialBalance1 = toBN(await getBalance(web3, contributor1))
-      const transaction1 = await payout.withdrawPayments({ from: contributor1 })
+      await payout.withdrawPayments(contributor1)
       const finalBalance1 = await getBalance(web3, contributor1)
       const balanceIncrease1 = toBN(finalBalance1).sub(initialBalance1)
 
       const initialBalance2 = toBN(await getBalance(web3, contributor2))
-      const transaction2 = await payout.withdrawPayments({ from: contributor2 })
+      await payout.withdrawPayments(contributor2)
       const finalBalance2 = await getBalance(web3, contributor2)
       const balanceIncrease2 = toBN(finalBalance2).sub(initialBalance2)
 
       expect(
-        balanceIncrease1.eq(toBN(0.25 * funds - cost(transaction1)))
+        balanceIncrease1.eq(toBN(0.25 * funds))
       ).to.be.true()
       expect(
-        balanceIncrease2.eq(toBN(0.75 * funds - cost(transaction2)))
+        balanceIncrease2.eq(toBN(0.75 * funds))
       ).to.be.true()
     })
   })
 })
-
-function cost (transaction) {
-  return Payout.defaults().gasPrice * transaction.receipt.gasUsed
-}

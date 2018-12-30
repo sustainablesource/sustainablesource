@@ -22,7 +22,7 @@ contract Payout is PullPayment, PayoutInterface {
             address contributor = contributions.getContributor(i);
             uint numberOfContributions = contributions.numberOfContributions(contributor);
             uint share = msg.value.mul(numberOfContributions).div(totalContributions);
-            asyncSend(contributor, share);
+            _asyncTransfer(contributor, share);
         }
     }
 }

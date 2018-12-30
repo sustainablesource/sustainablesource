@@ -1,5 +1,5 @@
 pragma solidity ^0.4.8;
-import "oraclize/usingOraclize.sol";
+import "./oraclize/usingOraclize.sol";
 import "./Conversions.sol";
 import "./UsersInterface.sol";
 

@@ -1,7 +1,7 @@
 pragma solidity ^0.4.8;
 
-import "zeppelin/payment/PullPayment.sol";
-import "zeppelin/SafeMath.sol";
+import "openzeppelin-solidity/contracts/payment/PullPayment.sol";
+import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "./ContributionsInterface.sol";
 import "./PayoutInterface.sol";
 

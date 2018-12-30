@@ -6226,6 +6226,11 @@ onetime@^2.0.0:
   dependencies:
     mimic-fn "^1.0.0"
 
+openzeppelin-solidity@2.1.0-rc.2:
+  version "2.1.0-rc.2"
+  resolved "https://registry.yarnpkg.com/openzeppelin-solidity/-/openzeppelin-solidity-2.1.0-rc.2.tgz#704b7c86cc45fc82bc23ab706d767d04cf3391dc"
+  integrity sha512-2Yf0c4k1v0L354ZXobBn6wL207fBw+906icm4F0DYix4U+4fUMA2xgjWzVFi6zdJKZnCgBRkg+eddF8ZZY6gNA==
+
 optimist@^0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/optimist/-/optimist-0.6.1.tgz#da3ea74686fa21a19a111c326e90eb15a0196686"

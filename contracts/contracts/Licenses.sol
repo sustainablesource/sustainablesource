@@ -1,5 +1,5 @@
 pragma solidity ^0.4.8;
-import "zeppelin/ownership/Ownable.sol";
+import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "./PayoutInterface.sol";
 
 contract Licenses is Ownable {

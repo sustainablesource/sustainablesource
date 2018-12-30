@@ -1,4 +1,4 @@
-pragma solidity ^0.4.8;
+pragma solidity ^0.5.0;
 import "./oraclize/usingOraclize.sol";
 import "./Conversions.sol";
 import "./UsersInterface.sol";
@@ -15,12 +15,12 @@ contract Users is UsersInterface, usingOraclize {
         return usernameHashToAddress[usernameHash];
     }
 
-    function attestationPrice() public view returns (uint) {
+    function attestationPrice() public returns (uint) {
         oraclize_setProof(proofType_TLSNotary | proofStorage_IPFS);
         return oraclize_getPrice("URL", 400000);
     }
 
-    function attest(string username, string gistId)
+    function attest(string memory username, string memory gistId)
         public
         payable
         onlyCorrectPayment
@@ -33,7 +33,11 @@ contract Users is UsersInterface, usingOraclize {
         queries[queryId] = Query(username, msg.sender);
     }
 
-    function __callback(bytes32 queryId, string result, bytes)
+    function __callback(
+        bytes32 queryId,
+        string memory result,
+        bytes memory
+    )
         public
         onlyOraclize
     {
@@ -46,7 +50,9 @@ contract Users is UsersInterface, usingOraclize {
         revert("callback called for non-existent query");
     }
 
-    function processQueryResult(Query query, string result) private {
+    function processQueryResult(Query storage query, string memory result)
+        private
+    {
         string memory accountString = query.account.toString();
         string memory correctResult = strConcat(
             "[\"", query.username, "\", \"attestation\", \"0x", accountString, "\"]"

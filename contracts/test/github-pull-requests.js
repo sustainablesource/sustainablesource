@@ -27,7 +27,7 @@ contract('PullRequests', function (accounts) {
   })
 
   it('returns the registration price', async function () {
-    const price = await pullRequests.registrationPrice()
+    const price = await pullRequests.registrationPrice.call()
     expect(price.toNumber()).to.equal(registrationPrice)
   })
 

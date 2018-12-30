@@ -1,7 +1,7 @@
-pragma solidity ^0.4.8;
+pragma solidity ^0.5.0;
 
 library Conversions {
-    function toString(address addr) internal pure returns (string) {
+    function toString(address addr) internal pure returns (string memory) {
         bytes memory result = new bytes(40);
         for (uint i = 0; i < 20; i++) {
             byte b = byte(uint8(uint(addr) / (2**(8*(19 - i)))));
@@ -13,7 +13,11 @@ library Conversions {
         return string(result);
     }
 
-    function toLowerCase(string str) internal pure returns (string) {
+    function toLowerCase(string memory str)
+        internal
+        pure
+        returns (string memory)
+    {
         bytes memory input = bytes(str);
         bytes memory output = new bytes(input.length);
         for (uint i = 0; i < input.length; i++) {
@@ -27,7 +31,7 @@ library Conversions {
     }
 
     function toHex(byte b) private pure returns (byte c) {
-        uint8 asciiOffset = b < 10 ? 0x30 : 0x57;
+        uint8 asciiOffset = uint8(b) < 10 ? 0x30 : 0x57;
         return byte(uint8(b) + asciiOffset);
     }
 }

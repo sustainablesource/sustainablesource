@@ -24,7 +24,7 @@ contract('Users', function (accounts) {
   })
 
   it('returns the attestation price', async function () {
-    const price = await users.attestationPrice()
+    const price = await users.attestationPrice.call()
     expect(price.toNumber()).to.equal(oraclizePrice)
   })
 

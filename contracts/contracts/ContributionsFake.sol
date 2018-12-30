@@ -1,4 +1,4 @@
-pragma solidity ^0.4.8;
+pragma solidity ^0.5.0;
 
 import "./ContributionsInterface.sol";
 
@@ -16,15 +16,15 @@ contract ContributionsFake is ContributionsInterface {
         contributions[contributor] += amount;
     }
 
-    function totalContributions() public constant returns (uint) {
+    function totalContributions() public view returns (uint) {
         return total;
     }
 
-    function numberOfContributors() public constant returns (uint) {
+    function numberOfContributors() public view returns (uint) {
         return contributors.length;
     }
 
-    function getContributor(uint index) public constant returns (address) {
+    function getContributor(uint index) public view returns (address) {
         return contributors[index];
     }
 

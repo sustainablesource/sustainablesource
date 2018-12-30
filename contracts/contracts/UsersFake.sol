@@ -1,4 +1,4 @@
-pragma solidity ^0.4.8;
+pragma solidity ^0.5.0;
 import "./UsersInterface.sol";
 
 contract UsersFake is UsersInterface {
@@ -8,7 +8,7 @@ contract UsersFake is UsersInterface {
         return usernameHashToAddress[usernameHash];
     }
 
-    function setUser(string username, address account) public {
+    function setUser(string memory username, address account) public {
         usernameHashToAddress[keccak256(bytes(username))] = account;
     }
 }

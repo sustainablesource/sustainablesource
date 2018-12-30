@@ -1,4 +1,4 @@
-pragma solidity^0.4.6;
+pragma solidity^0.5.0;
 import "./oraclize/usingOraclize.sol";
 import "./PullRequestsInterface.sol";
 
@@ -11,11 +11,11 @@ contract PullRequests is PullRequestsInterface, usingOraclize {
     mapping (bytes32 => UserQuery) userQueries;
     mapping (bytes32 => MergedQuery) mergedQueries;
 
-    constructor(string repo_) public {
+    constructor(string memory repo_) public {
         repo = repo_;
     }
 
-    function creator(uint pullRequestId) public view returns (string) {
+    function creator(uint pullRequestId) public view returns (string memory) {
         return pullRequestIdToCreator[pullRequestId];
     }
 
@@ -23,12 +23,12 @@ contract PullRequests is PullRequestsInterface, usingOraclize {
         return pullRequestIdToMergedState[pullRequestId];
     }
 
-    function registrationPrice() public view returns (uint) {
+    function registrationPrice() public returns (uint) {
         oraclize_setProof(proofType_TLSNotary | proofStorage_IPFS);
         return 2 * oraclize_getPrice("URL", 300000);
     }
 
-    function register(uint pullRequestId, string creator_)
+    function register(uint pullRequestId, string memory creator_)
         public
         payable
         onlyCorrectPayment
@@ -44,7 +44,7 @@ contract PullRequests is PullRequestsInterface, usingOraclize {
         mergedQueries[mergedQueryId] = MergedQuery(pullRequestId);
     }
 
-    function __callback(bytes32 queryId, string result, bytes)
+    function __callback(bytes32 queryId, string memory result, bytes memory)
         public
         onlyOraclize
     {
@@ -65,7 +65,7 @@ contract PullRequests is PullRequestsInterface, usingOraclize {
         revert("result to unknown query");
     }
 
-    function processUserResult(UserQuery query, string result)
+    function processUserResult(UserQuery storage query, string memory result)
         private
     {
         string memory correctResult = query.creator;
@@ -74,7 +74,10 @@ contract PullRequests is PullRequestsInterface, usingOraclize {
         }
     }
 
-    function processMergedStateResult(MergedQuery query, string result)
+    function processMergedStateResult(
+        MergedQuery storage query,
+        string memory result
+    )
         private
     {
         string memory correctResult = "true";
@@ -85,7 +88,8 @@ contract PullRequests is PullRequestsInterface, usingOraclize {
 
     function queryPrefix(uint pullRequestId)
         private
-        returns (string)
+        view
+        returns (string memory)
     {
         return strConcat(
             "json(https://api.github.com/repos/",

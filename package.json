@@ -21,7 +21,8 @@
   "workspaces": [
     "chai",
     "contracts",
-    "oraclize"
+    "oraclize",
+    "user-registry"
   ],
   "standard": {
     "env": [

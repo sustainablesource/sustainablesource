@@ -1,5 +1,5 @@
 pragma solidity ^0.5.0;
-import "./UsersInterface.sol";
+import "@sustainablesource/user-registry/contracts/UsersInterface.sol";
 
 contract UsersFake is UsersInterface {
     mapping (bytes32 => address) usernameHashToAddress;

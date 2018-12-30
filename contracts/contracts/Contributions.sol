@@ -1,7 +1,7 @@
 pragma solidity ^0.5.0;
 
+import "@sustainablesource/user-registry/contracts/UsersInterface.sol";
 import "./ContributionsInterface.sol";
-import "./UsersInterface.sol";
 import "./PullRequestsInterface.sol";
 
 contract Contributions is ContributionsInterface {

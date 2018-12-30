@@ -2,8 +2,17 @@ pragma solidity ^0.5.0;
 import "./PullRequestsInterface.sol";
 
 contract PullRequestsFake is PullRequestsInterface {
+    string repo;
     mapping (uint => string) pullRequestIdToCreator;
     mapping (uint => bool) pullRequestIdToMergedState;
+
+    function repository() public view returns (string memory) {
+        return repo;
+    }
+
+    function setRepository(string memory repo_) public {
+        repo = repo_;
+    }
 
     function creator(uint pullRequestId) public view returns (string memory) {
         return pullRequestIdToCreator[pullRequestId];

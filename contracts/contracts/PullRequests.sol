@@ -15,6 +15,10 @@ contract PullRequests is PullRequestsInterface, usingOraclize {
         repo = repo_;
     }
 
+    function repository() public view returns (string memory) {
+        return repo;
+    }
+
     function creator(uint pullRequestId) public view returns (string memory) {
         return pullRequestIdToCreator[pullRequestId];
     }

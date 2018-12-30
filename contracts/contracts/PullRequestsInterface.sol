@@ -1,6 +1,7 @@
 pragma solidity ^0.5.0;
 
 contract PullRequestsInterface {
+    function repository() public view returns (string memory);
     function creator(uint pullRequestId) public view returns (string memory);
     function isMerged(uint pullRequestId) public view returns (bool);
 

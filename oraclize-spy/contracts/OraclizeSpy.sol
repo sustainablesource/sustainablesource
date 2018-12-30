@@ -1,4 +1,4 @@
-pragma solidity^0.4.6;
+pragma solidity^0.5.0;
 
 contract OraclizeSpy {
     bytes32 queryIdToReturn;
@@ -14,7 +14,7 @@ contract OraclizeSpy {
     }
 
     function alwaysReturnOraclizePrice(
-        string datasource,
+        string memory datasource,
         uint gaslimit,
         uint price
     )
@@ -23,7 +23,11 @@ contract OraclizeSpy {
         oraclizePriceToReturn[datasource][gaslimit] = price;
     }
 
-    function oraclize_query(string datasource, string arg, uint gaslimit)
+    function oraclize_query(
+        string memory datasource,
+        string memory arg,
+        uint gaslimit
+    )
         internal
         returns (bytes32 queryId)
     {
@@ -40,7 +44,7 @@ contract OraclizeSpy {
         return oraclizeAddressToReturn;
     }
 
-    function oraclize_getPrice(string datasource, uint gaslimit)
+    function oraclize_getPrice(string memory datasource, uint gaslimit)
         internal
         returns (uint)
     {

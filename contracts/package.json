@@ -13,8 +13,9 @@
     "child-process-promise": "^2.2.1",
     "fs-extra": "^4.0.1",
     "is-port-reachable": "^2.0.0",
-    "@sustainablesource/chai": "^0.1.0"
     "openzeppelin-solidity": "2.1.0-rc.2",
+    "@sustainablesource/chai": "^0.1.0",
+    "@sustainablesource/oraclize-spy": "^0.1.0"
   },
   "dependencies": {
     "ganache-core": "^2.2.1",

@@ -20,7 +20,8 @@
   },
   "workspaces": [
     "chai",
-    "contracts"
+    "contracts",
+    "oraclize-spy"
   ],
   "standard": {
     "env": [

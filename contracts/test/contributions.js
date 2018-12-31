@@ -14,10 +14,6 @@ contract('Contributions', function (accounts) {
     contributions = await Contributions.new(users.address, pullRequests.address)
   })
 
-  it('is deployed', async function () {
-    expect(await Contributions.deployed()).to.exist()
-  })
-
   it('has 0 contributions by default', async function () {
     const totalContributions = await contributions.totalContributions()
     const numberOfContributors = await contributions.numberOfContributors()

@@ -17,10 +17,6 @@ contract('Licenses', function (accounts) {
     licenses = await Licenses.new(payout.address, fee)
   })
 
-  it('is deployed', async function () {
-    expect(await Licenses.deployed()).to.exist()
-  })
-
   it('does not give out a license initially', async function () {
     expect(await licenses.hasLicense(person, version)).to.be.false()
   })

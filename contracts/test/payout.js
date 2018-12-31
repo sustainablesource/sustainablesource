@@ -17,10 +17,6 @@ contract('Payout', function (accounts) {
     payout = await Payout.new(contributions.address)
   })
 
-  it('is deployed', async function () {
-    expect(await Payout.deployed()).to.exist()
-  })
-
   it('rejects payments when there are no contributors', async function () {
     await expect(payout.pay({ value: funds })).to.be.rejected()
   })

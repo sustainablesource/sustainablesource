@@ -1,4 +1,4 @@
-const Users = artifacts.require('Users.sol')
+const Users = artifacts.require('Users')
 const SustainableSource = artifacts.require('SustainableSource')
 
 async function deploy (deployer) {

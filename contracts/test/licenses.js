@@ -1,5 +1,5 @@
 const { expect } = require('@sustainablesource/chai')
-const getBalance = require('./get-balance')
+const { getBalance } = web3.eth
 const PayoutFake = artifacts.require('PayoutFake.sol')
 const Licenses = artifacts.require('Licenses.sol')
 
@@ -36,7 +36,7 @@ contract('Licenses', function (accounts) {
     })
 
     it('sends license fee to the payout contract', async function () {
-      const balance = await getBalance(web3, payout.address)
+      const balance = await getBalance(payout.address)
       expect(balance).to.equal(fee)
     })
   })

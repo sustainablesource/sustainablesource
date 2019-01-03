@@ -1,5 +1,5 @@
 const { expect } = require('@sustainablesource/chai')
-const getBalance = require('./get-balance')
+const { getBalance } = web3.eth
 const ContributionsFake = artifacts.require('ContributionsFake')
 const Payout = artifacts.require('Payout')
 const toBN = web3.utils.toBN
@@ -37,14 +37,14 @@ contract('Payout', function (accounts) {
     it('divides funds according to amount of contributions', async function () {
       await payout.pay({ value: funds })
 
-      const initialBalance1 = toBN(await getBalance(web3, contributor1))
+      const initialBalance1 = toBN(await getBalance(contributor1))
       await payout.withdrawPayments(contributor1)
-      const finalBalance1 = await getBalance(web3, contributor1)
+      const finalBalance1 = await getBalance(contributor1)
       const balanceIncrease1 = toBN(finalBalance1).sub(initialBalance1)
 
-      const initialBalance2 = toBN(await getBalance(web3, contributor2))
+      const initialBalance2 = toBN(await getBalance(contributor2))
       await payout.withdrawPayments(contributor2)
-      const finalBalance2 = await getBalance(web3, contributor2)
+      const finalBalance2 = await getBalance(contributor2)
       const balanceIncrease2 = toBN(finalBalance2).sub(initialBalance2)
 
       expect(

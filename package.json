@@ -21,6 +21,7 @@
   "workspaces": [
     "chai",
     "contracts",
+    "integration-tests",
     "oraclize",
     "user-registry"
   ],

@@ -1,17 +1,17 @@
 const { expect } = require('@sustainablesource/chai')
-const isTestNetwork = require('./test-networks').isTestNetwork
 const Users = artifacts.require('Users.sol')
+const SustainableSource = artifacts.require('SustainableSource.sol')
 const PullRequests = artifacts.require('PullRequests.sol')
+const { toBN } = web3.utils
+const { getBalance } = web3.eth
 
 contract('GitHub', function (accounts) {
-  const address = '0x7792eba89dd0facd048329955c5855d52554b788'
+  const address = '0xc995206c20d29A428cc8535279525086b6e15C48'
   const username = 'markspanbroek'
 
   describe('integration testing environment', function () {
     it('has the correct main account', async function () {
-      if (await isTestNetwork(web3)) {
-        expect(accounts[0]).to.equal(address)
-      }
+      expect(accounts[0]).to.equal(address)
     })
   })
 
@@ -21,23 +21,19 @@ contract('GitHub', function (accounts) {
     })
 
     describe('user attestation', function () {
-      const gistId = 'a85344feaf0141e1b393f399d8c01318'
+      const gistId = '321aae303592471c1ed314a9a499cf65'
 
       let users
       let price
 
       beforeEach(async function () {
-        if (await isTestNetwork(web3)) {
-          users = await Users.deployed()
-          price = await users.attestationPrice()
-        }
+        users = await Users.deployed()
+        price = await users.attestationPrice.call()
       })
 
       it('has sufficient funds', async function () {
-        if (await isTestNetwork(web3)) {
-          const balance = await web3.eth.getBalance(address)
-          expect(balance.toNumber()).to.be.above(price.toNumber())
-        }
+        const balance = toBN(await getBalance(address))
+        expect(balance.gt(price)).to.be.true()
       })
 
       it('attests with a correct gist', async function () {
@@ -47,10 +43,8 @@ contract('GitHub', function (accounts) {
             await poll()
           }
         }
-        if (await isTestNetwork(web3)) {
-          await users.attest(username, gistId, { value: price })
-          await poll()
-        }
+        await users.attest(username, gistId, { value: price })
+        await poll()
       })
     })
 
@@ -61,17 +55,15 @@ contract('GitHub', function (accounts) {
       let price
 
       beforeEach(async function () {
-        if (await isTestNetwork(web3)) {
-          pullRequests = await PullRequests.deployed()
-          price = await pullRequests.registrationPrice()
-        }
+        const sustainablesource = await SustainableSource.deployed()
+        const address = await sustainablesource.pullrequests()
+        pullRequests = await PullRequests.at(address)
+        price = await pullRequests.registrationPrice.call()
       })
 
       it('has sufficient funds', async function () {
-        if (await isTestNetwork(web3)) {
-          const balance = await web3.eth.getBalance(address)
-          expect(balance.toNumber()).to.be.above(price.toNumber())
-        }
+        const balance = toBN(await getBalance(address))
+        expect(balance.gt(price)).to.be.true()
       })
 
       it('registers a pull request', async function () {
@@ -83,10 +75,8 @@ contract('GitHub', function (accounts) {
             await poll()
           }
         }
-        if (await isTestNetwork(web3)) {
-          await pullRequests.register(pullRequestId, username, { value: price })
-          await poll()
-        }
+        await pullRequests.register(pullRequestId, username, { value: price })
+        await poll()
       })
     })
   })

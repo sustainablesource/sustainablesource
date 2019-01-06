@@ -19,13 +19,11 @@
   },
   "dependencies": {
     "ganache-core": "^2.2.1",
-    "truffle": "^5.0.0",
-    "truffle-hdwallet-provider": "^1.0.1"
+    "truffle": "^5.0.0"
   },
   "scripts": {
     "install": "truffle compile",
-    "test": "truffle test --network testing",
-    "integration-test": "truffle test --network ropsten test/github-integration.js"
+    "test": "truffle test --network testing"
   },
   "engines": {
     "node": ">=7.6.0"

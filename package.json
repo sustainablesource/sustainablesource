@@ -21,10 +21,10 @@
   "workspaces": [
     "chai",
     "contracts",
-    "attestations",
     "integration-tests",
     "oraclize",
-    "user-registry"
+    "user-registry",
+    "user-registry-ui"
   ],
   "standard": {
     "env": [

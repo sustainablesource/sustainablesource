@@ -8,6 +8,6 @@ module.exports = {
     }
   },
   mocha: {
-    slow: 250
+    slow: 2000
   }
 }

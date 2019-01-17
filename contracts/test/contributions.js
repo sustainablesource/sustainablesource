@@ -1,7 +1,7 @@
+const { expect } = require('@sustainablesource/chai')
 const Contributions = artifacts.require('Contributions.sol')
 const Users = artifacts.require('UsersFake.sol')
 const PullRequests = artifacts.require('PullRequestsFake.sol')
-const expect = require('chai').expect
 
 contract('Contributions', function (accounts) {
   let contributions
@@ -12,10 +12,6 @@ contract('Contributions', function (accounts) {
     pullRequests = await PullRequests.new()
     users = await Users.new()
     contributions = await Contributions.new(users.address, pullRequests.address)
-  })
-
-  it('is deployed', async function () {
-    expect(await Contributions.deployed()).to.exist()
   })
 
   it('has 0 contributions by default', async function () {

@@ -1,5 +1,4 @@
-const expect = require('chai').expect
-const PullRequests = artifacts.require('PullRequests')
+const { expect } = require('@sustainablesource/chai')
 const TestablePullRequests = artifacts.require('TestablePullRequests')
 const hexToNumber = web3.utils.hexToNumber
 
@@ -22,12 +21,8 @@ contract('PullRequests', function (accounts) {
     )
   })
 
-  it('is deployed', async function () {
-    expect(await PullRequests.deployed()).to.exist()
-  })
-
   it('returns the registration price', async function () {
-    const price = await pullRequests.registrationPrice()
+    const price = await pullRequests.registrationPrice.call()
     expect(price.toNumber()).to.equal(registrationPrice)
   })
 

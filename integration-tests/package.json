@@ -1,0 +1,13 @@
+{
+  "name": "@sustainablesource/integration-tests",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "test": "[ -z \"$ETHEREUM_WALLET_MNEMONIC\" ] || truffle test --network ropsten"
+  },
+  "dependencies": {
+    "truffle": "^5.0.0",
+    "truffle-hdwallet-provider": "^1.0.1",
+    "@sustainablesource/contracts": "^0.1.0"
+  }
+}

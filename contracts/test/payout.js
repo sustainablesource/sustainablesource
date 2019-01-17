@@ -1,5 +1,5 @@
-const expect = require('chai').expect
-const getBalance = require('./get-balance')
+const { expect } = require('@sustainablesource/chai')
+const { getBalance } = web3.eth
 const ContributionsFake = artifacts.require('ContributionsFake')
 const Payout = artifacts.require('Payout')
 const toBN = web3.utils.toBN
@@ -15,10 +15,6 @@ contract('Payout', function (accounts) {
   beforeEach(async function () {
     contributions = await ContributionsFake.new()
     payout = await Payout.new(contributions.address)
-  })
-
-  it('is deployed', async function () {
-    expect(await Payout.deployed()).to.exist()
   })
 
   it('rejects payments when there are no contributors', async function () {
@@ -41,26 +37,22 @@ contract('Payout', function (accounts) {
     it('divides funds according to amount of contributions', async function () {
       await payout.pay({ value: funds })
 
-      const initialBalance1 = toBN(await getBalance(web3, contributor1))
-      const transaction1 = await payout.withdrawPayments({ from: contributor1 })
-      const finalBalance1 = await getBalance(web3, contributor1)
+      const initialBalance1 = toBN(await getBalance(contributor1))
+      await payout.withdrawPayments(contributor1)
+      const finalBalance1 = await getBalance(contributor1)
       const balanceIncrease1 = toBN(finalBalance1).sub(initialBalance1)
 
-      const initialBalance2 = toBN(await getBalance(web3, contributor2))
-      const transaction2 = await payout.withdrawPayments({ from: contributor2 })
-      const finalBalance2 = await getBalance(web3, contributor2)
+      const initialBalance2 = toBN(await getBalance(contributor2))
+      await payout.withdrawPayments(contributor2)
+      const finalBalance2 = await getBalance(contributor2)
       const balanceIncrease2 = toBN(finalBalance2).sub(initialBalance2)
 
       expect(
-        balanceIncrease1.eq(toBN(0.25 * funds - cost(transaction1)))
+        balanceIncrease1.eq(toBN(0.25 * funds))
       ).to.be.true()
       expect(
-        balanceIncrease2.eq(toBN(0.75 * funds - cost(transaction2)))
+        balanceIncrease2.eq(toBN(0.75 * funds))
       ).to.be.true()
     })
   })
 })
-
-function cost (transaction) {
-  return Payout.defaults().gasPrice * transaction.receipt.gasUsed
-}

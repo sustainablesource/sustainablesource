@@ -1,6 +1,5 @@
-const chai = require('chai')
-const expect = chai.expect
-const getBalance = require('./get-balance')
+const { expect } = require('@sustainablesource/chai')
+const { getBalance } = web3.eth
 const PayoutFake = artifacts.require('PayoutFake.sol')
 const Licenses = artifacts.require('Licenses.sol')
 
@@ -16,10 +15,6 @@ contract('Licenses', function (accounts) {
   beforeEach(async function () {
     payout = await PayoutFake.new()
     licenses = await Licenses.new(payout.address, fee)
-  })
-
-  it('is deployed', async function () {
-    expect(await Licenses.deployed()).to.exist()
   })
 
   it('does not give out a license initially', async function () {
@@ -41,7 +36,7 @@ contract('Licenses', function (accounts) {
     })
 
     it('sends license fee to the payout contract', async function () {
-      const balance = await getBalance(web3, payout.address)
+      const balance = await getBalance(payout.address)
       expect(balance).to.equal(fee)
     })
   })

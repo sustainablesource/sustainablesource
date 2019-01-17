@@ -1,5 +1,5 @@
-pragma solidity ^0.4.8;
-import "./UsersInterface.sol";
+pragma solidity ^0.5.0;
+import "@sustainablesource/user-registry/contracts/UsersInterface.sol";
 
 contract UsersFake is UsersInterface {
     mapping (bytes32 => address) usernameHashToAddress;
@@ -8,7 +8,7 @@ contract UsersFake is UsersInterface {
         return usernameHashToAddress[usernameHash];
     }
 
-    function setUser(string username, address account) public {
+    function setUser(string memory username, address account) public {
         usernameHashToAddress[keccak256(bytes(username))] = account;
     }
 }

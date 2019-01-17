@@ -1,7 +1,8 @@
-pragma solidity ^0.4.8;
+pragma solidity ^0.5.0;
 
 contract PullRequestsInterface {
-    function creator(uint pullRequestId) public view returns (string);
+    function repository() public view returns (string memory);
+    function creator(uint pullRequestId) public view returns (string memory);
     function isMerged(uint pullRequestId) public view returns (bool);
 
     function creatorHash(uint pullRequestId) public view returns (bytes32) {

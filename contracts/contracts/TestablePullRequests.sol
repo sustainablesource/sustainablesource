@@ -1,8 +1,8 @@
-pragma solidity^0.4.6;
+pragma solidity^0.5.0;
 import "./PullRequests.sol";
-import "./OraclizeSpy.sol";
+import "@sustainablesource/oraclize/contracts/OraclizeSpy.sol";
 
 contract TestablePullRequests is PullRequests, OraclizeSpy {
-    constructor(string repo) PullRequests(repo) public {
+    constructor(string memory repo) PullRequests(repo) public {
     }
 }

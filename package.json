@@ -19,7 +19,11 @@
     "format": "prettier-standard '**/*.js'"
   },
   "workspaces": [
-    "contracts"
+    "chai",
+    "contracts",
+    "integration-tests",
+    "oraclize",
+    "user-registry"
   ],
   "standard": {
     "env": [

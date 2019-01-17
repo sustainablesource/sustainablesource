@@ -1,7 +1,7 @@
-pragma solidity ^0.4.8;
+pragma solidity ^0.5.0;
 
-import "zeppelin/payment/PullPayment.sol";
-import "zeppelin/SafeMath.sol";
+import "openzeppelin-solidity/contracts/payment/PullPayment.sol";
+import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "./ContributionsInterface.sol";
 import "./PayoutInterface.sol";
 
@@ -22,7 +22,7 @@ contract Payout is PullPayment, PayoutInterface {
             address contributor = contributions.getContributor(i);
             uint numberOfContributions = contributions.numberOfContributions(contributor);
             uint share = msg.value.mul(numberOfContributions).div(totalContributions);
-            asyncSend(contributor, share);
+            _asyncTransfer(contributor, share);
         }
     }
 }

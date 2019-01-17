@@ -1,5 +1,5 @@
-pragma solidity ^0.4.8;
-import "zeppelin/ownership/Ownable.sol";
+pragma solidity ^0.5.0;
+import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "./PayoutInterface.sol";
 
 contract Licenses is Ownable {
@@ -7,7 +7,7 @@ contract Licenses is Ownable {
     mapping(string => mapping(address => bool)) licenses;
     PayoutInterface payout;
 
-    function Licenses(PayoutInterface payout_, uint licenseFeeInWei_) public {
+    constructor(PayoutInterface payout_, uint licenseFeeInWei_) public {
         payout = payout_;
         licenseFeeInWei = licenseFeeInWei_;
     }
@@ -16,14 +16,17 @@ contract Licenses is Ownable {
         licenseFeeInWei = licenseFeeInWei_;
     }
 
-    function payLicenseFee(address account, string version) public payable {
+    function payLicenseFee(address account, string memory version)
+        public
+        payable
+    {
         require(msg.value == licenseFeeInWei, "incorrect payment");
 
         payout.pay.value(msg.value)();
         licenses[version][account] = true;
     }
 
-    function hasLicense(address account, string version)
+    function hasLicense(address account, string memory version)
         public
         view
         returns (bool)

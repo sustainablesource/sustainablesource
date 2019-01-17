@@ -1,7 +1,7 @@
-pragma solidity ^0.4.8;
+pragma solidity ^0.5.0;
 
+import "@sustainablesource/user-registry/contracts/UsersInterface.sol";
 import "./ContributionsInterface.sol";
-import "./UsersInterface.sol";
 import "./PullRequestsInterface.sol";
 
 contract Contributions is ContributionsInterface {
@@ -27,7 +27,7 @@ contract Contributions is ContributionsInterface {
         require(pullRequests.isMerged(pullRequestId), "pull request must be merged");
         bytes32 creatorHash = pullRequests.creatorHash(pullRequestId);
         address contributor = users.userByHash(creatorHash);
-        require(contributor != 0, "contributor is not registered");
+        require(contributor != address(0), "contributor is not registered");
         registeredPullRequests[pullRequestId] = true;
         addContribution(contributor);
     }

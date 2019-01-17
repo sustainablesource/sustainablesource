@@ -1,0 +1,11 @@
+{
+  "name": "@sustainablesource/oraclize",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "install": "truffle compile"
+  },
+  "devDependencies": {
+    "truffle": "^5.0.0"
+  }
+}

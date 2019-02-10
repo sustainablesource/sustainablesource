@@ -36,7 +36,10 @@ async function requestToken ({ code }) {
   const clientSecret = process.env.GITHUB_CLIENT_SECRET
   const response = await fetch(accessTokenUrl, {
     method: 'post',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
     body: JSON.stringify({
       client_id: clientId,
       client_secret: clientSecret,

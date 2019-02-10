@@ -17,7 +17,8 @@ it('includes the client id', async () => {
   const clientId = 'SomeClientId'
   process.env.GITHUB_CLIENT_ID = clientId
   const response = await app.get('/')
-  expect(response.headers.location).toEqual(stringContaining(clientId))
+  const location = response.headers.location
+  expect(url.parse(location, true).query.client_id).toEqual(clientId)
 })
 
 it('includes a unique state', async () => {

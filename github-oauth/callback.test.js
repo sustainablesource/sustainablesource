@@ -50,6 +50,11 @@ describe('posting to Github', () => {
     expect(contentType).toEqual('application/json')
   })
 
+  it('requests a json response', () => {
+    const accept = fetchMock.lastOptions().headers['Accept']
+    expect(accept).toEqual('application/json')
+  })
+
   describe('json body', () => {
     let body
 

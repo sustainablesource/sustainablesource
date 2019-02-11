@@ -18,15 +18,20 @@
     "test": "standard && lerna run test",
     "format": "prettier-standard '**/*.js'"
   },
-  "workspaces": [
-    "chai",
-    "contracts",
-    "github-oauth",
-    "integration-tests",
-    "oraclize",
-    "user-registry",
-    "user-registry-ui"
-  ],
+  "workspaces": {
+    "packages": [
+      "chai",
+      "contracts",
+      "github-oauth",
+      "integration-tests",
+      "oraclize",
+      "user-registry",
+      "user-registry-ui"
+    ],
+    "nohoist": [
+      "**/react-scripts", "**/react-scripts/**"
+    ]
+  },
   "standard": {
     "env": [
       "mocha",

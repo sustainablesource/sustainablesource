@@ -16,6 +16,7 @@
   },
   "scripts": {
     "test": "standard && lerna run test",
+    "deploy": "lerna run deploy",
     "format": "prettier-standard '**/*.js'"
   },
   "workspaces": [

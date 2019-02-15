@@ -1,6 +1,7 @@
 {
   "name": "@sustainablesource/github-oauth",
   "version": "0.1.0",
+  "main": "index.js",
   "scripts": {
     "test": "jest",
     "deploy": "now --token $NOW_TOKEN && now alias --token $NOW_TOKEN"

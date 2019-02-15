@@ -6,6 +6,6 @@
     "install": "truffle compile"
   },
   "devDependencies": {
-    "truffle": "^5.0.0"
+    "truffle": "^5.0.4"
   }
 }

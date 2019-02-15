@@ -1,5 +1,6 @@
 import React from 'react'
 import Button from 'react-bootstrap/lib/Button'
+import { loginUrl } from '@sustainablesource/github-oauth'
 
 export const Github = ({ username }) => {
   if (username) {
@@ -10,4 +11,8 @@ export const Github = ({ username }) => {
 }
 
 const GithubUser = ({ username }) => <p>{username}</p>
-const GithubLogin = () => <Button>login to Github</Button>
+const GithubLogin = () => (
+  <Button onClick={() => { window.location.assign(loginUrl) }}>
+    login to Github
+  </Button>
+)

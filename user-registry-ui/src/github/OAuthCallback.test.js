@@ -8,17 +8,6 @@ const location = window.location
 const accessToken = 'some_access_token'
 const tokenType = 'some_token_type'
 
-let originalLocation
-
-beforeEach(() => {
-  originalLocation = location.href
-  location.assign = jest.fn()
-})
-
-afterEach(() => {
-  location.href = originalLocation
-})
-
 it('stores the access token in local storage', () => {
   location.href += `#access_token=${accessToken}&token_type=${tokenType}`
   render(<OAuthCallback />)

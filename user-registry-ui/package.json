@@ -10,7 +10,7 @@
     "react": "^16.5.0",
     "react-bootstrap": "^1.0.0-beta.1",
     "react-dom": "^16.5.0",
-    "react-scripts": "1.1.5"
+    "react-scripts": "2.1.8"
   },
   "devDependencies": {
     "jest-dom": "^2.1.0",

@@ -38,7 +38,7 @@ async function requestToken ({ code }) {
     method: 'post',
     headers: {
       'Content-Type': 'application/json',
-      'Accept': 'application/json'
+      Accept: 'application/json'
     },
     body: JSON.stringify({
       client_id: clientId,

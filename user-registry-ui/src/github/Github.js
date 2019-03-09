@@ -12,7 +12,11 @@ export const Github = ({ username }) => {
 
 const GithubUser = ({ username }) => <p>{username}</p>
 const GithubLogin = () => (
-  <Button onClick={() => { window.location.assign(loginUrl) }}>
+  <Button
+    onClick={() => {
+      window.location.assign(loginUrl)
+    }}
+  >
     login to Github
   </Button>
 )

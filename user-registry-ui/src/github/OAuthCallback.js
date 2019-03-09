@@ -4,8 +4,12 @@ import querystring from 'querystring'
 export class OAuthCallback extends React.Component {
   componentDidMount () {
     const { accessToken, tokenType } = extractToken()
-    if (!accessToken || !tokenType) { return }
-    if (tokenAlreadyStored()) { return }
+    if (!accessToken || !tokenType) {
+      return
+    }
+    if (tokenAlreadyStored()) {
+      return
+    }
     storeToken({ accessToken, tokenType })
     removeHashFromUrl()
   }

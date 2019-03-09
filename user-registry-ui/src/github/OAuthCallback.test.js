@@ -11,8 +11,6 @@ const tokenType = 'some_token_type'
 let originalLocation
 
 beforeEach(() => {
-  localStorage.clear()
-  localStorage.setItem.mockClear()
   originalLocation = location.href
   location.assign = jest.fn()
 })

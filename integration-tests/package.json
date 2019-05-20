@@ -6,7 +6,7 @@
     "test": "[ -z \"$ETHEREUM_WALLET_MNEMONIC\" ] || truffle test --network ropsten"
   },
   "dependencies": {
-    "truffle": "^5.0.0",
+    "truffle": "^5.0.18",
     "truffle-hdwallet-provider": "^1.0.1",
     "@sustainablesource/contracts": "^0.1.0"
   }

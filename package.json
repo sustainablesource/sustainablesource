@@ -16,18 +16,21 @@
   },
   "scripts": {
     "test": "standard && lerna run test",
+    "deploy": "lerna run deploy",
     "format": "prettier-standard '**/*.js'"
   },
   "workspaces": [
     "chai",
     "contracts",
+    "github-oauth",
     "integration-tests",
     "oraclize",
     "user-registry"
   ],
   "standard": {
     "env": [
-      "mocha"
+      "mocha",
+      "jest"
     ],
     "globals": [
       "web3",

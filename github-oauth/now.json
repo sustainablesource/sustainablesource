@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "name": "sustainablesource",
+  "builds": [
+    { "src": "login.js", "use": "@now/node" },
+    { "src": "callback.js", "use": "@now/node" }
+  ],
+  "routes": [
+    { "src": "/login", "dest": "/login.js" },
+    { "src": "/callback", "dest": "/callback.js" }
+  ],
+  "alias": "github-oauth.sustainablesource.io",
+  "env": {
+    "GITHUB_CLIENT_ID": "@github-client-id",
+    "GITHUB_CLIENT_SECRET": "@github-client-secret",
+    "CALLBACK_URL": "http://localhost:3000"
+  }
+}

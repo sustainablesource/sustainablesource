@@ -18,7 +18,7 @@
     "@sustainablesource/oraclize": "^0.1.0"
   },
   "dependencies": {
-    "ganache-core": "^2.2.1",
+    "ganache-core": "sustainablesource/ganache-core#workaround-issue-425",
     "truffle": "^5.0.0"
   },
   "scripts": {

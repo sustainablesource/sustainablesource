@@ -12,6 +12,7 @@ before_install:
 before_script:
   - curl https://faucet.ropsten.be/donate/0xc995206c20d29A428cc8535279525086b6e15C48
 deploy:
+  skip_cleanup: true
   provider: script
   script: yarn deploy
   on:

@@ -9,6 +9,7 @@
     "start": "next start"
   },
   "devDependencies": {
+    "@testing-library/react": "^8.0.1",
     "jest": "^24.8.0",
     "next": "^8.1.0",
     "react": "^16.8.6",

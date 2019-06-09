@@ -5,18 +5,42 @@ import { Wizard } from './index'
 import configureMockStore from 'redux-mock-store'
 const mockStore = configureMockStore()
 
-it('shows the github step initially', () => {
-  const store = mockStore({ github: {} })
-  const { getByText } = render(<Wizard store={store} />)
-  expect(step(getByText('Github'))).toHaveClass('active')
-  expect(step(getByText('Ethereum'))).toHaveClass('disabled')
+describe('initially', () => {
+  let store
+
+  beforeEach(() => {
+    store = mockStore({
+      github: {},
+      ethereum: {}
+    })
+  })
+
+  it('shows the github step', () => {
+    const { getByText } = render(<Wizard store={store} />)
+    expect(step(getByText('Github'))).toHaveClass('active')
+    expect(step(getByText('Ethereum'))).toHaveClass('disabled')
+    expect(step(getByText('Confirm'))).toHaveClass('disabled')
+  })
 })
 
-it('shows the ethereum step when the github username is known', () => {
-  const store = mockStore({ github: { username: 'some username' } })
-  const { getByText } = render(<Wizard store={store} />)
-  expect(step(getByText('Github'))).toHaveClass('completed')
-  expect(step(getByText('Ethereum'))).toHaveClass('active')
+describe('when the github username is known', () => {
+  let store
+
+  beforeEach(() => {
+    store = mockStore({
+      github: { username: 'some username' },
+      ethereum: {}
+    })
+  })
+
+  it('shows the ethereum step', () => {
+    const { getByText } = render(<Wizard store={store} />)
+    expect(step(getByText('Github'))).toHaveClass('completed')
+    expect(step(getByText('Ethereum'))).toHaveClass('active')
+    expect(step(getByText('Confirm'))).toHaveClass('disabled')
+  })
+})
+
 })
 
 function step (element) {

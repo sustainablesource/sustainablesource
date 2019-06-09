@@ -1,7 +1,4 @@
-import React from 'react'
+import 'semantic-ui-offline/semantic.min.css'
+import { Wizard } from '../wizard'
 
-const Registration = () => (
-  <div />
-)
-
-export default Registration
+export default Wizard

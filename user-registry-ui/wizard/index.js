@@ -1,7 +1,8 @@
 import React from 'react'
 import { Step } from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import { getGithubUsername, getEthereumAccount } from './selectors'
+import { getGithubUsername } from '../github'
+import { getEthereumAccount } from '../ethereum'
 
 let Wizard = ({ username, account }) => {
   const step = username ? account ? 3 : 2 : 1

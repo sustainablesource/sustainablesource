@@ -1,10 +1,10 @@
 import React from 'react'
 import { Step } from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import { getGithubUsername } from './selectors'
+import { getGithubUsername, getEthereumAccount } from './selectors'
 
-let Wizard = ({ username }) => {
-  const step = username ? 2 : 1
+let Wizard = ({ username, account }) => {
+  const step = username ? account ? 3 : 2 : 1
   return (
     <Step.Group>
       <Step
@@ -18,15 +18,24 @@ let Wizard = ({ username }) => {
         icon='ethereum'
         title='Ethereum'
         description='Select your Identity'
-        active={step === 2}
         disabled={step < 2}
+        active={step === 2}
+        completed={step > 2}
+      />
+      <Step
+        icon='user'
+        title='Confirm'
+        description='Register for payouts'
+        active={step === 3}
+        disabled={step < 3}
       />
     </Step.Group>
   )
 }
 
 Wizard = connect(state => ({
-  username: getGithubUsername(state)
+  username: getGithubUsername(state),
+  account: getEthereumAccount(state)
 }))(Wizard)
 
 export { Wizard }

@@ -1,0 +1,1 @@
+export { githubReducer } from './reducer'

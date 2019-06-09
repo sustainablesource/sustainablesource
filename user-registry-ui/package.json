@@ -20,6 +20,7 @@
     "react-dom": "^16.8.6"
   },
   "dependencies": {
+    "@babel/runtime": "^7.4.5",
     "@zeit/next-css": "^1.0.1",
     "file-loader": "^4.0.0",
     "redux-starter-kit": "^0.5.1",

@@ -4,6 +4,7 @@ module.exports = {
     'text-summary'
   ],
   setupFilesAfterEnv: [
-    '@testing-library/react/cleanup-after-each'
+    '@testing-library/react/cleanup-after-each',
+    'jest-dom/extend-expect'
   ]
 }

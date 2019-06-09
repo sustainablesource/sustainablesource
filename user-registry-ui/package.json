@@ -23,6 +23,7 @@
     "@babel/runtime": "^7.4.5",
     "@zeit/next-css": "^1.0.1",
     "file-loader": "^4.0.0",
+    "react-redux": "^7.0.3",
     "redux-starter-kit": "^0.5.1",
     "semantic-ui-offline": "^2.4.1-1",
     "semantic-ui-react": "^0.87.1",

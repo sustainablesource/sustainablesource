@@ -2,17 +2,13 @@ import React from 'react'
 import { render } from '@testing-library/react'
 import { Wizard } from './index'
 
-import configureMockStore from 'redux-mock-store'
-const mockStore = configureMockStore()
+import { mockStore } from '../mockStore'
 
 describe('initially', () => {
   let store
 
   beforeEach(() => {
-    store = mockStore({
-      github: {},
-      ethereum: {}
-    })
+    store = mockStore()
   })
 
   it('shows the github step', () => {
@@ -28,8 +24,7 @@ describe('when the github username is known', () => {
 
   beforeEach(() => {
     store = mockStore({
-      github: { username: 'some username' },
-      ethereum: {}
+      github: { username: 'some username' }
     })
   })
 

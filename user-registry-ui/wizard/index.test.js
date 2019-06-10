@@ -2,7 +2,7 @@ import React from 'react'
 import { render } from '@testing-library/react'
 import { Wizard } from './index'
 
-import { mockStore } from '../mockStore'
+import { mockStore } from '../store/mockStore'
 
 describe('initially', () => {
   let store

@@ -4236,6 +4236,11 @@ clone-deep@^4.0.1:
     kind-of "^6.0.2"
     shallow-clone "^3.0.0"
 
+clone-function@>=1.0.1:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/clone-function/-/clone-function-1.0.6.tgz#428471937750bca9c48ecbfbc16f6e232f74a03d"
+  integrity sha1-QoRxk3dQvKnEjsv7wW9uIy90oD0=
+
 clone-response@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/clone-response/-/clone-response-1.0.2.tgz#d1dc973920314df67fbeb94223b4ee350239e96b"
@@ -8267,7 +8272,7 @@ jest-config@^24.9.0:
     pretty-format "^24.9.0"
     realpath-native "^1.1.0"
 
-jest-diff@^24.0.0, jest-diff@^24.9.0:
+jest-diff@^24.0.0, jest-diff@^24.8.0, jest-diff@^24.9.0:
   version "24.9.0"
   resolved "https://registry.yarnpkg.com/jest-diff/-/jest-diff-24.9.0.tgz#931b7d0d5778a1baf7452cb816e325e3724055da"
   integrity sha512-qMfrTs8AdJE2iqrTp0hzh7kTd2PQWrsFyj9tORoKmu32xjPjeE4NyjVRDz8ybYwqS2ik8N4hsIpiVTyFeo2lBQ==
@@ -8332,7 +8337,7 @@ jest-environment-node@^24.9.0:
     jest-mock "^24.9.0"
     jest-util "^24.9.0"
 
-jest-get-type@^24.9.0:
+jest-get-type@^24.8.0, jest-get-type@^24.9.0:
   version "24.9.0"
   resolved "https://registry.yarnpkg.com/jest-get-type/-/jest-get-type-24.9.0.tgz#1684a0c8a50f2e4901b6644ae861f579eed2ef0e"
   integrity sha512-lUseMzAley4LhIcpSP9Jf+fTrQ4a1yHQwLNeeVa2cEmbCGeoZAtYPOIv8JaxLD/sUpKxetKGP+gsHl8f8TSj8Q==
@@ -10329,6 +10334,11 @@ object-copy@^0.1.0:
     define-property "^0.2.5"
     kind-of "^3.0.3"
 
+object-foreach@>=0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/object-foreach/-/object-foreach-0.1.2.tgz#d7421c5b40e3b6a3ef57ac624368d21d8f8d2dec"
+  integrity sha1-10IcW0DjtqPvV6xiQ2jSHY+NLew=
+
 object-inspect@^1.7.0:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/object-inspect/-/object-inspect-1.7.0.tgz#f4f6bd181ad77f006b5ece60bd0b6f398ff74a67"
@@ -10353,6 +10363,14 @@ object-keys@~0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/object-keys/-/object-keys-0.4.0.tgz#28a6aae7428dd2c3a92f3d95f21335dd204e0336"
   integrity sha1-KKaq50KN0sOpLz2V8hM13SBOAzY=
+
+object-merge@2.5.1:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/object-merge/-/object-merge-2.5.1.tgz#077e8915ce38ea7294788448c5dd339e34df4227"
+  integrity sha1-B36JFc446nKUeIRIxd0znjTfQic=
+  dependencies:
+    clone-function ">=1.0.1"
+    object-foreach ">=0.1.2"
 
 object-visit@^1.0.0:
   version "1.0.1"
@@ -11765,6 +11783,13 @@ redux-immutable-state-invariant@^2.1.0:
   dependencies:
     invariant "^2.1.0"
     json-stringify-safe "^5.0.1"
+
+redux-localstorage-simple@^2.1.6:
+  version "2.1.6"
+  resolved "https://registry.yarnpkg.com/redux-localstorage-simple/-/redux-localstorage-simple-2.1.6.tgz#af623c0146d756fa12cd0d83f5c6d4ad1be7e215"
+  integrity sha512-0Vb9LNIECbVa+Jtdk4aGhLPsMFXyuMXjm3d2xUiy2wvQsSCp6PDZ2pez4LUXQfUxXyNh9fH5HRDFGb5zIxH/Yw==
+  dependencies:
+    object-merge "2.5.1"
 
 redux-mock-store@^1.5.3:
   version "1.5.4"

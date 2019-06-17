@@ -6,6 +6,6 @@
     "prepare": "truffle compile"
   },
   "devDependencies": {
-    "truffle": "^5.0.18"
+    "truffle": "^5.0.22"
   }
 }

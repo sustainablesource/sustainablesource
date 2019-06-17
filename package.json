@@ -14,6 +14,9 @@
     "prettier-standard": "^8.0.1",
     "standard": "^11.0.1"
   },
+  "resolutions": {
+    "diff": "^3.5.0"
+  },
   "scripts": {
     "test": "standard && lerna run test",
     "deploy": "lerna run deploy",

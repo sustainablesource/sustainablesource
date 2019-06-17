@@ -1,0 +1,33 @@
+{
+  "name": "@sustainablesource/user-registry-ui",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "test": "jest",
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/preset-react": "^7.0.0",
+    "@testing-library/react": "^8.0.1",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^24.8.0",
+    "jest-dom": "^3.5.0",
+    "next": "^8.1.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "redux-mock-store": "^1.5.3"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.4.5",
+    "@zeit/next-css": "^1.0.1",
+    "file-loader": "^4.0.0",
+    "react-redux": "^7.0.3",
+    "redux-starter-kit": "^0.5.1",
+    "semantic-ui-offline": "^2.4.1-1",
+    "semantic-ui-react": "^0.87.1",
+    "url-loader": "^2.0.0"
+  }
+}

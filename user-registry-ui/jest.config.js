@@ -9,6 +9,7 @@ module.exports = {
   setupFilesAfterEnv: [
     '@testing-library/react/cleanup-after-each',
     'jest-dom/extend-expect',
-    './__setups__/localstorage'
+    './__setups__/localstorage',
+    './__setups__/location'
   ]
 }

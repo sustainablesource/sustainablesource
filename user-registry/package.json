@@ -2,11 +2,14 @@
   "name": "@sustainablesource/user-registry",
   "version": "0.1.0",
   "scripts": {
-    "install": "truffle compile",
+    "prepare": "truffle compile",
     "test": "truffle test --network testing"
   },
+  "dependencies": {
+    "oraclize-eth-api": "oraclize/ethereum-api"
+  },
   "devDependencies": {
-    "truffle": "^5.0.18",
+    "truffle": "^5.0.22",
     "ganache-core": "sustainablesource/ganache-core#workaround-issue-425",
     "openzeppelin-solidity": "2.1.0-rc.2",
     "@sustainablesource/chai": "^0.1.0",

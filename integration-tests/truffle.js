@@ -12,5 +12,14 @@ module.exports = {
   },
   mocha: {
     slow: 5 * 60 * 1000
+  },
+  compilers: {
+    solc: {
+      settings: {
+        optimizer: {
+          enabled: true
+        }
+      }
+    }
   }
 }

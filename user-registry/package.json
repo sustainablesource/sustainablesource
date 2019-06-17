@@ -5,6 +5,9 @@
     "prepare": "truffle compile",
     "test": "truffle test --network testing"
   },
+  "dependencies": {
+    "oraclize-eth-api": "oraclize/ethereum-api"
+  },
   "devDependencies": {
     "truffle": "^5.0.18",
     "ganache-core": "sustainablesource/ganache-core#workaround-issue-425",

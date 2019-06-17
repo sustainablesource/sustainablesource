@@ -19,7 +19,8 @@
   },
   "dependencies": {
     "ganache-core": "sustainablesource/ganache-core#workaround-issue-425",
-    "truffle": "^5.0.18"
+    "truffle": "^5.0.18",
+    "oraclize-eth-api": "oraclize/ethereum-api"
   },
   "scripts": {
     "prepare": "truffle compile",

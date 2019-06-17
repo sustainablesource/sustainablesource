@@ -1,5 +1,5 @@
 pragma solidity ^0.5.0;
-import "@sustainablesource/oraclize/contracts/usingOraclize.sol";
+import "oraclize-eth-api/oraclizeAPI_0.5.sol";
 import "./Conversions.sol";
 import "./UsersInterface.sol";
 

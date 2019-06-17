@@ -11,6 +11,8 @@ before_install:
   - export PATH=$HOME/.yarn/bin:$PATH
 before_script:
   - curl https://faucet.ropsten.be/donate/0xc995206c20d29A428cc8535279525086b6e15C48
+script:
+  - yarn test --parallel
 deploy:
   skip_cleanup: true
   provider: script

@@ -17,7 +17,8 @@
   "scripts": {
     "test": "standard && lerna run test",
     "deploy": "lerna run deploy",
-    "format": "prettier-standard '**/*.js'"
+    "format": "prettier-standard '**/*.js'",
+    "prepare": "lerna run prepare"
   },
   "workspaces": [
     "chai",

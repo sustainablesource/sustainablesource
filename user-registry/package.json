@@ -2,7 +2,7 @@
   "name": "@sustainablesource/user-registry",
   "version": "0.1.0",
   "scripts": {
-    "install": "truffle compile",
+    "prepare": "truffle compile",
     "test": "truffle test --network testing"
   },
   "devDependencies": {

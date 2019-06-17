@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "scripts": {
-    "install": "truffle compile"
+    "prepare": "truffle compile"
   },
   "devDependencies": {
     "truffle": "^5.0.18"

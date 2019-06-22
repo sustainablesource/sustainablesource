@@ -1,7 +1,7 @@
 import { createStore } from './store'
+import { storeOAuthToken } from '../github/actions'
 
 const localStorage = window.localStorage
-const objectContaining = expect.objectContaining
 
 it('persists to local storage', () => {
   const store = createStore()
@@ -11,8 +11,8 @@ it('persists to local storage', () => {
 })
 
 it('loads from local storage', () => {
-  const storedState = { github: { oauth: { some: 'state' } } }
-  localStorage.setItem('store', JSON.stringify(storedState))
   const store = createStore()
-  expect(store.getState()).toEqual(objectContaining(storedState))
+  store.dispatch(storeOAuthToken('some_token'))
+  const loadedStore = createStore()
+  expect(loadedStore.getState()).toEqual(store.getState())
 })

@@ -11,7 +11,7 @@ it('persists to local storage', () => {
 })
 
 it('loads from local storage', () => {
-  const storedState = { github: { some: 'state' } }
+  const storedState = { github: { oauth: { some: 'state' } } }
   localStorage.setItem('store', JSON.stringify(storedState))
   const store = createStore()
   expect(store.getState()).toEqual(objectContaining(storedState))

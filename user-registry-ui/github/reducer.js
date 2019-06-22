@@ -1,13 +1,6 @@
-import { createReducer } from 'redux-starter-kit'
-import { storeOAuthToken, clearOAuthToken } from './actions'
+import { combineReducers } from 'redux'
+import { oauthReducer } from './oauth/reducer'
 
-export const githubReducer = createReducer({}, {
-  [storeOAuthToken]: (state, action) => {
-    if (!state.oauthToken) {
-      state.oauthToken = action.payload
-    }
-  },
-  [clearOAuthToken]: (state, action) => {
-    delete state.oauthToken
-  }
+export const githubReducer = combineReducers({
+  oauth: oauthReducer
 })

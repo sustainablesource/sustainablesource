@@ -16,3 +16,20 @@ it('loads from local storage', () => {
   const loadedStore = createStore()
   expect(loadedStore.getState()).toEqual(store.getState())
 })
+
+describe('when local storage is absent', () => {
+  let localStorage
+
+  beforeEach(() => {
+    localStorage = window.localStorage
+    delete window.localStorage
+  })
+
+  afterEach(() => {
+    window.localStorage = localStorage
+  })
+
+  it('can create a store', () => {
+    expect(() => createStore()).not.toThrow()
+  })
+})

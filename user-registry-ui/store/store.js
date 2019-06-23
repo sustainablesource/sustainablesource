@@ -8,9 +8,15 @@ export const createStore = () => configureStore({
     github: githubReducer,
     ethereum: ethereumReducer
   },
-  preloadedState: load({ namespace: 'store' }),
+  preloadedState: loadIfPossible({ namespace: 'store' }),
   middleware: [
     ...getDefaultMiddleware(),
     save({ namespace: 'store' })
   ]
 })
+
+const loadIfPossible = (...args) => {
+  if (typeof window !== typeof undefined && window.localStorage) {
+    return load(...args)
+  }
+}

@@ -9,3 +9,4 @@ export const retrieveUsername = ({ accessToken }) => async (dispatch) => {
 }
 
 export const storeUsername = createAction('github/username/store')
+export const clearUsername = createAction('github/username/clear')

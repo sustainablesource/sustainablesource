@@ -11,5 +11,6 @@ module.exports = {
     'jest-dom/extend-expect',
     './__setups__/localstorage',
     './__setups__/location'
-  ]
+  ],
+  clearMocks: true
 }

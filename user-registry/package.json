@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "truffle": "^5.0.22",
-    "ganache-core": "sustainablesource/ganache-core#workaround-issue-425",
+    "ganache-core": "^2.5.7",
     "openzeppelin-solidity": "2.1.0-rc.2",
     "@sustainablesource/chai": "^0.1.0",
     "@sustainablesource/oraclize": "^0.1.0"

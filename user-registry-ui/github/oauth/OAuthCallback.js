@@ -5,9 +5,12 @@ import { storeOAuthToken } from '../actions'
 
 class OAuthCallback extends React.Component {
   componentDidMount () {
-    const { storeOAuthToken } = this.props
-    storeOAuthToken(extractToken())
-    window.location.assign('/')
+    const token = extractToken()
+    if (token) {
+      const { storeOAuthToken } = this.props
+      storeOAuthToken(token)
+      removeHashFromUrl()
+    }
   }
 
   render () {
@@ -18,6 +21,10 @@ class OAuthCallback extends React.Component {
 function extractToken () {
   const query = querystring.parse(window.location.hash.slice(1))
   return query.access_token
+}
+
+function removeHashFromUrl () {
+  window.history.replaceState({}, '', window.location.href.replace(/#.*$/, ''))
 }
 
 export default connect(null, { storeOAuthToken })(OAuthCallback)

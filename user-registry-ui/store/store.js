@@ -2,6 +2,7 @@ import { configureStore, getDefaultMiddleware } from 'redux-starter-kit'
 import { load, save } from 'redux-localstorage-simple'
 import { githubReducer } from '../github'
 import { ethereumReducer } from '../ethereum'
+import { usernameRetriever } from '../github/middleware'
 
 export const createStore = () => configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const createStore = () => configureStore({
   preloadedState: loadIfPossible({ namespace: 'store' }),
   middleware: [
     ...getDefaultMiddleware(),
+    usernameRetriever,
     save({ namespace: 'store' })
   ]
 })

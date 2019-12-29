@@ -1,7 +1,7 @@
 import React from 'react'
 import { renderWithRedux } from '../../store/testrender'
 import { getGithubOAuthToken } from '..'
-import OAuthCallback from './OAuthCallback'
+import { OAuthCallback } from './OAuthCallback'
 
 const location = window.location
 

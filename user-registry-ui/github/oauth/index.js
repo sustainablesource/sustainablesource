@@ -1,3 +1,1 @@
-import OAuthCallback from './OAuthCallback'
-
-export { OAuthCallback }
+export { OAuthCallback } from './OAuthCallback'

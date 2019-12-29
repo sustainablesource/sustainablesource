@@ -6,16 +6,19 @@ import { EthereumPrompt } from './EthereumPrompt'
 
 const walletUri = 'some:walletconnect:uri'
 
-beforeEach(() => {
-  mockUri(walletUri)
-})
-
 it('initiates wallet connection when shown', () => {
+  mockUri(walletUri)
   const { store } = renderWithRedux(<EthereumPrompt />)
   expect(getWalletUri(store.getState())).toEqual(walletUri)
 })
 
 it('shows a wallet connect qr code', async () => {
+  mockUri(walletUri)
   const { getByTestId } = renderWithRedux(<EthereumPrompt />)
   expect(getByTestId('qrcode').getAttribute('value')).toEqual(walletUri)
+})
+
+it('shows a spinner when wallet connection is not yet established', () => {
+  const { queryByTestId } = renderWithRedux(<EthereumPrompt />)
+  expect(queryByTestId('loader')).toBeVisible()
 })

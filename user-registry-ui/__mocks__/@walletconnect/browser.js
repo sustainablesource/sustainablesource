@@ -1,5 +1,10 @@
-var uri = null
-var connected = false
+var uri
+var connected
+
+beforeEach(() => {
+  uri = null
+  connected = false
+})
 
 export const mockCreateSession = jest.fn()
 export const mockUri = value => { uri = value }

@@ -15,9 +15,9 @@ contract('GitHub', function (accounts) {
     })
   })
 
-  describe('integration tests (up to 5 minutes each)', function () {
+  describe('integration tests (up to 10 minutes each)', function () {
     beforeEach(function () {
-      this.timeout(5 * 60 * 1000)
+      this.timeout(10 * 60 * 1000)
     })
 
     describe('user attestation', function () {

@@ -4,12 +4,12 @@ import { githubReducer } from '../github'
 import { ethereumReducer } from '../ethereum'
 import { usernameRetriever } from '../github/middleware'
 
-export const createStore = () => configureStore({
+export const createStore = state => configureStore({
   reducer: {
     github: githubReducer,
     ethereum: ethereumReducer
   },
-  preloadedState: loadIfPossible({ namespace: 'store' }),
+  preloadedState: state || loadIfPossible({ namespace: 'store' }),
   middleware: [
     ...getDefaultMiddleware(),
     usernameRetriever,

@@ -12,7 +12,7 @@ export const Wizard = () => {
   return (
     <Container text>
       <Divider hidden />
-      <Step.Group>
+      <Step.Group fluid>
         <Step
           icon='github'
           title='Github'
@@ -23,7 +23,7 @@ export const Wizard = () => {
         <Step
           icon='ethereum'
           title='Ethereum'
-          description='Select your Identity'
+          description='Connect a wallet'
           disabled={step < 2}
           active={step === 2}
           completed={step > 2}

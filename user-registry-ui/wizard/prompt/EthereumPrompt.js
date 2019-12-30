@@ -6,7 +6,7 @@ import { connectToWallet, getWalletUri } from '../../ethereum'
 
 export const EthereumPrompt = () => {
   const dispatch = useDispatch()
-  useEffect(() => dispatch(connectToWallet()), [])
+  useEffect(() => { dispatch(connectToWallet()) }, [])
   return (
     <Container data-testid='ethereum-prompt'>
       <Container text>

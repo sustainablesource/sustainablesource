@@ -9,3 +9,4 @@ export const connectToWallet = () => async dispatch => {
 }
 
 export const storeWalletUri = createAction('ethereum/wallet/uri/store')
+export const storeAccount = createAction('ethereum/account/store')

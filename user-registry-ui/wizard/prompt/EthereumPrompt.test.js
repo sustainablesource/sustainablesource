@@ -27,3 +27,9 @@ it('shows a spinner when wallet connection is not yet established', () => {
   const { queryByTestId } = renderWithRedux(<EthereumPrompt />)
   expect(queryByTestId('loader')).toBeVisible()
 })
+
+it('displays errors', () => {
+  const state = { ethereum: { error: 'some error' } }
+  const { queryByText } = renderWithRedux(<EthereumPrompt />, state)
+  expect(queryByText('some error')).toBeVisible()
+})

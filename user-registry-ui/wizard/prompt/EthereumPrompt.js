@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
-import { Container, Loader, Segment } from 'semantic-ui-react'
+import { Container, Loader, Message, Segment } from 'semantic-ui-react'
 import QRCode from 'qrcode.react'
 import { useDispatch, useSelector } from 'react-redux'
-import { connectToWallet, getWalletUri } from '../../ethereum'
+import { connectToWallet, getWalletUri, getError } from '../../ethereum'
 
 export const EthereumPrompt = () => {
   const dispatch = useDispatch()
@@ -20,6 +20,7 @@ export const EthereumPrompt = () => {
         Download a <a href='https://walletconnect.org/apps'>WalletConnect </a>
         compatible wallet and use it to scan the QR code.
       </Container>
+      <ErrorMessage />
     </Container>
   )
 }
@@ -31,4 +32,14 @@ export const WalletQRCode = () => {
   } else {
     return <Loader data-testid='loader' active />
   }
+}
+
+export const ErrorMessage = () => {
+  const error = useSelector(getError)
+  if (!error) { return null }
+  return (
+    <Segment basic padded='very'>
+      <Message negative>{ error }</Message>
+    </Segment>
+  )
 }

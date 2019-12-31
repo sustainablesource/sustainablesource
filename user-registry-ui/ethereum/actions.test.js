@@ -1,5 +1,5 @@
-import { connectToWallet, storeWalletUri } from './actions'
-import WalletConnect, { mockUri, mockConnected, mockCreateSession }
+import { connectToWallet, storeWalletUri, storeAccount } from './actions'
+import WalletConnect, { mockUri, mockOn, mockConnected, mockCreateSession }
   from '@walletconnect/browser'
 
 describe('connecting to a wallet', () => {
@@ -34,5 +34,23 @@ describe('connecting to a wallet', () => {
     mockConnected(true)
     await action(dispatch)
     expect(mockCreateSession).not.toBeCalled()
+  })
+
+  describe('when connect event is received', () => {
+    const account = '0xSomeAccount'
+    const payload = { params: [{ accounts: [account], chainId: null }] }
+
+    beforeEach(() => {
+      mockOn.mockImplementation((event, callback) => {
+        if (event === 'connect') {
+          callback(null, payload)
+        }
+      })
+    })
+
+    it('stores the connected ethereum account', async () => {
+      await action(dispatch)
+      expect(dispatch).toBeCalledWith(storeAccount(account))
+    })
   })
 })

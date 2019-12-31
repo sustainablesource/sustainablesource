@@ -19,3 +19,13 @@ it('signals a wallet error', () => {
   const state = ethereumReducer({}, signalWalletError(error))
   expect(state.error).toEqual(error)
 })
+
+it('clears a previous error when a new wallet uri is stored', () => {
+  const state = ethereumReducer({ error: 'some error' }, storeWalletUri(uri))
+  expect(state.error).toBeNull()
+})
+
+it('clears a previous error when a new account is stored', () => {
+  const state = ethereumReducer({ error: 'some error' }, storeAccount(account))
+  expect(state.error).toBeNull()
+})

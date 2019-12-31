@@ -8,8 +8,16 @@ export const storeAccount = createAction('ethereum/account/store')
 
 export const connectToWallet = () => async dispatch => {
   const connector = new WalletConnect({ bridge })
+  await createWalletSession(connector, dispatch)
   handleWalletEvents(connector, dispatch)
-  if (!connector.connected) { await connector.createSession() }
+}
+
+const createWalletSession = async (connector, dispatch) => {
+  if (!connector.connected) {
+    await connector.createSession()
+  } else {
+    dispatch(storeAccount(connector.accounts[0]))
+  }
   dispatch(storeWalletUri(connector.uri))
 }
 

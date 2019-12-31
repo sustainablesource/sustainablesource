@@ -1,10 +1,12 @@
 import { connectToWallet, storeWalletUri, storeAccount } from './actions'
-import WalletConnect, { mockUri, mockOn, mockConnected, mockCreateSession }
-  from '@walletconnect/browser'
+import WalletConnect, {
+  mockUri, mockConnected, mockAccounts, mockCreateSession, mockOn
+} from '@walletconnect/browser'
 
 describe('connecting to a wallet', () => {
   const bridge = 'https://bridge.walletconnect.org'
   const uri = 'some:walletconnect:uri'
+  const account = '0xSomeAccount'
 
   let action
   let dispatch
@@ -30,14 +32,24 @@ describe('connecting to a wallet', () => {
     expect(mockCreateSession).toBeCalled()
   })
 
-  it('does not create a new session when connected', async () => {
-    mockConnected(true)
-    await action(dispatch)
-    expect(mockCreateSession).not.toBeCalled()
+  describe('when ethereum account is already connected', () => {
+    beforeEach(() => {
+      mockConnected(true)
+      mockAccounts([account])
+    })
+
+    it('does not create a new session', async () => {
+      await action(dispatch)
+      expect(mockCreateSession).not.toBeCalled()
+    })
+
+    it('stores the connected ethereum account', async () => {
+      await action(dispatch)
+      expect(dispatch).toBeCalledWith(storeAccount(account))
+    })
   })
 
   describe('when connect event is received', () => {
-    const account = '0xSomeAccount'
     const payload = { params: [{ accounts: [account], chainId: null }] }
 
     beforeEach(() => {

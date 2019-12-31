@@ -11,7 +11,7 @@ const accountReducer = createReducer(null, {
 })
 
 const errorReducer = createReducer(null, {
-  [signalWalletError]: (_, action) => action.payload.message
+  [signalWalletError]: (_, action) => action.payload
 })
 
 export const ethereumReducer = combineReducers({

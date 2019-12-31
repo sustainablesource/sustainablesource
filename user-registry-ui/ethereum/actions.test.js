@@ -68,7 +68,7 @@ describe('connecting to a wallet', () => {
   })
 
   describe('when connect event listener receives an error', () => {
-    const error = new Error('some error')
+    const error = 'some error'
 
     beforeEach(() => {
       mockOn.mockImplementation((event, callback) => {

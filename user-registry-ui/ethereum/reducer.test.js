@@ -15,7 +15,7 @@ it('stores the ethereum account', () => {
 })
 
 it('signals a wallet error', () => {
-  const error = new Error('some error')
+  const error = 'some error'
   const state = ethereumReducer({}, signalWalletError(error))
-  expect(state.error).toEqual(error.message)
+  expect(state.error).toEqual(error)
 })

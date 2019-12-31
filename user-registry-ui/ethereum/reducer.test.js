@@ -1,5 +1,5 @@
 import { ethereumReducer } from './reducer'
-import { storeWalletUri, storeAccount } from './actions'
+import { storeWalletUri, storeAccount, signalWalletError } from './actions'
 
 const uri = 'some:wallet:uri'
 const account = '0xSomeAccount'
@@ -12,4 +12,10 @@ it('stores the wallet uri', () => {
 it('stores the ethereum account', () => {
   const state = ethereumReducer({}, storeAccount(account))
   expect(state.account).toEqual(account)
+})
+
+it('signals a wallet error', () => {
+  const error = new Error('some error')
+  const state = ethereumReducer({}, signalWalletError(error))
+  expect(state.error).toEqual(error.message)
 })

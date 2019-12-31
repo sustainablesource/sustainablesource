@@ -1,4 +1,5 @@
-import { connectToWallet, storeWalletUri, storeAccount } from './actions'
+import { connectToWallet, storeWalletUri, storeAccount, signalWalletError }
+  from './actions'
 import WalletConnect, {
   mockUri, mockConnected, mockAccounts, mockCreateSession, mockOn
 } from '@walletconnect/browser'
@@ -63,6 +64,23 @@ describe('connecting to a wallet', () => {
     it('stores the connected ethereum account', async () => {
       await action(dispatch)
       expect(dispatch).toBeCalledWith(storeAccount(account))
+    })
+  })
+
+  describe('when connect event listener receives an error', () => {
+    const error = new Error('some error')
+
+    beforeEach(() => {
+      mockOn.mockImplementation((event, callback) => {
+        if (event === 'connect') {
+          callback(error, null)
+        }
+      })
+    })
+
+    it('signals the error', async () => {
+      await action(dispatch)
+      expect(dispatch).toBeCalledWith(signalWalletError(error))
     })
   })
 })

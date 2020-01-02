@@ -5,6 +5,7 @@ const bridge = 'https://bridge.walletconnect.org'
 
 export const storeWalletUri = createAction('ethereum/wallet/uri/store')
 export const storeAccount = createAction('ethereum/account/store')
+export const disconnected = createAction('ethereum/wallet/disconnect')
 export const signalWalletError = createAction('ethereum/wallet/error')
 
 export const connectToWallet = () => async dispatch => {
@@ -25,6 +26,7 @@ const createWalletSession = async (connector, dispatch) => {
 const handleWalletEvents = (connector, dispatch) => {
   connector.on('connect', handleWalletUpdate(dispatch))
   connector.on('session_update', handleWalletUpdate(dispatch))
+  connector.on('disconnect', handleWalletDisconnect(dispatch))
 }
 
 const handleWalletUpdate = dispatch => (error, payload) => {
@@ -33,4 +35,8 @@ const handleWalletUpdate = dispatch => (error, payload) => {
   } else {
     dispatch(signalWalletError(error))
   }
+}
+
+const handleWalletDisconnect = dispatch => () => {
+  dispatch(disconnected())
 }

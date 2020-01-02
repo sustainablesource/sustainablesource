@@ -1,13 +1,16 @@
 import { combineReducers } from 'redux'
 import { createReducer } from 'redux-starter-kit'
-import { storeWalletUri, storeAccount, signalWalletError } from './actions'
+import { storeWalletUri, storeAccount, disconnected, signalWalletError }
+  from './actions'
 
 const walletReducer = createReducer(null, {
-  [storeWalletUri]: (_, action) => action.payload
+  [storeWalletUri]: (_, action) => action.payload,
+  [disconnected]: () => null
 })
 
 const accountReducer = createReducer(null, {
-  [storeAccount]: (_, action) => action.payload
+  [storeAccount]: (_, action) => action.payload,
+  [disconnected]: () => null
 })
 
 const errorReducer = createReducer(null, {

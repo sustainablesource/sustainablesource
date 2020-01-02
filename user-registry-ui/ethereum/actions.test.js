@@ -1,5 +1,6 @@
-import { connectToWallet, storeWalletUri, storeAccount, signalWalletError }
-  from './actions'
+import {
+  connectToWallet, storeWalletUri, storeAccount, signalWalletError, disconnected
+} from './actions'
 import WalletConnect, {
   mockUri, mockConnected, mockAccounts, mockCreateSession, mockEvent
 } from '@walletconnect/browser'
@@ -69,5 +70,11 @@ describe('connecting to a wallet', () => {
     await action(dispatch)
     mockEvent({ name: 'session_update', payload })
     expect(dispatch).toBeCalledWith(storeAccount(account))
+  })
+
+  it('signals when disconnected', async () => {
+    await action(dispatch)
+    mockEvent({ name: 'disconnect' })
+    expect(dispatch).toBeCalledWith(disconnected())
   })
 })

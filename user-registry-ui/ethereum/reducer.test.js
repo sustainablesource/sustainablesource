@@ -1,5 +1,6 @@
 import { ethereumReducer } from './reducer'
-import { storeWalletUri, storeAccount, signalWalletError } from './actions'
+import { storeWalletUri, storeAccount, disconnected, signalWalletError }
+  from './actions'
 
 const uri = 'some:wallet:uri'
 const account = '0xSomeAccount'
@@ -28,4 +29,10 @@ it('clears a previous error when a new wallet uri is stored', () => {
 it('clears a previous error when a new account is stored', () => {
   const state = ethereumReducer({ error: 'some error' }, storeAccount(account))
   expect(state.error).toBeNull()
+})
+
+it('clears wallet uri and ethereum account when disconnected', () => {
+  const state = ethereumReducer({ wallet: uri, account }, disconnected())
+  expect(state.wallet).toBeNull()
+  expect(state.account).toBeNull()
 })

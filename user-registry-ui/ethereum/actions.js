@@ -11,7 +11,9 @@ export const signalWalletError = createAction('ethereum/wallet/error')
 export const connectToWallet = () => async dispatch => {
   const connector = new WalletConnect({ bridge })
   await createWalletSession(connector, dispatch)
-  handleWalletEvents(connector, dispatch)
+  connector.on('connect', handleWalletUpdate(dispatch))
+  connector.on('session_update', handleWalletUpdate(dispatch))
+  connector.on('disconnect', handleWalletDisconnect(dispatch))
 }
 
 const createWalletSession = async (connector, dispatch) => {
@@ -21,12 +23,6 @@ const createWalletSession = async (connector, dispatch) => {
     dispatch(storeAccount(connector.accounts[0]))
   }
   dispatch(storeWalletUri(connector.uri))
-}
-
-const handleWalletEvents = (connector, dispatch) => {
-  connector.on('connect', handleWalletUpdate(dispatch))
-  connector.on('session_update', handleWalletUpdate(dispatch))
-  connector.on('disconnect', handleWalletDisconnect(dispatch))
 }
 
 const handleWalletUpdate = dispatch => (error, payload) => {

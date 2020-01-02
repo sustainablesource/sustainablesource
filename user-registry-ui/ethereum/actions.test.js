@@ -1,7 +1,7 @@
 import { connectToWallet, storeWalletUri, storeAccount, signalWalletError }
   from './actions'
 import WalletConnect, {
-  mockUri, mockConnected, mockAccounts, mockCreateSession, mockOn
+  mockUri, mockConnected, mockAccounts, mockCreateSession, mockEvent
 } from '@walletconnect/browser'
 
 describe('connecting to a wallet', () => {
@@ -50,37 +50,18 @@ describe('connecting to a wallet', () => {
     })
   })
 
-  describe('when connect event is received', () => {
+  it('stores the ethereum account when connect event arrives', async () => {
     const payload = { params: [{ accounts: [account], chainId: null }] }
-
-    beforeEach(() => {
-      mockOn.mockImplementation((event, callback) => {
-        if (event === 'connect') {
-          callback(null, payload)
-        }
-      })
-    })
-
-    it('stores the connected ethereum account', async () => {
-      await action(dispatch)
-      expect(dispatch).toBeCalledWith(storeAccount(account))
-    })
+    await action(dispatch)
+    mockEvent({ name: 'connect', payload })
+    expect(dispatch).toBeCalledWith(storeAccount(account))
   })
 
-  describe('when connect event listener receives an error', () => {
+  it('signals errors from the connect event listener', async () => {
     const error = 'some error'
-
-    beforeEach(() => {
-      mockOn.mockImplementation((event, callback) => {
-        if (event === 'connect') {
-          callback(error, null)
-        }
-      })
-    })
-
-    it('signals the error', async () => {
-      await action(dispatch)
-      expect(dispatch).toBeCalledWith(signalWalletError(error))
-    })
+    await action(dispatch)
+    mockEvent({ name: 'connect', error })
+    expect(dispatch).toBeCalledWith(signalWalletError(error))
   })
+
 })

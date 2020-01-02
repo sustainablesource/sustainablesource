@@ -11,7 +11,7 @@ beforeEach(() => {
 })
 
 export const mockCreateSession = jest.fn()
-export const mockOn = jest.fn()
+const mockOn = jest.fn()
 export const mockUri = value => { uri = value }
 export const mockConnected = value => { connected = value }
 export const mockAccounts = value => { accounts = value }
@@ -25,5 +25,11 @@ const WalletConnect = jest.fn(() => ({
   accounts,
   chainId
 }))
+
+export const mockEvent = ({ name, error = null, payload = null }) => {
+  mockOn.mock.calls
+    .filter(([event]) => event === name)
+    .forEach(([, callback]) => { callback(error, payload) })
+}
 
 export default WalletConnect

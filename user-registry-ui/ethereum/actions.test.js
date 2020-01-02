@@ -77,4 +77,11 @@ describe('connecting to a wallet', () => {
     mockEvent({ name: 'disconnect' })
     expect(dispatch).toBeCalledWith(disconnected())
   })
+
+  it('signals errors from the disconnect event listener', async () => {
+    const error = 'some error'
+    await action(dispatch)
+    mockEvent({ name: 'disconnect', error })
+    expect(dispatch).toBeCalledWith(signalWalletError(error))
+  })
 })

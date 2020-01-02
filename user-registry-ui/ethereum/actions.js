@@ -37,6 +37,10 @@ const handleWalletUpdate = dispatch => (error, payload) => {
   }
 }
 
-const handleWalletDisconnect = dispatch => () => {
-  dispatch(disconnected())
+const handleWalletDisconnect = dispatch => (error) => {
+  if (!error) {
+    dispatch(disconnected())
+  } else {
+    dispatch(signalWalletError(error))
+  }
 }

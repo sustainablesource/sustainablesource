@@ -23,11 +23,14 @@ const createWalletSession = async (connector, dispatch) => {
 }
 
 const handleWalletEvents = (connector, dispatch) => {
-  connector.on('connect', (error, payload) => {
-    if (!error) {
-      dispatch(storeAccount(payload.params[0].accounts[0]))
-    } else {
-      dispatch(signalWalletError(error))
-    }
-  })
+  connector.on('connect', handleWalletUpdate(dispatch))
+  connector.on('session_update', handleWalletUpdate(dispatch))
+}
+
+const handleWalletUpdate = dispatch => (error, payload) => {
+  if (!error) {
+    dispatch(storeAccount(payload.params[0].accounts[0]))
+  } else {
+    dispatch(signalWalletError(error))
+  }
 }

@@ -64,4 +64,10 @@ describe('connecting to a wallet', () => {
     expect(dispatch).toBeCalledWith(signalWalletError(error))
   })
 
+  it('stores the ethereum account when session update arrives', async () => {
+    const payload = { params: [{ accounts: [account], chainId: null }] }
+    await action(dispatch)
+    mockEvent({ name: 'session_update', payload })
+    expect(dispatch).toBeCalledWith(storeAccount(account))
+  })
 })

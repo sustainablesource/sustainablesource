@@ -16,9 +16,7 @@ contract('GitHub', function (accounts) {
   })
 
   describe('integration tests (up to 10 minutes each)', function () {
-    beforeEach(function () {
-      this.timeout(10 * 60 * 1000)
-    })
+    this.timeout(10 * 60 * 1000)
 
     describe('user attestation', function () {
       const gistId = '321aae303592471c1ed314a9a499cf65'

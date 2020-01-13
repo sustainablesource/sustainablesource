@@ -22,10 +22,6 @@ beforeEach(() => {
   app = simulator(callback)
 })
 
-afterEach(() => {
-  fetchMock.restore()
-})
-
 function mockGithubOAuth () {
   fetchMock.post(accessTokenUrl, {
     access_token: accessToken,

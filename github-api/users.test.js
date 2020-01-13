@@ -7,10 +7,6 @@ describe('retrieving the github username', () => {
   const username = 'some username'
   const accessToken = 'some_token'
 
-  afterEach(() => {
-    fetchMock.restore()
-  })
-
   describe('success', () => {
     beforeEach(async () => {
       fetchMock.get(url, { login: username })

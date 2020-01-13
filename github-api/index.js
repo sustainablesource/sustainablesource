@@ -1,1 +1,2 @@
-export { retrieveUsername } from './users'
+export * from './users'
+export * from './gists'

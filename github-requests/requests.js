@@ -3,33 +3,15 @@ import fetch from 'cross-fetch'
 const url = 'https://api.github.com'
 
 export async function get (path, accessToken) {
-  const response = await fetch(`${url}${path}`, {
-    headers: headers(accessToken)
-  })
-  await handleError(response)
-  return response.json()
+  return request('GET', path, accessToken)
 }
 
 export async function post (path, accessToken, body) {
-  const response = await fetch(`${url}${path}`, {
-    method: 'POST',
-    headers: {
-      ...headers(accessToken),
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(body)
-  })
-  await handleError(response)
-  return response.json()
+  return request('POST', path, accessToken, body)
 }
 
 export async function del (path, accessToken) {
-  const response = await fetch(`${url}${path}`, {
-    method: 'DELETE',
-    headers: headers(accessToken)
-  })
-  await handleError(response)
-  return response.json()
+  return request('DELETE', path, accessToken)
 }
 
 export class HttpError extends Error {
@@ -39,11 +21,25 @@ export class HttpError extends Error {
   }
 }
 
-function headers (accessToken) {
-  return {
+async function request (method, path, accessToken, body = undefined) {
+  let options = { method, headers: headers(accessToken, body) }
+  if (body) {
+    options = { ...options, body: JSON.stringify(body) }
+  }
+  const response = await fetch(`${url}${path}`, options)
+  await handleError(response)
+  return response.json()
+}
+
+function headers (accessToken, body = undefined) {
+  let result = {
     Authorization: `token ${accessToken}`,
     Accept: 'application/json'
   }
+  if (body) {
+    result = { ...result, 'Content-Type': 'application/json' }
+  }
+  return result
 }
 
 async function handleError (response) {

@@ -27,6 +27,12 @@ describe('creating a gist', () => {
       expect(accept).toEqual('application/json')
     })
 
+    it('sends json', async () => {
+      await createGist({ accessToken, options })
+      const contentType = fetchMock.lastOptions().headers['Content-Type']
+      expect(contentType).toEqual('application/json')
+    })
+
     it('sends the gist options', async () => {
       await createGist({ accessToken, options })
       const body = JSON.parse(fetchMock.lastOptions().body)

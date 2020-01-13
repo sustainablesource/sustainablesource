@@ -14,7 +14,10 @@ export async function get (path, accessToken) {
 export async function post (path, accessToken, body) {
   const response = await fetch(`${url}${path}`, {
     method: 'POST',
-    headers: headers(accessToken),
+    headers: {
+      ...headers(accessToken),
+      'Content-Type': 'application/json'
+    },
     body: JSON.stringify(body)
   })
   await handleError(response)

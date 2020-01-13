@@ -6,8 +6,10 @@ const options = {
   description: 'some gist',
   files: { 'some_file_name': 'some content' }
 }
+const id = 'some id'
 
 it('creates a gist', async () => {
-  await createGist({ accessToken, options })
+  post.mockResolvedValue({ id })
+  expect(await createGist({ accessToken, options })).toEqual(id)
   expect(post).toBeCalledWith('/gists', accessToken, options)
 })

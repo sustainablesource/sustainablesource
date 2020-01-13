@@ -1,11 +1,11 @@
-import fetchMock from 'node-fetch'
+import { get } from '@sustainablesource/github-requests'
 import { retrieveUsername } from './users'
 
-const url = 'https://api.github.com/user'
 const accessToken = 'some_token'
 const username = 'some username'
 
 it('retrieves the github username', async () => {
-  fetchMock.get(url, { login: username })
+  get.mockResolvedValue({ login: username })
   expect(await retrieveUsername({ accessToken })).toEqual(username)
+  expect(get).toBeCalledWith('/user', accessToken)
 })

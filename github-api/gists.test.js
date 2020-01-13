@@ -1,7 +1,6 @@
-import fetchMock from 'node-fetch'
+import { post } from '@sustainablesource/github-requests'
 import { createGist } from './gists'
 
-const url = 'https://api.github.com/gists'
 const accessToken = 'some_token'
 const options = {
   description: 'some gist',
@@ -9,8 +8,6 @@ const options = {
 }
 
 it('creates a gist', async () => {
-  fetchMock.post(url, {})
   await createGist({ accessToken, options })
-  const body = JSON.parse(fetchMock.lastOptions().body)
-  expect(body).toEqual(options)
+  expect(post).toBeCalledWith('/gists', accessToken, options)
 })

@@ -1,5 +1,5 @@
 import fetchMock from 'node-fetch'
-import { HttpError } from './HttpError'
+import { HttpError } from './requests'
 import { createGist } from './gists'
 
 describe('creating a gist', () => {

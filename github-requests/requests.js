@@ -23,6 +23,15 @@ export async function post (path, accessToken, body) {
   return response.json()
 }
 
+export async function del (path, accessToken) {
+  const response = await fetch(`${url}${path}`, {
+    method: 'DELETE',
+    headers: headers(accessToken)
+  })
+  await handleError(response)
+  return response.json()
+}
+
 export class HttpError extends Error {
   constructor ({ status, message }) {
     super(`${status}: ${message}`)

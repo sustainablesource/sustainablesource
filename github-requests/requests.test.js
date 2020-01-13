@@ -1,5 +1,5 @@
 import fetchMock from 'node-fetch'
-import { get, post, HttpError } from './requests'
+import { get, post, del, HttpError } from './requests'
 
 describe('http requests', () => {
   const accessToken = 'some_token'
@@ -75,6 +75,39 @@ describe('http requests', () => {
 
       it('throws on http errors', async () => {
         const retrieval = post(path, accessToken, body)
+        const expected = new HttpError({ status, message })
+        await expect(retrieval).rejects.toStrictEqual(expected)
+      })
+    })
+  })
+
+  describe('delete', () => {
+    describe('success', () => {
+      let response
+
+      beforeEach(async () => {
+        fetchMock.delete(url, result)
+        response = await del(path, accessToken)
+      })
+
+      it('provides oauth authorization', checkAuthorization)
+      it('requests a json response', checkAccept)
+
+      it('returns the response', async () => {
+        expect(response).toEqual(result)
+      })
+    })
+
+    describe('failure', () => {
+      const status = 404
+      const message = 'not found'
+
+      beforeEach(() => {
+        fetchMock.delete(url, { status, body: { message } })
+      })
+
+      it('throws on http errors', async () => {
+        const retrieval = del(path, accessToken)
         const expected = new HttpError({ status, message })
         await expect(retrieval).rejects.toStrictEqual(expected)
       })

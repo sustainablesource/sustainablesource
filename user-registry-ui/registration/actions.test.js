@@ -1,20 +1,30 @@
-import { createAttestation, storeAttestationId, signalAttestationError }
-  from './actions'
-import { createGist } from '@sustainablesource/github-api'
+import {
+  createAttestation,
+  removeAttestation,
+  storeAttestationId,
+  clearAttestationId,
+  signalAttestationError
+} from './actions'
+import { createGist, deleteGist } from '@sustainablesource/github-api'
+
+const accessToken = 'some_token'
+
+let dispatch
+
+beforeEach(() => {
+  dispatch = jest.fn()
+})
 
 describe('attesting the ethereum account', () => {
-  const accessToken = 'some_token'
   const account = '0xSomeAccount'
   const getState = () => ({
     github: { oauth: { accessToken } },
     ethereum: { account }
   })
 
-  let dispatch
   let action
 
   beforeEach(() => {
-    dispatch = jest.fn()
     action = createAttestation()
   })
 
@@ -39,6 +49,37 @@ describe('attesting the ethereum account', () => {
   it('handles errors while creating the gist', async () => {
     const error = new Error('some error')
     createGist.mockRejectedValue(error)
+    await action(dispatch, getState)
+    expect(dispatch).toBeCalledWith(signalAttestationError(error.message))
+  })
+})
+
+describe('removing the attestation', () => {
+  const id = 'some_gist_id'
+  const getState = () => ({
+    github: { oauth: { accessToken } },
+    registration: { attestationId: id }
+  })
+
+  let action
+
+  beforeEach(() => {
+    action = removeAttestation()
+  })
+
+  it('deletes the github gist', async () => {
+    await action(dispatch, getState)
+    expect(deleteGist).toBeCalledWith({ accessToken, id })
+  })
+
+  it('clears the gist id', async () => {
+    await action(dispatch, getState)
+    expect(dispatch).toBeCalledWith(clearAttestationId())
+  })
+
+  it('handles errors while deleting gist', async () => {
+    const error = new Error('some error')
+    deleteGist.mockRejectedValue(error)
     await action(dispatch, getState)
     expect(dispatch).toBeCalledWith(signalAttestationError(error.message))
   })

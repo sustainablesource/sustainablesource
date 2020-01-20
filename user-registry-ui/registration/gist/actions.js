@@ -1,6 +1,6 @@
 import { createAction } from 'redux-starter-kit'
-import { getGithubOAuthToken } from '../github'
-import { getEthereumAccount } from '../ethereum'
+import { getGithubOAuthToken } from '../../github'
+import { getEthereumAccount } from '../../ethereum'
 import { createGist, deleteGist } from '@sustainablesource/github-api'
 import { getAttestationId } from './selectors'
 

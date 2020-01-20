@@ -15,6 +15,6 @@ it('creates a gist', async () => {
 })
 
 it('deletes a gist', async () => {
-  await deleteGist({ id })
-  expect(del).toBeCalledWith(`/gists/${id}`)
+  await deleteGist({ accessToken, id })
+  expect(del).toBeCalledWith(`/gists/${id}`, accessToken)
 })

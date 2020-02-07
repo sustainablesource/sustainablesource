@@ -1,14 +1,13 @@
+import { infuraId } from '../infura'
 import {
-  connectToWallet, storeWalletUri, storeAccount, signalWalletError, disconnected
+  connectToWallet, storeAccount, signalWalletError, connected, disconnected
 } from './actions'
-import WalletConnect, {
-  mockUri, mockConnected, mockAccounts, mockCreateSession, mockEvent
-} from '@walletconnect/browser'
+import WalletConnectProvider, { mockEvent, mockEnable }
+  from '@walletconnect/web3-provider'
 
 describe('connecting to a wallet', () => {
-  const bridge = 'https://bridge.walletconnect.org'
-  const uri = 'some:walletconnect:uri'
   const account = '0xSomeAccount'
+  const error = 'some error'
 
   let action
   let dispatch
@@ -16,72 +15,34 @@ describe('connecting to a wallet', () => {
   beforeEach(() => {
     action = connectToWallet()
     dispatch = jest.fn()
-    mockUri(uri)
   })
 
-  it('stores the wallet uri', async () => {
+  it('provides the infura id', async () => {
     await action(dispatch)
-    expect(dispatch).toBeCalledWith(storeWalletUri(uri))
+    expect(WalletConnectProvider).toBeCalledWith({ infuraId })
   })
 
-  it('uses the walletconnect.org bridge', async () => {
+  it('stores the ethereum account when accounts change', async () => {
     await action(dispatch)
-    expect(WalletConnect).toBeCalledWith({ bridge })
-  })
-
-  it('creates a new session when not connected', async () => {
-    await action(dispatch)
-    expect(mockCreateSession).toBeCalled()
-  })
-
-  describe('when ethereum account is already connected', () => {
-    beforeEach(() => {
-      mockConnected(true)
-      mockAccounts([account])
-    })
-
-    it('does not create a new session', async () => {
-      await action(dispatch)
-      expect(mockCreateSession).not.toBeCalled()
-    })
-
-    it('stores the connected ethereum account', async () => {
-      await action(dispatch)
-      expect(dispatch).toBeCalledWith(storeAccount(account))
-    })
-  })
-
-  it('stores the ethereum account when connect event arrives', async () => {
-    const payload = { params: [{ accounts: [account], chainId: null }] }
-    await action(dispatch)
-    mockEvent({ name: 'connect', payload })
+    mockEvent('accountsChanged', [account])
     expect(dispatch).toBeCalledWith(storeAccount(account))
   })
 
-  it('signals errors from the connect event listener', async () => {
-    const error = 'some error'
+  it('signals errors while enabling the provider', async () => {
+    mockEnable.mockRejectedValue(new Error(error))
     await action(dispatch)
-    mockEvent({ name: 'connect', error })
     expect(dispatch).toBeCalledWith(signalWalletError(error))
   })
 
-  it('stores the ethereum account when session update arrives', async () => {
-    const payload = { params: [{ accounts: [account], chainId: null }] }
+  it('signals when connected', async () => {
     await action(dispatch)
-    mockEvent({ name: 'session_update', payload })
-    expect(dispatch).toBeCalledWith(storeAccount(account))
+    mockEvent('open')
+    expect(dispatch).toBeCalledWith(connected())
   })
 
   it('signals when disconnected', async () => {
     await action(dispatch)
-    mockEvent({ name: 'disconnect' })
+    mockEvent('close', 42, 'some reason')
     expect(dispatch).toBeCalledWith(disconnected())
-  })
-
-  it('signals errors from the disconnect event listener', async () => {
-    const error = 'some error'
-    await action(dispatch)
-    mockEvent({ name: 'disconnect', error })
-    expect(dispatch).toBeCalledWith(signalWalletError(error))
   })
 })

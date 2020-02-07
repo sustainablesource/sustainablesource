@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux'
 import { createReducer } from 'redux-starter-kit'
-import { storeWalletUri, storeAccount, disconnected, signalWalletError }
+import { storeAccount, connected, disconnected, signalWalletError }
   from './actions'
 
-const walletReducer = createReducer(null, {
-  [storeWalletUri]: (_, action) => action.payload,
-  [disconnected]: () => null
+const connectionReducer = createReducer(null, {
+  [connected]: () => true,
+  [disconnected]: () => false
 })
 
 const accountReducer = createReducer(null, {
@@ -15,12 +15,12 @@ const accountReducer = createReducer(null, {
 
 const errorReducer = createReducer(null, {
   [signalWalletError]: (_, action) => action.payload,
-  [storeWalletUri]: () => null,
+  [connected]: () => null,
   [storeAccount]: () => null
 })
 
 export const ethereumReducer = combineReducers({
-  wallet: walletReducer,
+  connected: connectionReducer,
   account: accountReducer,
   error: errorReducer
 })

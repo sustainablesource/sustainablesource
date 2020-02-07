@@ -1,37 +1,28 @@
-import React, { useEffect } from 'react'
-import { Container, Loader, Message, Segment } from 'semantic-ui-react'
-import QRCode from 'qrcode.react'
+import React from 'react'
+import { Button, Container, Message, Segment } from 'semantic-ui-react'
 import { useDispatch, useSelector } from 'react-redux'
-import { connectToWallet, getWalletUri, getError } from '../../ethereum'
+import { connectToWallet, getError } from '../../ethereum'
 
 export const EthereumPrompt = () => {
   const dispatch = useDispatch()
-  useEffect(() => { dispatch(connectToWallet()) }, [])
   return (
     <Container data-testid='ethereum-prompt'>
       <Container text>
         Income from Sustainable Source projects is paid out through the Ethereum
-        network. You need an Ethereum wallet to claim your income.
+        network. Download a
+        <a href='https://walletconnect.org/apps'> WalletConnect </a> compatible
+        Ethereum wallet to claim your income.
       </Container>
       <Segment basic padded='very' textAlign='center'>
-        <WalletQRCode />
+        <Button
+          primary
+          content='Connect to Wallet'
+          onClick={() => dispatch(connectToWallet())}
+        />
       </Segment>
-      <Container text textAlign='center'>
-        Download a <a href='https://walletconnect.org/apps'>WalletConnect </a>
-        compatible wallet and use it to scan the QR code.
-      </Container>
       <ErrorMessage />
     </Container>
   )
-}
-
-export const WalletQRCode = () => {
-  const walletUri = useSelector(getWalletUri)
-  if (walletUri) {
-    return <QRCode data-testid='qrcode' value={walletUri} />
-  } else {
-    return <Loader data-testid='loader' active />
-  }
 }
 
 export const ErrorMessage = () => {

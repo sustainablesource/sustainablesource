@@ -1,8 +1,7 @@
-import { getEthereumAccount, getWalletUri, getError } from './selectors'
+import { getEthereumAccount, getError, isConnected } from './selectors'
 
-it('selects the wallet uri', () => {
-  const uri = 'some:wallet:uri'
-  expect(getWalletUri({ ethereum: { wallet: uri } })).toEqual(uri)
+it('selects the connection state', () => {
+  expect(isConnected({ ethereum: { connected: true } })).toBe(true)
 })
 
 it('selects the ethereum account', () => {

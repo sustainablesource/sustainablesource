@@ -22,7 +22,6 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.4.5",
-    "@walletconnect/browser": "^1.0.0-beta.42",
     "@walletconnect/web3-provider": "^1.0.0-beta.46",
     "@zeit/next-css": "^1.0.1",
     "file-loader": "^4.0.0",

@@ -115,12 +115,12 @@ describe('http requests', () => {
   })
 
   function checkAuthorization () {
-    const authorization = fetchMock.lastOptions().headers['Authorization']
+    const authorization = fetchMock.lastOptions().headers.Authorization
     expect(authorization).toEqual(`token ${accessToken}`)
   }
 
   function checkAccept () {
-    const accept = fetchMock.lastOptions().headers['Accept']
+    const accept = fetchMock.lastOptions().headers.Accept
     expect(accept).toEqual('application/json')
   }
 

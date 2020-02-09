@@ -47,7 +47,7 @@ describe('posting to Github', () => {
   })
 
   it('requests a json response', () => {
-    const accept = fetchMock.lastOptions().headers['Accept']
+    const accept = fetchMock.lastOptions().headers.Accept
     expect(accept).toEqual('application/json')
   })
 
@@ -105,8 +105,8 @@ describe('access token', () => {
 it('returns an error when returned state does not match cookie', async () => {
   mockGithubOAuth()
   const response = await app
-    .get(`/?state=some_state`)
-    .set('Cookie', `state=other_state`)
+    .get('/?state=some_state')
+    .set('Cookie', 'state=other_state')
   const url = response.header.location
   expect(url).toEqual(stringContaining('error='))
 })

@@ -30,7 +30,7 @@ export const ErrorMessage = () => {
   if (!error) { return null }
   return (
     <Segment basic padded='very'>
-      <Message negative>{ error }</Message>
+      <Message negative>{error}</Message>
     </Segment>
   )
 }

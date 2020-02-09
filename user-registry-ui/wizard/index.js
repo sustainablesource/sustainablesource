@@ -37,9 +37,9 @@ export const Wizard = () => {
         />
       </Step.Group>
       <Divider hidden />
-      { step === 1 && <GithubPrompt /> }
-      { step === 2 && <EthereumPrompt /> }
-      { step === 3 && <ConfirmationPrompt /> }
+      {step === 1 && <GithubPrompt />}
+      {step === 2 && <EthereumPrompt />}
+      {step === 3 && <ConfirmationPrompt />}
       <Divider hidden />
     </Container>
   )

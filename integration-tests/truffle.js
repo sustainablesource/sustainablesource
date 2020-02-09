@@ -5,7 +5,7 @@ module.exports = {
     kovan: {
       network_id: 42,
       provider: () => new HDWalletProvider(
-        process.env['ETHEREUM_WALLET_MNEMONIC'],
+        process.env.ETHEREUM_WALLET_MNEMONIC,
         `https://kovan.infura.io/v3/${process.env.INFURA_API_KEY}`
       )
     }

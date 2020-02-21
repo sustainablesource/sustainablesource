@@ -1,9 +1,7 @@
-import { infuraId } from '../infura'
 import {
   connectToWallet, storeAccount, signalWalletError, connected, disconnected
 } from './actions'
-import WalletConnectProvider, { mockEvent, mockEnable }
-  from '@walletconnect/web3-provider'
+import { mockEvent, mockEnable } from '@walletconnect/web3-provider'
 
 describe('connecting to a wallet', () => {
   const account = '0xSomeAccount'
@@ -15,11 +13,6 @@ describe('connecting to a wallet', () => {
   beforeEach(() => {
     action = connectToWallet()
     dispatch = jest.fn()
-  })
-
-  it('provides the infura id', async () => {
-    await action(dispatch)
-    expect(WalletConnectProvider).toBeCalledWith({ infuraId })
   })
 
   it('stores the ethereum account when accounts change', async () => {

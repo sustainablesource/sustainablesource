@@ -1,6 +1,5 @@
 import { createAction } from 'redux-starter-kit'
-import WalletConnectProvider from '@walletconnect/web3-provider'
-import { infuraId } from '../infura'
+import { getWeb3Provider } from './provider'
 
 export const storeAccount = createAction('ethereum/account/store')
 export const connected = createAction('ethereum/wallet/connect')
@@ -8,7 +7,7 @@ export const disconnected = createAction('ethereum/wallet/disconnect')
 export const signalWalletError = createAction('ethereum/wallet/error')
 
 export const connectToWallet = () => async dispatch => {
-  const provider = new WalletConnectProvider({ infuraId })
+  const provider = getWeb3Provider()
   provider.on('accountsChanged', ([account]) => {
     dispatch(storeAccount(account))
   })

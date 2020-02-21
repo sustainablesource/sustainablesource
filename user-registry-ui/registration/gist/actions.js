@@ -1,4 +1,4 @@
-import { createAction } from 'redux-starter-kit'
+import { createAction } from '@reduxjs/toolkit'
 import { getGithubOAuthToken } from '../../github'
 import { getEthereumAccount } from '../../ethereum'
 import { createGist, deleteGist } from '@sustainablesource/github-api'

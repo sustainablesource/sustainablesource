@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { createReducer } from 'redux-starter-kit'
+import { createReducer } from '@reduxjs/toolkit'
 import { storeAttestationId, clearAttestationId } from './actions'
 
 export const attestationReducer = createReducer(null, {

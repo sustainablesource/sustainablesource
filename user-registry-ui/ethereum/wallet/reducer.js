@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { createReducer } from 'redux-starter-kit'
+import { createReducer } from '@reduxjs/toolkit'
 import { storeAccount, connected, disconnected, signalWalletError }
   from './actions'
 

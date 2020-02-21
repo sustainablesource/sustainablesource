@@ -1,4 +1,4 @@
-import { createAction } from 'redux-starter-kit'
+import { createAction } from '@reduxjs/toolkit'
 import * as githubApi from '@sustainablesource/github-api'
 
 export * from './oauth/actions'

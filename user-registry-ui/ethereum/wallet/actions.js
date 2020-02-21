@@ -1,4 +1,4 @@
-import { createAction } from 'redux-starter-kit'
+import { createAction } from '@reduxjs/toolkit'
 import { getWeb3Provider } from './provider'
 
 export const storeAccount = createAction('ethereum/account/store')

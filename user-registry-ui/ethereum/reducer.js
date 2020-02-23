@@ -4,4 +4,5 @@ import { web3Reducer } from './web3'
 
 export const ethereumReducer = combineReducers({
   wallet: walletReducer,
+  web3: web3Reducer
 })

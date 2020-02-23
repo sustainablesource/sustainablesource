@@ -10,7 +10,7 @@ it('enables the Ethereum provider when connecting to wallet', async () => {
 })
 
 it('displays errors', () => {
-  const state = { ethereum: { error: 'some error' } }
+  const state = { ethereum: { wallet: { error: 'some error' } } }
   const { queryByText } = renderWithRedux(<EthereumPrompt />, state)
   expect(queryByText('some error')).toBeVisible()
 })

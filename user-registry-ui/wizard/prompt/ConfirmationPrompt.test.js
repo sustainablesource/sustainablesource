@@ -12,7 +12,7 @@ it('shows github account used for registration', () => {
 })
 
 it('shows ethereum account used for registration', () => {
-  const state = { ethereum: { account } }
+  const state = { ethereum: { wallet: { account } } }
   const { queryByText } = renderWithRedux(<ConfirmationPrompt />, state)
   expect(queryByText(account, { exact: false })).not.toBeNull()
 })

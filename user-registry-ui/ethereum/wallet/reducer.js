@@ -19,7 +19,7 @@ const errorReducer = createReducer(null, {
   [storeAccount]: () => null
 })
 
-export const ethereumReducer = combineReducers({
+export const walletReducer = combineReducers({
   connected: connectionReducer,
   account: accountReducer,
   error: errorReducer

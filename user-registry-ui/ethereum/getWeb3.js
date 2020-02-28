@@ -1,10 +1,9 @@
 import Web3 from 'web3'
 import WalletConnectProvider from '@walletconnect/web3-provider'
-import { infuraId } from '../infura'
-import { derivedState } from '../../redux'
+import { infuraId } from './infura'
+import { derivedState } from '../redux'
 import { getWeb3Id } from './selectors'
-import { newWeb3Id } from './actions'
-import { storeAccount, connected, disconnected } from '../wallet'
+import { newWeb3Id, storeAccount, connected, disconnected } from './actions'
 
 const createWeb3 = (_, dispatch) => {
   const provider = new WalletConnectProvider({ infuraId })

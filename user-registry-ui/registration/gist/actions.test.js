@@ -19,7 +19,7 @@ describe('attesting the ethereum account', () => {
   const account = '0xSomeAccount'
   const getState = () => ({
     github: { oauth: { accessToken } },
-    ethereum: { wallet: { account } }
+    ethereum: { account }
   })
 
   let action

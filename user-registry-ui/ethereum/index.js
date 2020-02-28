@@ -1,3 +1,4 @@
-export { ethereumReducer } from './reducer'
-export * from './wallet/selectors'
-export * from './wallet/actions'
+export * from './selectors'
+export * from './actions'
+export * from './reducer'
+export * from './getWeb3'

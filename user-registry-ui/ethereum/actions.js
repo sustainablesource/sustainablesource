@@ -1,6 +1,7 @@
 import { createAction } from '@reduxjs/toolkit'
-import { getWeb3 } from '../web3'
+import { getWeb3 } from './getWeb3'
 
+export const newWeb3Id = createAction('web3/id/new')
 export const storeAccount = createAction('ethereum/account/store')
 export const connected = createAction('ethereum/wallet/connect')
 export const disconnected = createAction('ethereum/wallet/disconnect')

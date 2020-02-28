@@ -1,8 +1,7 @@
 import Web3 from 'web3'
 import WalletConnectProvider, { mockEvent } from '@walletconnect/web3-provider'
-import { infuraId } from '../infura'
-import { storeAccount, connected, disconnected } from '../wallet'
-import { newWeb3Id } from './actions'
+import { infuraId } from './infura'
+import { newWeb3Id, storeAccount, connected, disconnected } from './actions'
 import { getWeb3 } from './getWeb3'
 
 describe('web3 getter', () => {
@@ -13,7 +12,7 @@ describe('web3 getter', () => {
   let dispatch
 
   beforeEach(() => {
-    state = { ethereum: { web3: { id: Math.random() }}}
+    state = { ethereum: { web3: { id: Math.random() } } }
     dispatch = jest.fn()
     web3 = getWeb3(state, dispatch)
   })

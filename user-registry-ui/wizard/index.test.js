@@ -39,7 +39,7 @@ describe('when the github username is known', () => {
 describe('when the github username and ethereum account are known', () => {
   const state = {
     github: { username: 'some username' },
-    ethereum: { wallet: { account: 'some account' } }
+    ethereum: { account: 'some account' }
   }
 
   it('shows the confirmation step', () => {

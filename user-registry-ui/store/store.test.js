@@ -7,7 +7,7 @@ it('persists to local storage', () => {
   const store = createStore()
   const action = { type: 'SOME_ACTION' }
   store.dispatch(action)
-  expect(localStorage['store']).toBeDefined()
+  expect(localStorage.store).toBeDefined()
 })
 
 it('loads from local storage', () => {

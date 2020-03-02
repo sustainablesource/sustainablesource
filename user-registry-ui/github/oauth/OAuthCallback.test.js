@@ -1,27 +1,22 @@
 import React from 'react'
-import OAuthCallback from './OAuthCallback'
-import { render } from '@testing-library/react'
-import { mockStore } from '../../store/mockStore'
-import { storeOAuthToken } from '../actions'
+import { renderWithRedux } from '../../store/testrender'
+import { getGithubOAuthToken } from '..'
+import { OAuthCallback } from './OAuthCallback'
 
 const location = window.location
 
 const token = 'some_access_token'
 
-let store
-
-beforeEach(() => {
-  store = mockStore()
-})
-
 describe('when access token is present', () => {
+  let store
+
   beforeEach(() => {
     location.href += `#access_token=${token}`
-    render(<OAuthCallback store={store} />)
+    store = renderWithRedux(<OAuthCallback />).store
   })
 
   it('stores the access token', () => {
-    expect(store.getActions()).toEqual([storeOAuthToken(token)])
+    expect(getGithubOAuthToken(store.getState())).toEqual(token)
   })
 
   it('removes the access token from the url', () => {
@@ -31,15 +26,16 @@ describe('when access token is present', () => {
 
 describe('when access token is absent', () => {
   let originalUrl
+  let store
 
   beforeEach(() => {
     location.href += '#some_hash'
     originalUrl = location.href
-    render(<OAuthCallback store={store} />)
+    store = renderWithRedux(<OAuthCallback />).store
   })
 
   it('does not store the access token', () => {
-    expect(store.getActions()).toEqual([])
+    expect(getGithubOAuthToken(store.getState())).toBeUndefined()
   })
 
   it('does not alter the url', () => {

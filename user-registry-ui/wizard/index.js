@@ -1,16 +1,18 @@
 import React from 'react'
 import { Container, Divider, Step } from 'semantic-ui-react'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { getGithubUsername } from '../github'
 import { getEthereumAccount } from '../ethereum'
 import { GithubPrompt, EthereumPrompt, ConfirmationPrompt } from './prompt'
 
-let Wizard = ({ username, account }) => {
+export const Wizard = () => {
+  const username = useSelector(getGithubUsername)
+  const account = useSelector(getEthereumAccount)
   const step = username ? account ? 3 : 2 : 1
   return (
     <Container text>
       <Divider hidden />
-      <Step.Group>
+      <Step.Group fluid>
         <Step
           icon='github'
           title='Github'
@@ -21,7 +23,7 @@ let Wizard = ({ username, account }) => {
         <Step
           icon='ethereum'
           title='Ethereum'
-          description='Select your Identity'
+          description='Connect a wallet'
           disabled={step < 2}
           active={step === 2}
           completed={step > 2}
@@ -35,17 +37,10 @@ let Wizard = ({ username, account }) => {
         />
       </Step.Group>
       <Divider hidden />
-      { step === 1 && <GithubPrompt /> }
-      { step === 2 && <EthereumPrompt /> }
-      { step === 3 && <ConfirmationPrompt /> }
+      {step === 1 && <GithubPrompt />}
+      {step === 2 && <EthereumPrompt />}
+      {step === 3 && <ConfirmationPrompt />}
       <Divider hidden />
     </Container>
   )
 }
-
-Wizard = connect(state => ({
-  username: getGithubUsername(state),
-  account: getEthereumAccount(state)
-}))(Wizard)
-
-export { Wizard }

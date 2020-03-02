@@ -1,21 +1,18 @@
-import React from 'react'
-import { connect } from 'react-redux'
+import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import querystring from 'querystring'
 import { storeOAuthToken } from '../actions'
 
-class OAuthCallback extends React.Component {
-  componentDidMount () {
+export const OAuthCallback = () => {
+  const dispatch = useDispatch()
+  useEffect(() => {
     const token = extractToken()
     if (token) {
-      const { storeOAuthToken } = this.props
-      storeOAuthToken(token)
+      dispatch(storeOAuthToken(token))
       removeHashFromUrl()
     }
-  }
-
-  render () {
-    return null
-  }
+  }, [])
+  return null
 }
 
 function extractToken () {
@@ -26,5 +23,3 @@ function extractToken () {
 function removeHashFromUrl () {
   window.history.replaceState({}, '', window.location.href.replace(/#.*$/, ''))
 }
-
-export default connect(null, { storeOAuthToken })(OAuthCallback)

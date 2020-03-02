@@ -1,5 +1,4 @@
 import fetch from 'node-fetch'
-import url from 'url'
 import querystring from 'querystring'
 import cookie from 'cookie'
 import { accessTokenUrl } from './github-url'
@@ -8,7 +7,7 @@ export default async function (request, response) {
   let result
   try {
     checkState({ request })
-    const { code } = url.parse(request.url, true).query
+    const code = requestParams({ request }).get('code')
     result = await requestToken({ code })
   } catch (error) {
     result = { error: error.message }
@@ -17,11 +16,15 @@ export default async function (request, response) {
 }
 
 function checkState ({ request }) {
-  const queryState = url.parse(request.url, true).query.state
+  const queryState = requestParams({ request }).get('state')
   const cookieState = extractStateFromCookie({ request })
   if (queryState !== cookieState) {
     throw new Error('state does not match cookie')
   }
+}
+
+function requestParams ({ request }) {
+  return new URL(request.url, `http://${request.headers.host}`).searchParams
 }
 
 function extractStateFromCookie ({ request }) {
@@ -38,7 +41,7 @@ async function requestToken ({ code }) {
     method: 'post',
     headers: {
       'Content-Type': 'application/json',
-      'Accept': 'application/json'
+      Accept: 'application/json'
     },
     body: JSON.stringify({
       client_id: clientId,

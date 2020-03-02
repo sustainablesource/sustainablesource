@@ -8,11 +8,9 @@
     "test": "jest"
   },
   "devDependencies": {
-    "fetch-mock": "^7.3.3",
     "jest": "^24.8.0"
   },
   "dependencies": {
-    "cross-fetch": "^3.0.4",
     "esm": "^3.2.25"
   }
 }

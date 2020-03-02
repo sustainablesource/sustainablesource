@@ -2,11 +2,11 @@ const HDWalletProvider = require('truffle-hdwallet-provider')
 
 module.exports = {
   networks: {
-    ropsten: {
-      network_id: 3,
+    kovan: {
+      network_id: 42,
       provider: () => new HDWalletProvider(
         process.env['ETHEREUM_WALLET_MNEMONIC'],
-        `https://ropsten.infura.io/v3/${process.env['INFURA_API_KEY']}`
+        `https://kovan.infura.io/v3/${process.env.INFURA_API_KEY}`
       )
     }
   },

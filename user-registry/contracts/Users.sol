@@ -1,9 +1,9 @@
 pragma solidity ^0.5.0;
-import "oraclize-eth-api/oraclizeAPI_0.5.sol";
+import "provable-eth-api/provableAPI_0.5.sol";
 import "./Conversions.sol";
 import "./UsersInterface.sol";
 
-contract Users is UsersInterface, usingOraclize {
+contract Users is UsersInterface, usingProvable {
 
     using Conversions for address;
     using Conversions for string;
@@ -16,8 +16,8 @@ contract Users is UsersInterface, usingOraclize {
     }
 
     function attestationPrice() public returns (uint) {
-        oraclize_setProof(proofType_TLSNotary | proofStorage_IPFS);
-        return oraclize_getPrice("URL", 400000);
+        provable_setProof(proofType_TLSNotary | proofStorage_IPFS);
+        return provable_getPrice("URL", 400000);
     }
 
     function attest(string memory username, string memory gistId)
@@ -28,7 +28,7 @@ contract Users is UsersInterface, usingOraclize {
         string memory queryPrefix = "json(https://api.github.com/gists/";
         string memory queryPostfix = ").$..[owner,files]..[login,filename,content]";
         string memory query = strConcat(queryPrefix, gistId, queryPostfix);
-        bytes32 queryId = oraclize_query("URL", query, 400000);
+        bytes32 queryId = provable_query("URL", query, 400000);
 
         queries[queryId] = Query(username, msg.sender);
     }
@@ -39,7 +39,7 @@ contract Users is UsersInterface, usingOraclize {
         bytes memory
     )
         public
-        onlyOraclize
+        onlyProvable
     {
         Query storage query = queries[queryId];
         if (bytes(query.username).length != 0) {
@@ -68,9 +68,9 @@ contract Users is UsersInterface, usingOraclize {
         address account;
     }
 
-    modifier onlyOraclize {
-        if (msg.sender != oraclize_cbAddress()) {
-            revert("only Oraclize is allowed to call this method");
+    modifier onlyProvable {
+        if (msg.sender != provable_cbAddress()) {
+            revert("only Provable is allowed to call this method");
         }
         _;
     }

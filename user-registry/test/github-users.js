@@ -5,17 +5,17 @@ const hexToNumber = web3.utils.hexToNumber
 const keccak256 = web3.utils.keccak256
 
 contract('Users', function (accounts) {
-  const oraclizePrice = 123456
-  const oraclizeGasLimit = 400000
+  const provablePrice = 123456
+  const provableGasLimit = 400000
 
   let users
 
   beforeEach(async function () {
     users = await TestableUsers.new()
-    await users.alwaysReturnOraclizePrice(
+    await users.alwaysReturnProvablePrice(
       'URL',
-      oraclizeGasLimit,
-      oraclizePrice
+      provableGasLimit,
+      provablePrice
     )
   })
 
@@ -25,28 +25,28 @@ contract('Users', function (accounts) {
 
   it('returns the attestation price', async function () {
     const price = await users.attestationPrice.call()
-    expect(price.toNumber()).to.equal(oraclizePrice)
+    expect(price.toNumber()).to.equal(provablePrice)
   })
 
   context('when attesting', function () {
     const username = 'Some User'
     const account = accounts[1]
     const gistId = '1234abcd'
-    const oraclizeQueryId = '0x42'
-    const oraclizeAddress = accounts[2]
+    const provableQueryId = '0x42'
+    const provableAddress = accounts[2]
 
     let transaction
 
     beforeEach(async function () {
-      await users.returnOraclizeQueryIdsStartingFrom(oraclizeQueryId)
-      await users.alwaysReturnOraclizeAddress(oraclizeAddress)
+      await users.returnProvableQueryIdsStartingFrom(provableQueryId)
+      await users.alwaysReturnProvableAddress(provableAddress)
       transaction = await users.attest(username, gistId, {
         from: account,
-        value: oraclizePrice
+        value: provablePrice
       })
     })
 
-    it('requests gist details through oraclize', async function () {
+    it('requests gist details through Provable', async function () {
       const githubApi = 'https://api.github.com'
       const jsonPath = '$..[owner,files]..[login,filename,content]'
       const query = `json(${githubApi}/gists/${gistId}).${jsonPath}`
@@ -55,7 +55,7 @@ contract('Users', function (accounts) {
       expect(event.args.arg).to.equal(query)
     })
 
-    it('requests oraclize proofs', async function () {
+    it('requests Provable proofs', async function () {
       const notary = 0x10
       const ipfs = 0x01
       const event = transaction.logs[0]
@@ -64,11 +64,11 @@ contract('Users', function (accounts) {
 
     it('specifies a custom gas limit', async function () {
       const event = transaction.logs[1]
-      expect(event.args.gaslimit.toNumber()).to.equal(oraclizeGasLimit)
+      expect(event.args.gaslimit.toNumber()).to.equal(provableGasLimit)
     })
 
     it('only accepts calls with correct payment', async function () {
-      const wrongPayment = oraclizePrice - 1
+      const wrongPayment = provablePrice - 1
       const call = users.attest(username, gistId, {
         from: account,
         value: wrongPayment
@@ -76,27 +76,27 @@ contract('Users', function (accounts) {
       await expect(call).to.eventually.be.rejected()
     })
 
-    it('only accepts callbacks from oraclize', async function () {
-      const notOraclize = accounts[3]
-      const call = users.__callback(0, '', { from: notOraclize })
+    it('only accepts callbacks from Provable', async function () {
+      const notProvable = accounts[3]
+      const call = users.__callback(0, '', { from: notProvable })
       await expect(call).to.be.rejected()
     })
 
-    context('when oraclize query results are in', function () {
-      async function oraclizeCallback (result) {
-        await users.__callback(oraclizeQueryId, result, {
-          from: oraclizeAddress
+    context('when Provable query results are in', function () {
+      async function provableCallback (result) {
+        await users.__callback(provableQueryId, result, {
+          from: provableAddress
         })
       }
 
       it('registers the username when gist is correct', async function () {
-        await oraclizeCallback(`["${username}", "attestation", "${account}"]`)
+        await provableCallback(`["${username}", "attestation", "${account}"]`)
         expect(await users.user(username)).to.equal(account)
         expect(await users.userByHash(keccak256(username))).to.equal(account)
       })
 
       it('does not register when username is incorrect', async function () {
-        await oraclizeCallback(`["incorrect", "attestation", "${account}"]`)
+        await provableCallback(`["incorrect", "attestation", "${account}"]`)
         const user = await users.user(username)
         const userByHash = await users.userByHash(keccak256(username))
         expect(hexToNumber(user)).to.equal(0)
@@ -104,7 +104,7 @@ contract('Users', function (accounts) {
       })
 
       it('does not register when filename is incorrect', async function () {
-        await oraclizeCallback(`["${username}", "incorrect", "${account}"]`)
+        await provableCallback(`["${username}", "incorrect", "${account}"]`)
         const user = await users.user(username)
         const userByHash = await users.userByHash(keccak256(username))
         expect(hexToNumber(user)).to.equal(0)
@@ -112,7 +112,7 @@ contract('Users', function (accounts) {
       })
 
       it('does not register when contents are incorrect', async function () {
-        await oraclizeCallback(`["${username}", "attestation", "incorrect"]`)
+        await provableCallback(`["${username}", "attestation", "incorrect"]`)
         const user = await users.user(username)
         const userByHash = await users.userByHash(keccak256(username))
         expect(hexToNumber(user)).to.equal(0)
@@ -120,8 +120,8 @@ contract('Users', function (accounts) {
       })
 
       it('only processes a query result once', async function () {
-        await oraclizeCallback('some result')
-        await expect(oraclizeCallback('some result')).to.be.rejected()
+        await provableCallback('some result')
+        await expect(provableCallback('some result')).to.be.rejected()
       })
     })
   })

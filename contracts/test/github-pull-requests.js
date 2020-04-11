@@ -4,20 +4,20 @@ const hexToNumber = web3.utils.hexToNumber
 
 contract('PullRequests', function (accounts) {
   const repo = 'sustainablesource/sustainablesource'
-  const oraclizeAddress = accounts[2]
-  const oraclizePrice = 123456
-  const oraclizeGasLimit = 300000
-  const registrationPrice = 2 * oraclizePrice
+  const provableAddress = accounts[2]
+  const provablePrice = 123456
+  const provableGasLimit = 300000
+  const registrationPrice = 2 * provablePrice
 
   let pullRequests
 
   beforeEach(async function () {
     pullRequests = await TestablePullRequests.new(repo)
-    await pullRequests.alwaysReturnOraclizeAddress(oraclizeAddress)
-    await pullRequests.alwaysReturnOraclizePrice(
+    await pullRequests.alwaysReturnProvableAddress(provableAddress)
+    await pullRequests.alwaysReturnProvablePrice(
       'URL',
-      oraclizeGasLimit,
-      oraclizePrice
+      provableGasLimit,
+      provablePrice
     )
   })
 
@@ -35,7 +35,7 @@ contract('PullRequests', function (accounts) {
     let transaction
 
     beforeEach(async function () {
-      await pullRequests.returnOraclizeQueryIdsStartingFrom(usernameQueryId)
+      await pullRequests.returnProvableQueryIdsStartingFrom(usernameQueryId)
       transaction = await pullRequests.register(pullRequestId, creator, {
         value: registrationPrice
       })
@@ -47,21 +47,21 @@ contract('PullRequests', function (accounts) {
       return `json(${url}).${jsonPath}`
     }
 
-    it('requests the user name through oraclize', async function () {
+    it('requests the user name through Provable', async function () {
       const query = createQuery('user.login')
       const event = transaction.logs[1]
       expect(event.args.datasource).to.equal('URL')
       expect(event.args.arg).to.equal(query)
     })
 
-    it('requests the merged state through oraclize', async function () {
+    it('requests the merged state through Provable', async function () {
       const query = createQuery('merged')
       const event = transaction.logs[2]
       expect(event.args.datasource).to.equal('URL')
       expect(event.args.arg).to.equal(query)
     })
 
-    it('requests oraclize proofs', async function () {
+    it('requests Provable proofs', async function () {
       const notary = 0x10
       const ipfs = 0x01
       const event = transaction.logs[0]
@@ -71,8 +71,8 @@ contract('PullRequests', function (accounts) {
     it('specifies a custom gas limit', async function () {
       const event1 = transaction.logs[1]
       const event2 = transaction.logs[2]
-      expect(event1.args.gaslimit.toNumber()).to.equal(oraclizeGasLimit)
-      expect(event2.args.gaslimit.toNumber()).to.equal(oraclizeGasLimit)
+      expect(event1.args.gaslimit.toNumber()).to.equal(provableGasLimit)
+      expect(event2.args.gaslimit.toNumber()).to.equal(provableGasLimit)
     })
 
     it('only accepts calls with correct payment', async function () {
@@ -81,16 +81,16 @@ contract('PullRequests', function (accounts) {
       await expect(call).to.eventually.be.rejected()
     })
 
-    it('only accepts callbacks from oraclize', async function () {
-      const notOraclize = accounts[3]
-      const call = pullRequests.__callback(0, '', '', { from: notOraclize })
+    it('only accepts callbacks from Provable', async function () {
+      const notProvable = accounts[3]
+      const call = pullRequests.__callback(0, '', '', { from: notProvable })
       await expect(call).to.be.rejected()
     })
 
-    context('when oraclize returns the user name', function () {
+    context('when Provable returns the user name', function () {
       async function usernameCallback (result) {
         await pullRequests.__callback(usernameQueryId, result, {
-          from: oraclizeAddress
+          from: provableAddress
         })
       }
 
@@ -116,10 +116,10 @@ contract('PullRequests', function (accounts) {
       })
     })
 
-    context('when oraclize returns the merged state', function () {
+    context('when Provable returns the merged state', function () {
       async function mergedStateCallback (result) {
         await pullRequests.__callback(mergedStateQueryId, result, {
-          from: oraclizeAddress
+          from: provableAddress
         })
       }
 

@@ -1,8 +1,8 @@
 pragma solidity^0.5.0;
-import "oraclize-eth-api/oraclizeAPI_0.5.sol";
+import "provable-eth-api/provableAPI_0.5.sol";
 import "./PullRequestsInterface.sol";
 
-contract PullRequests is PullRequestsInterface, usingOraclize {
+contract PullRequests is PullRequestsInterface, usingProvable {
 
     string repo;
 
@@ -28,8 +28,8 @@ contract PullRequests is PullRequestsInterface, usingOraclize {
     }
 
     function registrationPrice() public returns (uint) {
-        oraclize_setProof(proofType_TLSNotary | proofStorage_IPFS);
-        return 2 * oraclize_getPrice("URL", 300000);
+        provable_setProof(proofType_TLSNotary | proofStorage_IPFS);
+        return 2 * provable_getPrice("URL", 300000);
     }
 
     function register(uint pullRequestId, string memory creator_)
@@ -40,17 +40,17 @@ contract PullRequests is PullRequestsInterface, usingOraclize {
         string memory prefix = queryPrefix(pullRequestId);
 
         string memory userQuery = strConcat(prefix, "user.login");
-        bytes32 userQueryId = oraclize_query("URL", userQuery, 300000);
+        bytes32 userQueryId = provable_query("URL", userQuery, 300000);
         userQueries[userQueryId] = UserQuery(pullRequestId, creator_);
 
         string memory mergedQuery = strConcat(prefix, "merged");
-        bytes32 mergedQueryId = oraclize_query("URL", mergedQuery, 300000);
+        bytes32 mergedQueryId = provable_query("URL", mergedQuery, 300000);
         mergedQueries[mergedQueryId] = MergedQuery(pullRequestId);
     }
 
     function __callback(bytes32 queryId, string memory result, bytes memory)
         public
-        onlyOraclize
+        onlyProvable
     {
         UserQuery storage userQuery = userQueries[queryId];
         if (userQuery.pullRequestId != 0) {
@@ -113,9 +113,9 @@ contract PullRequests is PullRequestsInterface, usingOraclize {
         uint pullRequestId;
     }
 
-    modifier onlyOraclize {
-        if (msg.sender != oraclize_cbAddress()) {
-            revert("only Oraclize is allowed to call this function");
+    modifier onlyProvable {
+        if (msg.sender != provable_cbAddress()) {
+            revert("only Provable is allowed to call this function");
         }
         _;
     }

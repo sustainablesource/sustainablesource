@@ -3,15 +3,21 @@
   "version": "0.1.0",
   "scripts": {
     "prepare": "truffle compile",
-    "test": "truffle test --network testing"
+    "test-solidity": "truffle test --network testing",
+    "test-js": "jest",
+    "test": "$npm_execpath run test-solidity && $npm_execpath run test-js"
   },
   "dependencies": {
     "@truffle/contract": "^4.2.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/plugin-transform-runtime": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
     "@sustainablesource/chai": "^0.1.0",
     "@sustainablesource/provable": "^0.1.0",
     "ganache-core": "^2.5.7",
+    "jest": "^25.3.0",
     "openzeppelin-solidity": "2.1.0-rc.2",
     "provable-eth-api": "provable-things/ethereum-api",
     "truffle": "^5.0.22"

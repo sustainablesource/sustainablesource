@@ -5,14 +5,13 @@
     "prepare": "truffle compile",
     "test": "truffle test --network testing"
   },
-  "dependencies": {
-    "provable-eth-api": "provable-things/ethereum-api"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "truffle": "^5.0.22",
+    "@sustainablesource/chai": "^0.1.0",
+    "@sustainablesource/provable": "^0.1.0",
     "ganache-core": "^2.5.7",
     "openzeppelin-solidity": "2.1.0-rc.2",
-    "@sustainablesource/chai": "^0.1.0",
-    "@sustainablesource/provable": "^0.1.0"
+    "provable-eth-api": "provable-things/ethereum-api",
+    "truffle": "^5.0.22"
   }
 }

@@ -5,7 +5,9 @@
     "prepare": "truffle compile",
     "test": "truffle test --network testing"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@truffle/contract": "^4.2.0"
+  },
   "devDependencies": {
     "@sustainablesource/chai": "^0.1.0",
     "@sustainablesource/provable": "^0.1.0",

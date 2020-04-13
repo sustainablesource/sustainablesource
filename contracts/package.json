@@ -15,12 +15,12 @@
     "is-port-reachable": "^2.0.0",
     "openzeppelin-solidity": "2.1.0-rc.2",
     "@sustainablesource/chai": "^0.1.0",
-    "@sustainablesource/oraclize": "^0.1.0"
+    "@sustainablesource/provable": "^0.1.0"
   },
   "dependencies": {
     "ganache-core": "^2.5.7",
     "truffle": "^5.0.22",
-    "oraclize-eth-api": "oraclize/ethereum-api"
+    "provable-eth-api": "provable-things/ethereum-api"
   },
   "scripts": {
     "prepare": "truffle compile",

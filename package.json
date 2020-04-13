@@ -30,7 +30,7 @@
     "github-api",
     "github-oauth",
     "integration-tests",
-    "oraclize",
+    "provable",
     "user-registry",
     "user-registry-ui"
   ],

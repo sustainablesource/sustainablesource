@@ -1,82 +1,77 @@
 pragma solidity ^0.5.0;
-import "provable-eth-api/provableAPI_0.5.sol";
-import "./Conversions.sol";
 import "./UsersInterface.sol";
 
-contract Users is UsersInterface, usingProvable {
+contract Users is UsersInterface {
 
-    using Conversions for address;
-    using Conversions for string;
+    uint public attestationPrice;
+
+    address oracleAddress;
+    uint nextOracleRequestId;
+    mapping (uint => OracleRequest) oracleRequests;
 
     mapping (bytes32 => address) usernameHashToAddress;
-    mapping (bytes32 => Query) queries;
+
+    constructor(uint attestationPrice_, address oracleAddress_) public {
+        attestationPrice = attestationPrice_;
+        oracleAddress = oracleAddress_;
+    }
+
+    function oracleRequest(uint requestId)
+        public
+        view
+        returns (string memory, address)
+    {
+        OracleRequest storage request = oracleRequests[requestId];
+        return (request.gistId, request.account);
+    }
 
     function userByHash(bytes32 usernameHash) public view returns (address) {
         return usernameHashToAddress[usernameHash];
     }
 
-    function attestationPrice() public returns (uint) {
-        provable_setProof(proofType_TLSNotary | proofStorage_IPFS);
-        return provable_getPrice("URL", 400000);
-    }
-
-    function attest(string memory username, string memory gistId)
+    function attest(string memory gistId)
         public
         payable
         onlyCorrectPayment
     {
-        string memory queryPrefix = "json(https://api.github.com/gists/";
-        string memory queryPostfix = ").$..[owner,files]..[login,filename,content]";
-        string memory query = strConcat(queryPrefix, gistId, queryPostfix);
-        bytes32 queryId = provable_query("URL", query, 400000);
-
-        queries[queryId] = Query(username, msg.sender);
+        uint requestId = nextOracleRequestId++;
+        oracleRequests[requestId] = OracleRequest(gistId, msg.sender);
+        emit OracleRequestStored(requestId);
     }
 
-    function __callback(
-        bytes32 queryId,
-        string memory result,
-        bytes memory
-    )
+    function oracleResponse(uint requestId, bool attestationIsCorrect,
+                            string memory username)
         public
-        onlyProvable
+        onlyOracle
     {
-        Query storage query = queries[queryId];
-        if (bytes(query.username).length != 0) {
-            processQueryResult(query, result);
-            delete queries[queryId];
-            return;
+        OracleRequest storage request = oracleRequests[requestId];
+        if (bytes(request.gistId).length == 0) {
+            revert("response received for non-existing request");
         }
-        revert("callback called for non-existent query");
+        if (attestationIsCorrect) {
+            usernameHashToAddress[keccak256(bytes(username))] = request.account;
+        }
+        delete oracleRequests[requestId];
     }
 
-    function processQueryResult(Query storage query, string memory result)
-        private
-    {
-        string memory accountString = query.account.toString();
-        string memory correctResult = strConcat(
-            "[\"", query.username, "\", \"attestation\", \"0x", accountString, "\"]"
-        );
-
-        if (strCompare(correctResult.toLowerCase(), result.toLowerCase()) == 0) {
-            usernameHashToAddress[keccak256(bytes(query.username))] = query.account;
-        }
-    }
-
-    struct Query {
-        string username;
+    struct OracleRequest {
+        string gistId;
         address account;
     }
 
-    modifier onlyProvable {
-        if (msg.sender != provable_cbAddress()) {
-            revert("only Provable is allowed to call this method");
+    event OracleRequestStored (
+        uint requestId
+    );
+
+    modifier onlyOracle {
+        if (msg.sender != oracleAddress) {
+            revert("only the oracle is allowed to call this method");
         }
         _;
     }
 
     modifier onlyCorrectPayment {
-        if (msg.value != attestationPrice()) {
+        if (msg.value != attestationPrice) {
             revert("incorrect payment amount");
         }
         _;

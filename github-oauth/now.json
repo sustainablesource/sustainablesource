@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "name": "sustainablesource",
+  "name": "sustainablesource-github-oauth",
   "builds": [
     { "src": "login.js", "use": "@now/node" },
     { "src": "callback.js", "use": "@now/node" }

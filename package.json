@@ -30,6 +30,7 @@
     "github-api",
     "github-oauth",
     "integration-tests",
+    "oracle",
     "provable",
     "user-registry",
     "user-registry-ui"

@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "name": "sustainablesource-oracle",
+  "builds": [
+    { "src": "attest-user.js", "use": "@now/node" }
+  ],
+  "routes": [
+    { "src": "/attest/user", "dest": "/attest-user.js" }
+  ],
+  "rewrites": [
+    { "source": "/attest/user/:requestId", "destination": "/attest/user" }
+  ],
+  "alias": "oracle.sustainablesource.io"
+}

@@ -13,10 +13,6 @@ contract('Users', function (accounts) {
     users = await Users.new(attestationPrice, oracleAddress)
   })
 
-  it('is deployed', async function () {
-    expect(await Users.deployed()).to.exist()
-  })
-
   it('returns the attestation price', async function () {
     const price = await users.attestationPrice.call()
     expect(price.toNumber()).to.equal(attestationPrice)
